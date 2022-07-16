@@ -17,10 +17,10 @@ function App() {
 export default App;
 
 function About() {
-  return <div>abouut</div>;
+  return <div>About page</div>;
 }
 function Home() {
-  return <div>HOME</div>;
+  return <div>Home page</div>;
 }
 function Dashboard() {
   return <div>dashboard</div>;
