@@ -2,7 +2,7 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.css'
 
-function navbar() {
+function Navbar() {
     return (
         <div>
             <nav className='navbar w-full h-20 border-y-2 flex justify-between items-center'>
@@ -20,4 +20,4 @@ function navbar() {
     )
 }
 
-export default navbar
+export default Navbar
