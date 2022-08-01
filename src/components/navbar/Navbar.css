@@ -1,0 +1,16 @@
+.navbar{
+    background-color: #EFF0F3;
+    min-width: 600px;
+}
+
+.user-name{
+    font-family: 'Plus Jakarta Sans';
+    font-size: 2rem;
+    margin-left : 4rem;
+}
+
+.user-name-blog{
+    margin-top: 1.2rem;
+    color : #6246EA;
+    font-weight: 600;
+}

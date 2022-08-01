@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  box-sizing: border-box;
+  margin : 0;
+  padding : 0;
+}
+
 body {
+
   font-family: 'Source Code Pro';
+  background: #EFF0F3;
+  background-image: radial-gradient(#6246EA 2%, transparent 4%);
+  background-size: 70px 70px;
+  background-position: 0 0, 30px 30px;
+  background-repeat: repeat;
 }
