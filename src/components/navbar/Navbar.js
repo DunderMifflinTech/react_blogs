@@ -4,6 +4,7 @@ import './Navbar.css';
 
 function Navbar() {
   return (
+      <>
     <div>
       <nav className="navbar w-full h-20 border-y-2 flex justify-between items-center">
         <ul className="cursor-pointer flex">
@@ -25,6 +26,7 @@ function Navbar() {
         </ul>
       </nav>
     </div>
+    </>
   );
 }
 
