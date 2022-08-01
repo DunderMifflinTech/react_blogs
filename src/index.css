@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  font-family: 'Source Code Pro', monospace;
-  background: #eff0f3;
-  background-image: radial-gradient(#6246ea 2%, transparent 4%);
-  background-size: 70px 70px;
-  background-position: 0 0, 30px 30px;
-  background-repeat: repeat;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #eff0f3;
+    background-image: radial-gradient(#6246ea 4%, transparent 4%);
+    background-size: 45px 45px;
+    background-position: 0 0, 30px 30px;
+    background-repeat: repeat;
 }
