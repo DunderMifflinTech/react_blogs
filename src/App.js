@@ -5,7 +5,6 @@ import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home';
 import Playground from './pages/Playground/Playground';
 
-
 function App() {
   return (
     <>

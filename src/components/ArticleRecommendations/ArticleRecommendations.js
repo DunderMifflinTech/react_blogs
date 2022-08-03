@@ -5,7 +5,7 @@ import userPFP from '../../images/userPFP.png';
 import BaseButton from '../BaseButton/BaseButton';
 
 function ArticleRecommendations({ section }) {
-  var arr = [1, 2, 3, 4];
+  const TEMP = [1, 2, 3, 4];
   return (
     <div className="w-full flex flex-col bg-white min-w-[300px]">
       <div className="w-full flex flex-row flex-wrap px-[90px] py-[20px] justify-between">
@@ -18,8 +18,9 @@ function ArticleRecommendations({ section }) {
       </div>
 
       <div className="flex flex-row flex-wrap mx-[70px] justify-between mb-[40px]">
-        {arr.map((val, idx) => (
+        {TEMP.map((val) => (
           <BlogPost
+            key={val}
             creatorName="CreatorName"
             image={laptop}
             dateCreated={new Date()}
