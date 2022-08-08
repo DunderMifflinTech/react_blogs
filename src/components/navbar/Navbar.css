@@ -1,16 +1,42 @@
-.navbar{
-    background-color: #EFF0F3;
-    min-width: 600px;
-}
 
-.user-name{
-    font-family: 'Plus Jakarta Sans', ui-monospace;
-    font-size: 2rem;
-    margin-left : 4rem;
-}
 
-.user-name-blog{
-    margin-top: 1.2rem;
-    color : #6246EA;
-    font-weight: 600;
+@media(max-width : 600px){
+    .navbar-menu{
+        display: none;
+    }
+
+    .hamburgerMenu{
+        display: flex
+    }
+
+    .navbar-menu{
+        display: none;
+        flex-direction: column;
+        text-align: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 1rem;
+        margin-left: 5rem;
+        height: 100px;
+        margin-bottom: 20px;
+    }
+
+    .navbar-menu li{
+        transition: all 0.3s ease-in-out;
+    }
+
+    .navbar-menu li:hover{
+        font-size: 20px;
+    }
+    .navbar{
+        flex-direction: column;
+        height: inherit;
+    }
+    .navbar-menu.active{
+        display: flex;
+    }
+
+    .hamburgerMenu.active{
+        display: none;
+    }
 }
