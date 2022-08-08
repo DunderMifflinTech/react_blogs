@@ -17,7 +17,7 @@ function Article({ info }) {
             <div className="mt-[10px] flex flex-row flex-wrap justify-start list-none">
               {info.blogTags.map((val) => (
                 <li
-                  className="text-[15px] flex text-center px-[10px] py-[3px] mx-[5px] mb-[5px] text-[#e5e7eb] whitespace-nowrap bg-[#6246ea] hover:bg-[#322479] ease-out duration-300 rounded-[12px] cursor-pointer hover:"
+                  className="text-[15px] flex text-center px-[10px] py-[3px] mx-[5px] mb-[5px] text-[#e5e7eb] whitespace-nowrap bg-[#6246ea] hover:bg-[#322479] ease-out duration-300 rounded-full cursor-pointer"
                   key={val}
                 >
                   {val}
