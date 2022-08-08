@@ -12,7 +12,7 @@ function ArticleRecommendations({ section }) {
         <div className="font-[700] flex items-center justify-center">
           {section}
         </div>
-        <BaseButton className="font-[700]" variant="ghost">
+        <BaseButton className="font-[700]" variant="solid">
           See all articles
         </BaseButton>
       </div>

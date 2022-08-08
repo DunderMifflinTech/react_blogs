@@ -1,4 +1,5 @@
 import React from 'react';
+import LoremIpsum from 'react-lorem-ipsum';
 
 function Article({ info }) {
   return (
@@ -46,7 +47,7 @@ function Article({ info }) {
           </div>
         </div>
         <div className="article-content bg-white p-[20px]">
-          {info.blogContent}
+          <LoremIpsum p={14} />
         </div>
       </div>
       <div className=" bg-slate-700"></div>
