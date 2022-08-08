@@ -12,7 +12,6 @@ function Navbar() {
   }
 
   return (
-    // TODO:create a hamburder menu
     <>
       <div>
         <nav className="navbar bg-[#EFF0F3] h-20 w-full border-y-2 flex justify-between items-center relative">
@@ -26,11 +25,11 @@ function Navbar() {
               .Blog
             </li>
           </ul>
-          <a href="#" onClick = {()=>handleClick()} className="hamburgerMenu absolute top-[15px] hidden flex-col justify-between items-center right-[10px] h-[20px] w-[30px]">
+          <button href='/' onClick = {()=>handleClick()} className="hamburgerMenu absolute top-[15px] hidden flex-col justify-between items-center right-[10px] h-[20px] w-[30px]">
             <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
             <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
             <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
-          </a>
+          </button>
           <ul onClick = {()=>handleClick()} className="navbar-menu flex justify-end pr-8">
             <li className="pr-10">
               <NavLink to="/home">Home</NavLink>
