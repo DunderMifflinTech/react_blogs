@@ -82,11 +82,11 @@ function Footer() {
       </div>
       <span className=" mt-[70px] mb-[50px] footer-separator w-[70%] h-[1px] bg-slate-300 "></span>
       <div className="w-[60%]">
-        <div className="flex justify-between font-thin cursor-pointer">
-          <div>
+        <div className="flex justify-between font-thin">
+          <div className="cursor-pointer">
             <a>Write to us</a>
           </div>
-          <div>
+          <div className="cursor-pointer">
             <a>Privacy policy</a>
             <a className="pl-[20px]">Terms of use</a>
           </div>
