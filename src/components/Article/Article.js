@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import LoremIpsum from 'react-lorem-ipsum';
+import './Articls.css'
 
 function Article({ info }) {
-  const [isHovering, setIsHovering] = useState(false);
-  const handleOnMouseEnter = ()=> {
-    setIsHovering(true);
-  }
-  const handleOnMouseLeave = ()=> {
-    setIsHovering(false);
-  }
-
   return (
     <div className="flex flex-row">
       <div className="article-container ml-[5vw] mt-[20px] w-[75vw] h-full flex flex-col rounded-[12px] overflow-hidden">
-        <div className="article-header p-[15px] bg-white flex flex-row rounded-[12px]">
+        <div className="article-header p-[15px] bg-white flex flex-row rounded-[12px] shadow-2xl">
           <div className=" article-image w-[40%] h-[35vh] rounded-[12px] flex justify-center items-center">
             <img
               className="rounded-[12px] h-full w-full object-cover"
@@ -34,20 +27,12 @@ function Article({ info }) {
               ))}
             </div>
             <div
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-              style={{
-                height: isHovering ? '17.35vh' : '7vh'
-              }}
-              className="blogAbstract mt-[7px] text-[13px] h-[7vh] overflow-scroll text-[#bfc1c4] transition-all duration-500 ease-in-out "
+              className="blogAbstract mt-[7px] text-[13px] h-[7vh] rounded-md overflow-scroll text-[#bfc1c4] transition-all duration-500 ease-in-out "
             >
               {info.blogAbstract}
             </div>
             <div
-              style={{
-                display: isHovering ? 'none' : 'flex'
-              }}
-              className="user-block mt-[25px] w-[260px] flex-row h-[57px]"
+              className="user-block mt-[25px] flex w-[260px] flex-row h-[57px] overflow-x-hidden transition-all ease-in 100ms"
             >
               <div className="w-[57px] h-[57px] rounded-full flex content-center items-center overflow-hidden">
                 <img
@@ -66,7 +51,7 @@ function Article({ info }) {
             </div>
           </div>
         </div>
-        <div className="article-content bg-white p-[20px]">
+        <div className="article-content bg-white p-[20px] mt-10 rounded-[12px]">
           <LoremIpsum p={14} />
         </div>
       </div>
