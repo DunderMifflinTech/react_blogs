@@ -6,6 +6,8 @@ import Home from './pages/home/Home';
 import Playground from './pages/Playground/Playground';
 import Article from './components/Article/Article';
 import { BlogData } from './constants/dummyData';
+import Footer from './components/footer/Footer';
+import Playaround from './components/playaround/Playaround';
 
 function App() {
   return (
@@ -16,7 +18,9 @@ function App() {
         <Route path="/articles" element={<Article info={BlogData[0]} />} />
         <Route path="/p" element={<Playground />} />
         <Route path="/home" element={<Home />} />
+        <Route path = '/play' element={<Playaround/>} />
       </Routes>
+      <Footer/>
     </>
   );
 }
