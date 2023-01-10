@@ -8,12 +8,15 @@ import Article from './components/Article/Article';
 import { BlogData } from './constants/dummyData';
 import Footer from './components/footer/Footer';
 import Playaround from './components/playaround/Playaround';
+import {StaticRouter} from 'react-router-dom/server'
+import Login from './components/login/Login';
 
 function App() {
   return (
     <>
       <Navbar />
       <Routes>
+        <Route path ='/login' element = {<Login/>}/>
         <Route path="/" element={<Home />} />
         <Route path="/articles" element={<Article info={BlogData[0]} />} />
         <Route path="/p" element={<Playground />} />

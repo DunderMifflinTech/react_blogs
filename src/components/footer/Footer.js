@@ -93,7 +93,7 @@ function Footer() {
         </div>
       </div>
       <div className="font-thin pt-[100px]">
-      © 2022 BlogIO, Inc. All rights reserved.
+      © 2023 BlogIT, Inc. All rights reserved.
       </div>
     </div>
   );
