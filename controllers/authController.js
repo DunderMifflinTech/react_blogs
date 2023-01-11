@@ -6,7 +6,6 @@ const _JWT_TOKEN_ = require('./../secret');
 
 module.exports.authUserLogin = async function authUserLogin(req, res){
     try{
-        console.log('here');
         let user = req.body;
         let dbUser = await userModel.findOne({email: user.email})
         if(dbUser){
@@ -15,7 +14,7 @@ module.exports.authUserLogin = async function authUserLogin(req, res){
                 let token = jwt.sign({payload: user['_id']}, _JWT_TOKEN_);
                 // res.cookie('login_token', token);
                 res.cookie('login_token', token, {httpOnly: true});
-                res.json({
+                res.status(200).json({
                     message: 'User logged in'
                 })
             } else {

@@ -20,20 +20,28 @@ export const loginSucccess = () => {
 export const loginFailure = (error) => {
   return {
     type: USER_LOGIN_FAILURE,
-    payload: error.message,
+    payload: error,
   };
 };
 
-
-export const userLogin = (userCredentials)=>{
-    return function(dispatch){
-        try{
-            dispatch(sendLoginRequest());
-            axios.post("http://localhost:3001/auth/login", userCredentials)
-            .then((data)=>console.log(data))
-        }catch(err){
-            console.log(err.message);
-        }
-    }    
-}
-
+export const userLogin = (userCredentials) => {
+  return function (dispatch) {
+    try {
+      dispatch(sendLoginRequest());
+      axios
+        .post('http://localhost:3001/auth/login', userCredentials)
+        .then((data) => {
+          if (data.status == 200) {
+            dispatch(loginSucccess());
+          } else {
+            dispatch(loginFailure('incorrect credentials'));
+          }
+        })
+        .catch(err=>{
+          console.log(err.message)
+        });
+    } catch (err) {
+      dispatch(loginFailure(err.message));
+    }
+  };
+};

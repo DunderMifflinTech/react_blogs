@@ -6,7 +6,7 @@ import axios from 'axios';
 import {connect} from 'react-redux'
 
 
-function Login({userLogin, auth}) {
+function Login({auth, userLogin}) {
   const [login, setLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -19,6 +19,11 @@ function Login({userLogin, auth}) {
             password: password
         }
         userLogin(userCredentials);
+        if(auth.isLoggedIn){
+
+        } else {
+            alert('wrong email or password');
+        }
     }
 
     const handleSignUp = async ()=>{
