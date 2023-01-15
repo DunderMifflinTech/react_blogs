@@ -24,24 +24,30 @@ export const loginFailure = (error) => {
   };
 };
 
-export const userLogin = (userCredentials) => {
-  return function (dispatch) {
-    try {
-      dispatch(sendLoginRequest());
-      axios
-        .post('http://localhost:3001/auth/login', userCredentials)
-        .then((data) => {
-          if (data.status == 200) {
-            dispatch(loginSucccess());
-          } else {
-            dispatch(loginFailure('incorrect credentials'));
-          }
-        })
-        .catch(err=>{
-          console.log(err.message)
-        });
-    } catch (err) {
-      dispatch(loginFailure(err.message));
-    }
-  };
+export const userLogin = (userCredentials) => async (dispatch) => {
+  try {
+    dispatch(sendLoginRequest());
+    const request = await axios.post(
+      'http://localhost:3001/auth/login',
+      userCredentials
+    );
+    // console.log(request.status);
+    dispatch(loginSucccess());
+    return true;
+  } catch (err) {
+    dispatch(loginFailure(err.message));
+    return false;
+  }
 };
+
+export const userSignUp = (userCredentials)=> async (dispatch)=>{
+  try{
+    dispatch(sendLoginRequest());
+    const request = await axios.post('http://localhost:3001/auth/signup', userCredentials);
+    dispatch(loginSucccess());
+    return true;
+  }catch(err){
+    dispatch(loginFailure(err.message));
+    return false;
+  }
+}
