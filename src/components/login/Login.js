@@ -8,7 +8,7 @@ import './Login.css'
 
 
 function Login({isLoggedIn, userLogin, userSignUp}) {
-  const [login, setLogin] = useState(true); //to see if the user wats to login or sign up
+  const [login, setLogin] = useState(true); //to see if the user wants to login or sign up
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -54,9 +54,12 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
 
       const authSuccess = await userSignUp(userCredentials);
       if(authSuccess){
-
-      }else{
         
+      }else{
+        setIsInvalid(true);
+        setTimer(prevState=> [...prevState, setTimeout(() => {
+          setIsInvalid(false);
+        }, 10000)])
       }
 
     }
@@ -102,7 +105,7 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
   ) : (
     <>
       <div className="w-full flex justify-center">
-        <div className="w-[430px] h-[500px] p-[30px] mt-[50px] rounded-[12px] flex flex-col justify-around bg-[#fff] transition duration-150 ease-in-out hover:shadow-lg">
+        <div className="w-[430px] h-[500px] p-[30px] mt-[50px] rounded-[12px] flex flex-col justify-between bg-[#fff] transition duration-150 ease-in-out hover:shadow-lg">
             <div><a onClick = {()=>setLogin(true)}className='hover:text-[#6246ea] cursor-pointer'>Login?</a></div>
           <header className="text-center text-[30px]">Sign Up</header>
           <form className="h-[250px] flex flex-col justify-around">
@@ -130,9 +133,13 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
               placeholder="confirm password"
               onChange={(e)=>setConfirmPassword(e.target.value)}
             ></input>
+            <div className= { (isInvalid? 'fadeIn' : 'fadeOut') + ' invalid-credentials flex flex-row items-center bg-rose-200 rounded-sm' }>
+              <div className='w-[4px] h-3/4 rounded-lg bg-[#f52222]'></div>
+              <p className='ml-[2px] text-rose-500'>Invalid credentials</p>
+            </div>
           </form>
           <div className="flex justify-center">
-            <BaseButton variant={'solid'}>Submit</BaseButton>
+            <BaseButton variant={'solid'} onClick = {handleSignUp} className='w-[120px]'>Submit</BaseButton>
           </div>
         </div>
       </div>

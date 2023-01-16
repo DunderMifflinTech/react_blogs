@@ -47,6 +47,7 @@ export const userSignUp = (userCredentials)=> async (dispatch)=>{
     dispatch(loginSucccess());
     return true;
   }catch(err){
+    console.log(err)
     dispatch(loginFailure(err.message));
     return false;
   }

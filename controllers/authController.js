@@ -39,11 +39,12 @@ module.exports.authUserLogin = async function authUserLogin(req, res){
 module.exports.authUserSignup = async function authUserSignup(req, res){
     try{
         let user = req.body;
-        let doesUserExist = userModel.findOne({email: req.body.email});
+        let doesUserExist = await userModel.findOne({email: req.body.email});
         if(doesUserExist){
             res.status(400).json({
                 message: 'user exists'
             })
+            return;
         }
         let savedUser = await userModel.create(user);
         
@@ -53,10 +54,12 @@ module.exports.authUserSignup = async function authUserSignup(req, res){
             res.json({
                 message: 'user created'
             })
+            return;
         }else{
             res.status(500).json({
                 message: 'unable to save user in database'
             })
+            return;
         }
     }catch(err){
         res.status(500).json({
