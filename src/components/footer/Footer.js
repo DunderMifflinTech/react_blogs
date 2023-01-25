@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 
 function Footer() {
   return (
-    <div className="footer-body w-full mt-[100px] pt-[100px] pb-[20px] bg-[#eff0f3] flex flex-col items-center border-t-[1px]">
+    <div className="footer-body w-full mt-[100px] pt-[100px] pb-[20px] bg-[#ffff] flex flex-col items-center border-t-[1px]">
       <div className="flex justify-evenly w-full">
         <div className="site-logo">
           <ul className="cursor-pointer flex mr-[2rem]">

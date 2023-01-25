@@ -10,6 +10,7 @@ import Footer from './components/footer/Footer';
 import Playaround from './components/playaround/Playaround';
 import {StaticRouter} from 'react-router-dom/server'
 import Login from './components/login/Login';
+import UserWall from './components/userWall/UserWall';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path ='/login' element = {<Login/>}/>
         <Route path="/" element={<Home />} />
         <Route path="/articles" element={<Article info={BlogData[0]} />} />
+        <Route path = "/user-wall" element = {<UserWall/>}/>
         <Route path="/p" element={<Playground />} />
         <Route path="/home" element={<Home />} />
         <Route path = '/play' element={<Playaround/>} />

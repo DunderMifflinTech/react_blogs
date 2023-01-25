@@ -5,6 +5,7 @@ import { userLogin, userSignUp } from '../../redux/auth/authActions';
 import axios from 'axios';
 import {connect} from 'react-redux'
 import './Login.css'
+import { useNavigate } from 'react-router-dom';
 
 
 function Login({isLoggedIn, userLogin, userSignUp}) {
@@ -25,7 +26,7 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
       });
     }
   }, [])
-  
+    const navigate = useNavigate();
     const handleLogin = async ()=>{
         let userCredentials = {
             email: email,
@@ -36,6 +37,7 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
 
         if(authSuccess){
           
+          navigate('/');
         }else{
           setIsInvalid(true);
           setTimer(prevState=> [...prevState, setTimeout(() => {
@@ -45,7 +47,8 @@ function Login({isLoggedIn, userLogin, userSignUp}) {
     }
 
     const handleSignUp = async ()=>{
-
+      
+          navigate('/');
       let userCredentials = {
         name: name,
         email: email,
