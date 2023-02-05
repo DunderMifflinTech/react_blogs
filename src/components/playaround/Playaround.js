@@ -4,9 +4,7 @@ import './playaround.css'
 function Playaround() {
     return (
         <div className='divMaster'>
-            <div className="div1"></div>
-            <div className="div2"></div>
-            <div className="div3"></div>
+            <div className="h-[30px] w-[50px]">Text</div>
         </div>
     )
 }

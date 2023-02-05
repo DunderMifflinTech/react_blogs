@@ -3,7 +3,7 @@ import './UserBio.css'
 
 function UserBio({ userPFP, creatorNik, creatorBio, ...restOfProps }) {
   return (
-    <div className=" rounded-lg h-[100px] flex flex-row bg-[#ffff]">
+    <div className=" rounded-lg h-[120px] flex flex-row bg-[#ffff] outline outline-[1px] outline-[#d7d7d7] hover:outline-[1.3px] hover:outline-[#b5b5b5] transition-all ease-in-out">
       <div className=' user-img w-[100px] bg-[#6246EA] shrink-0 h-full flex justify-center items-center'>
         <img
           src={userPFP}
