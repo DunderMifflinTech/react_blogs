@@ -21,7 +21,7 @@ function UserWall() {
           <PersonalArticles />
         </div>
         <div>
-          <CreateArticles userPFP={userPFP} />
+          <CreateArticles userPFP={userPFP} userNik = {"userNik"}/>
           <Feed />
         </div>
         <div>
