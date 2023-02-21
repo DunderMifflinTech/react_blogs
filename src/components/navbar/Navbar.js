@@ -14,7 +14,7 @@ function Navbar() {
     <div>
       <nav className="navbar bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
         <ul className="cursor-pointer flex">
-          <NavLink to="/">
+          <NavLink to="/user-wall">
             <li className=" user-name text-[2rem] ml-[2rem] font-bold list-none ">
               Name
             </li>

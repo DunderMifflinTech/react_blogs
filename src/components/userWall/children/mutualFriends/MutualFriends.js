@@ -27,7 +27,7 @@ function MutualFriends() {
     },
   ];
   return (
-    <div className="bg-[#fff] rounded-lg outline outline-[1px] outline-[#d7d7d7] hover:outline-[#b5b5b5] hover:outline-[1.3px] transition-all ease-in-out">
+    <div className="bg-[#fff] rounded-lg outline outline-[1px] outline-[#d7d7d7]">
       <div className="pt-[10px] pb-[10px] flex place-content-center text-sm font-bold">
         People you may know
       </div>

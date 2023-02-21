@@ -15,13 +15,13 @@ function UserWall() {
         <div>
           <UserBio
             userPFP={userPFP}
-            creatorNik={'creatorNik'}
-            creatorBio={'creatorBio'}
+            userNik={'userNik'}
+            UserBio={'userBio'}
           />
           <PersonalArticles />
         </div>
         <div>
-          <CreateArticles userPFP={userPFP} userNik = {"userNik"}/>
+          <CreateArticles userPFP={userPFP} userNik={'userNik'} />
           <Feed />
         </div>
         <div>

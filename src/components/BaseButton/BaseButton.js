@@ -4,6 +4,7 @@ import {
   GHOST_THEME_COMMON_CLASSES,
   SOLID_THEME_COMMON_CLASSES,
   WHITE_THEME_COMMON_CLASSES,
+  RED_THEME_COMMON_CLASSES,
 } from '../../constants/baseComponentsClasses';
 
 function BaseButton({ children, variant, className, ...restProps }) {
@@ -14,6 +15,8 @@ function BaseButton({ children, variant, className, ...restProps }) {
       return GHOST_THEME_COMMON_CLASSES + ' hover:outline-transparent';
     if (variant === 'black')
       return BLACK_THEME_COMMON_CLASSES + ' hover:outline-white';
+    if (variant === 'red')
+      return RED_THEME_COMMON_CLASSES + 'hover: outline-white';
     return WHITE_THEME_COMMON_CLASSES + ' hover:outline-black';
   }
 
