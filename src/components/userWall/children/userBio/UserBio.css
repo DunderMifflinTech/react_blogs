@@ -1,3 +1,42 @@
-.user-img{
-    border-radius: 10px 100px 100px 10px
+.user-img {
+  border-radius: 10px 100px 100px 10px;
+}
+
+.horizontal-slider {
+  width: 50%;
+  max-width: 500px;
+  margin: auto;
+}
+.example-thumb {
+  cursor: pointer;
+  position: absolute;
+  z-index: 100;
+  background: #6246ea;
+  /* border: 5px solid #3774ff; */
+  border-radius: 100%;
+  display: block;
+  box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
+}
+.example-thumb.active {
+  background-color: grey;
+}
+.example-track {
+  margin: 10px;
+  position: relative;
+  background: #ddd;
+  border-radius: 15%;
+}
+.example-track.example-track-0 {
+  background: #6246ea;
+}
+.horizontal-slider .example-track {
+  top: 20px;
+  height: 4px;
+}
+.horizontal-slider .example-thumb {
+  top: 24px;
+  width: 15px;
+  outline: none;
+  height: 15px;
+  line-height: 18px;
 }
