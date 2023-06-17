@@ -20,12 +20,12 @@ mongoose.connect(__DBURL).then(() => {
 })
 .catch(e=>{
     console.log(`Invalid database connection, error message: ${e.message}`)
-})
+}) 
 
 
 app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
+app.get('*', (req, res) => {
+  res.send('Error 404 page not found :(');
 });

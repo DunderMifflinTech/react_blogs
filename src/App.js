@@ -8,7 +8,6 @@ import Article from './components/Article/Article';
 import { BlogData } from './constants/dummyData';
 import Footer from './components/footer/Footer';
 import Playaround from './components/playaround/Playaround';
-import {StaticRouter} from 'react-router-dom/server'
 import Login from './components/login/Login';
 import UserWall from './components/userWall/UserWall';
 

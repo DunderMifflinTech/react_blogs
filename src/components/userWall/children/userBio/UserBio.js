@@ -6,21 +6,18 @@ import { MdDelete } from 'react-icons/md';
 import { FiUpload } from 'react-icons/fi';
 import { BsSave } from 'react-icons/bs';
 import Cropper from 'react-easy-crop';
-import ReactSlider from 'react-slider';
 import getCroppedImg, { dataURLtoFile, generateDownload } from './utils';
 import axios from 'axios';
 
-
 import BaseButton from '../../../BaseButton/BaseButton';
 
-const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
+const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeModal}) => {
   const [img, setImg] = useState(userPFP);
   const [croppedArea, setCroppedArea] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const inputRef = useRef();
-
   const step = useRef(0);
+  const inputRef = useRef();
 
   const onCropComplete = useCallback(
     (croppedAreaPercentage, croppedAreaPixels) => {
@@ -39,27 +36,22 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
     }
   };
 
-  const sliderChange = (arg1, arg2) => {
-    console.log(`arg1 = ${arg1}  step = ${step.current}`);
-    if (arg1 > step.current) {
-      setZoom((prev) => prev + 0.1);
-      step.current = arg1;
-    } else if (arg1 < step.current) {
-      setZoom((prev) => prev - 0.1);
-      step.current = arg1;
-    }
-  };
-
   const handleImgSave = async () => {
     const canvas = await getCroppedImg(img, croppedArea);
-    const canvasDataURL = canvas.toDataURL("image/jpeg");
-    const convertedURLtoFile = dataURLtoFile(canvasDataURL, "cropped-image.jpeg");
-    try{
+    const canvasDataURL = canvas.toDataURL('image/jpeg');
+    const convertedURLtoFile = dataURLtoFile(
+      canvasDataURL,
+      'cropped-image.jpeg'
+    );
+    try {
       const formData = new FormData();
       formData.append('croppedImage', convertedURLtoFile);
-      const response = await axios.post(`http://localhost:3001/users/save-profile-picture`, formData);
+      const response = await axios.post(
+        `http://localhost:3001/users/save-profile-picture`,
+        formData
+      );
       console.log(response.data);
-    } catch(err){
+    } catch (err) {
       console.warn(err);
     }
   };
@@ -68,14 +60,17 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
     <div
       onClick={() => {
         document.body.style.overflow = '';
-        setIsModalOpen(false);
+        if(canModalClose)
+          closeModal();
+        else 
+          setCanModalClose(true);
       }}
       className="w-full h-full backdrop-blur-sm backdrop-brightness-50 fixed bottom-0 left-0 z-[1] flex justify-center items-center"
     >
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e)=>e.stopPropagation()}
+        onMouseDown={()=>{setCanModalClose(false)}}
+        onMouseUp={()=>{setCanModalClose(true)}}
         className="rounded-lg w-[700px] h-[540px] bg-[#fff] "
       >
         <div className="flex flex-row justify-between p-[10px] pl-[18px] pb-[25px]">
@@ -83,7 +78,7 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
           <IoClose
             onClick={() => {
               document.body.style.overflow = '';
-              setIsModalOpen(false);
+              closeModal();
             }}
             size={30}
             style={{ color: '#5c5c5c' }}
@@ -109,23 +104,26 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
           onChange={onSelectFile}
           className="hidden"
         />
-        <div className="h-[40px]">
-          <ReactSlider
-            className="horizontal-slider"
-            thumbClassName="example-thumb"
-            trackClassName="example-track"
-            onChange={sliderChange}
-            max={10}
+        <div className="h-[40px] flex">
+          {' '}
+          {/* //* INPUT SLIDER */}
+          <input
+            type="range"
+            value={zoom}
+            min={1}
+            max={2}
+            step={0.001}
+            onChange={(e) => {
+              setZoom(e.target.value);
+            }}
+            className="block m-auto zoom-range w-[50%] h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-300"
           />
         </div>
         <div className=" h-[85px] p-[15px] flex place-content-center place-items-center">
-          <BaseButton
+          <BaseButton //* UPLOAD BUTTON
             children={
               <>
-                <FiUpload
-                  size={20}
-                  className="mr-[10px]"
-                />
+                <FiUpload size={20} className="mr-[10px]" />
                 <span>Upload</span>
               </>
             }
@@ -133,7 +131,7 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
             variant={'solid'}
             className={' flex flex-row h-[40px] mr-[10px] place-items-center'}
           />
-          <BaseButton
+          <BaseButton //* SAVE BUTTON
             children={
               <>
                 <BsSave
@@ -148,7 +146,7 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
             variant={'solid'}
             className={' flex flex-row h-[40px] mr-[10px] place-items-center'}
           />
-          <BaseButton
+          <BaseButton //* DELETE BUTTON
             children={
               <>
                 <MdDelete size={20} className="mr-[10px]" />
@@ -166,11 +164,17 @@ const ImageModal = ({ setIsModalOpen, userPFP, userNik }) => {
 function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
   const [imgHover, setImgHover] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [canModalClose, setCanModalClose] = useState(true);
 
   const openModal = () => {
     document.body.style.overflow = 'hidden';
     setIsModalOpen(true);
   };
+
+  const closeModal = ()=>{
+    document.body.style.overflow = '';
+    setIsModalOpen(false);
+  }
 
   return (
     <>
@@ -179,10 +183,11 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           setIsModalOpen={setIsModalOpen}
           userPFP={userPFP}
           userNik={userNik}
+          canModalClose = {canModalClose}
+          setCanModalClose = {setCanModalClose}
+          closeModal = {closeModal}
         />
-      ) : (
-        null
-      )}
+      ) : null}
       <div className=" rounded-lg h-[120px] flex flex-row bg-[#ffff] outline outline-[1px] outline-[#d7d7d7]">
         <div
           onMouseEnter={() => setImgHover(true)}
@@ -192,11 +197,12 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           <img
             src={userPFP}
             className="h-[60px] w-[60px] border-[#525252] border-2 rounded-full"
+            onClick={openModal}
           ></img>
           <BsFillCameraFill
             onClick={openModal}
             size={20}
-            color={'#2b2c34'}
+            color={'rgb(255 255 255 / 85%)'}
             className={
               (imgHover
                 ? 'opacity-100 transition-opacity duration-300 '
