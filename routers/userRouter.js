@@ -1,8 +1,10 @@
 const express = require('express');
-const { getAllUsers, saveProfilePicture } = require('../controllers/userController');
 const userModel = require('../models/userModel');
+const { getAllUsers, saveProfilePicture } = require('../controllers/userController');
 
 const userRoutes = express.Router();
+
+
 
 userRoutes
     .route('/allusers')

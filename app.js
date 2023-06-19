@@ -5,8 +5,9 @@ const cookieParser = require('cookie-parser');
 const expressFileUpload = require('express-fileupload');
 const userRoutes = require('./routers/userRouter');
 const authRoutes = require('./routers/authRouter');
+const testRouter = require('./routers/testRouter');
 const app = express();
-app.use(cors(), express.json(), expressFileUpload());
+app.use(cors(), express.json(), expressFileUpload(), cookieParser());
 module.exports.port = port = 3001;
 const __DBURL =
   'mongodb+srv://admin:admin123@mastercluster.dxy63ez.mongodb.net/General?retryWrites=true&w=majority';
@@ -23,8 +24,9 @@ mongoose.connect(__DBURL).then(() => {
 }) 
 
 
-app.use('/users', userRoutes);
 app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/test', testRouter);
 
 app.get('*', (req, res) => {
   res.send('Error 404 page not found :(');

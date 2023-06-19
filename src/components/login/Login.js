@@ -25,17 +25,16 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
   }, []);
   const navigate = useNavigate();
   const handleLogin = async () => {
-    console.log('here')
     let userCredentials = {
       email: email,
       password: password,
     };
 
     const authSuccess = await userLogin(userCredentials);
-    console.log(authSuccess);
+    // console.log(authSuccess);
 
     if (authSuccess) {
-      console.log('hi')
+      // console.log('hi')
       navigate('/user-wall');
     } else {
       setIsInvalid(true);

@@ -19,10 +19,7 @@ module.exports.getAllUsers = async function getAllUsers(req, res) {
   }
 };
 
-module.exports.saveProfilePicture = async function saveProfilePicture(
-  req,
-  res
-) {
+module.exports.saveProfilePicture = async function saveProfilePicture(req, res) {
   res.status(200).json({
     message: 'It works lol',
     body: req.files

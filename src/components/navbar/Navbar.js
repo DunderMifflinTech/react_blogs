@@ -33,7 +33,7 @@ function Navbar() {
         </button>
         <ul onClick={handleClick} className="navbar-menu flex justify-end pr-8">
           <li className="pr-10">
-            <NavLink to="/home">Home</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li className="pr-10">
             <Link to="/articles">My Articles</Link>
