@@ -31,10 +31,8 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
     };
 
     const authSuccess = await userLogin(userCredentials);
-    // console.log(authSuccess);
 
     if (authSuccess) {
-      // console.log('hi')
       navigate('/user-wall');
     } else {
       setIsInvalid(true);

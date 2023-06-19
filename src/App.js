@@ -27,7 +27,7 @@ function App() {
           <Route path = "/user-wall" element = {<UserWall/>}/>
         </Route>
         <Route path="/p" element={<Playground />} />
-        <Route path = '/play' element={<Playaround/>} />
+        <Route path ='/play' element={<Playaround/>} />
       </Routes>
       <Footer/>
     </>

@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import { userLogOut } from '../../redux/auth/authActions';
+import { connect } from 'react-redux';
+import { useEffect } from 'react';
 
-function Navbar() {
+function Navbar({isLoggedIn, userLogOut}) {
   const handleClick = () => {
     const navbarMenu = document.getElementsByClassName('navbar-menu')[0];
     const hamburgerMenu = document.getElementsByClassName('hamburgerMenu')[0];
@@ -10,6 +13,16 @@ function Navbar() {
     hamburgerMenu.classList.toggle('active');
   };
 
+  const navigate = useNavigate();
+  const handleLogout = async() => {
+    let confirmLogout = await userLogOut();
+    if(confirmLogout){
+      navigate('/login');
+    } else {
+      alert('som ting wong');
+    }
+  };
+  
   return (
     <div>
       <nav className="navbar bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
@@ -39,7 +52,9 @@ function Navbar() {
             <Link to="/articles">My Articles</Link>
           </li>
           <li className="pr-10">
-            <NavLink to="/search">Search</NavLink>
+            <NavLink onClick={handleLogout} to="/login">
+              Logout
+            </NavLink>
           </li>
         </ul>
       </nav>
@@ -47,4 +62,16 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.auth.isLoggedIn,
+  };
+};
+
+const dispatchStateToProps = (dispatch) => {
+  return {
+    userLogOut: () => dispatch(userLogOut()),
+  };
+};
+
+export default connect(mapStateToProps, dispatchStateToProps)(Navbar);

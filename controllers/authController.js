@@ -5,21 +5,18 @@ const jwt = require('jsonwebtoken');
 const _JWT_TOKEN_ = require('./../secret');
 
 module.exports.protectRoute = async function protectRoute(req, res, next) {
-    console.log(req);
-  if(req) {
+  if (req) {
     try {
-        let token = req.cookies.login_token
-      // let hashPass = await userModel.find({email : req.body.email})
+      let token = req.cookies.login_token;
       if (token !== undefined) {
         let pass = jwt.verify(token, _JWT_TOKEN_);
-        if(pass){
+        if (pass) {
           next();
         } else {
           res.redirect('/login');
         }
       } else {
-        // res.message = "logInStatus false"
-        res.redirect('/login')
+        res.redirect('/login');
       }
     } catch (e) {
       console.log(e.message);
@@ -38,8 +35,8 @@ module.exports.authUserLogin = async function authUserLogin(req, res) {
     if (dbUser) {
       let pass = await bcrypt.compare(user.password, dbUser.password);
       if (pass) {
-        let token = jwt.sign({ payload: user["_id"] }, _JWT_TOKEN_);
-        res.cookie('login_token', token, {secure : true, httpOnly: true});
+        let token = jwt.sign({ payload: user['_id'] }, _JWT_TOKEN_);
+        res.cookie('login_token', token, { secure: true, httpOnly: true });
         res.json({
           message: 'User logged in',
         });
@@ -90,4 +87,9 @@ module.exports.authUserSignup = async function authUserSignup(req, res) {
       message: err.message,
     });
   }
+};
+
+module.exports.authUserLogout = async function authUserLogout(req, res) {
+  res.clearCookie('login_token');
+  res.status(400).send({ message: 'user Logged Out' });
 };
