@@ -22,7 +22,9 @@ function UserWall() {
         </div>
         <div>
           <CreateArticles userPFP={userPFP} userNik={'userNik'} />
-          <Feed />
+          <Feed>
+            
+          </Feed>
         </div>
         <div>
           <MutualFriends />

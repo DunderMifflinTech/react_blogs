@@ -34,7 +34,7 @@ const postsSchema = mongoose.Schema({
     likes: [{
         type: ObjectID,
     }],
-
+    
     comments: [{
         owner: ObjectID,
         type: String,

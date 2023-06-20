@@ -26,7 +26,7 @@ function SuggestedUser({ user, isLast, isFirst, ...restOfProps }) {
         className=" m-[10px] mt-[20px] h-[30px] w-[30px] rounded-full "
       />
       <div className="overflow-hidden pt-[10px] w-full">
-        <li className="list-none text-sm font-bold">{user.userNik}</li>
+        <li className="list-none text-[0.8rem] font-bold">{user.userNik}</li>
         <li className="inline list-none text-[12px] text-[#4d4d4d]">
           {user.userBio.length > 28
             ? user.userBio.substring(0, 28) + '...'
