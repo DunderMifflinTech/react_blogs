@@ -7,6 +7,8 @@ import {
   USER_LOGOUT_FAILURE,
 } from './authTypes';
 
+//! CHANGE HERE FOR NORMAL LOGIN FUNCTIONALITY
+
 const initialState = {
   loading: false,
   isLoggedIn: false,

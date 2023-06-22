@@ -1,0 +1,16 @@
+.like-enabled-icon{
+    translate: scale(100%);
+    position: relative;
+    animation-name: like-button-animation;
+    animation-duration: 200ms;
+}
+
+@keyframes like-button-animation {
+    50%{
+        transform: scale(1.2);
+    }
+
+    75%{
+        transform: scale(1);
+    }
+}
