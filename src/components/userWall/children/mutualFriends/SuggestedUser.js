@@ -16,7 +16,7 @@ function SuggestedUser({ user, isLast, isFirst, ...restOfProps }) {
   return (
     <div
       className={
-        (isLast == true ? '' : 'border-b-[1px] ') +
+        (isLast == true ? 'hover:rounded-b-2xl' : '') +
         (isFirst == true ? 'border-t-[1px]' : '') +
         ' h-[110px] w-full flex align-items-center hover:bg-[#f7f7f7] hover:ease-in-out transition-all'
       }

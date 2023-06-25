@@ -188,7 +188,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           closeModal = {closeModal}
         />
       ) : null}
-      <div className=" rounded-lg h-[120px] flex flex-row bg-[#ffff] outline outline-[1px] outline-[#d7d7d7]">
+      <div className=" h-[120px] flex flex-row bg-[#ffff] rounded-2xl border-[0.5px] border-[#fff]  shadow-[-6px_6px_14px_2px_rgb(185,185,185)]">
         <div
           onMouseEnter={() => setImgHover(true)}
           onMouseLeave={() => setImgHover(false)}

@@ -1,16 +1,21 @@
-import {React, useState} from 'react';
+import { Children, React, useState } from 'react';
 import userPFP from '../../../../../images/userPFP.png';
-import {FcLike, FcLikePlaceholder} from 'react-icons/fc'
-import {TbShare3} from 'react-icons/tb'
-import {BiComment} from 'react-icons/bi'
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { TbShare3 } from 'react-icons/tb';
+import { BiComment } from 'react-icons/bi';
+import {IconContext} from 'react-icons'; 
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import './Post.css'
+import './Post.css';
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
-function Post({}) {
-    const [likeVar, setLikeVar] = useState(false);
+function Post({ children }) {
+  const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
+  const handleCommentClick = () => {
+    setIsCommentSectionOpen(true);
+  };
+  const [likeVar, setLikeVar] = useState(false);
   return (
-    <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-md outline outline-[1px] outline-[#d7d7d7]">
+    <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
       <div>
         <div className="post-container p-[15px]">
           {' '}
@@ -30,22 +35,47 @@ function Post({}) {
                   {' '}
                   {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
                 </li>
-                <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]"> 3h</li>
+                <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                  {' '}
+                  3h
+                </li>
               </ul>
             </div>
           </div>
           <div>
-            <div className='post-body text-lg text-[#000] pt-[20px] text-[0.9rem]'>
-                Yeehaw this is my first post !
+            <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[20px]">
+              Yeehaw this is my first post!
             </div>
-            <div className='flex flex-row-reverse select-none'>
-                <div onClick={()=>setLikeVar(lv=> !lv)} className='like hover:cursor-pointer pr-[20px] flex text-[14px] items-center'><span className='pr-[7px]'>18</span>{likeVar?<FcLike size={25} className='like-enabled-icon'/> : <FcLikePlaceholder size={25} />}</div>
-                <div className='share pr-[20px] hover:cursor-pointer flex text-[13px] items-center'><span className='pr-[7px]'>4</span><TbShare3 size={25}/></div>
-                <div className='comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center'><span className='pr-[7px]'>55</span><BiComment size={25}/></div>
-                <br/>
+            <div className="flex flex-row-reverse select-none">
+              <div
+                onClick={() => setLikeVar((lv) => !lv)}
+                className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
+              >
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">18</span>
+                {likeVar ? (
+                  <FcLike size={20} className="like-enabled-icon" />
+                ) : (
+                  <FcLikePlaceholder  size={20} />
+                )}
+              </div>
+              <div className="share pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">4</span>
+                <TbShare3 color = 'DimGrey' size={20} />
+              </div>
+              <div
+                className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center"
+                onClick={handleCommentClick}
+              >
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">55</span>
+                <BiComment color = 'DimGrey'  size={20} />
+              </div>
             </div>
           </div>
         </div>
+        <div className="flex justify-center">
+          <hr className="w-[94.5%]"/>
+        </div>
+        <div className="p-[20px]">{children}</div>
       </div>
     </div>
   );

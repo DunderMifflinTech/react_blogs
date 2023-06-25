@@ -99,7 +99,7 @@ function CreateArticles({ userPFP, userNik, ...restOfProps }) {
       ) : (
         <></>
       )}
-      <div className=" bg-[#ffff] rounded-lg justify-around outline outline-[1px] outline-[#d7d7d7]">
+      <div className=" bg-[#ffff] justify-around rounded-2xl border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
         <div className="flex flex-row ml-[16px] pt-[18px] pr-[16px]">
           <img
             src={userPFP}

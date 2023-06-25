@@ -10,9 +10,9 @@
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Helvetica Neue', sans-serif;
     background-color: #F3F2EE;
-    background-image: radial-gradient(#6246ea 4%, transparent 4%);
+    /* background-image: radial-gradient(#6246ea 4%, transparent 4%); */
     background-size: 45px 45px;
     background-position: 0 0, 30px 30px;
     background-repeat: repeat;

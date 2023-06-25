@@ -18,7 +18,7 @@ function UserWall() {
             userNik={'userNik'}
             UserBio={'userBio'}
           />
-          <PersonalArticles />
+          {/* <PersonalArticles /> */}
         </div>
         <div>
           <CreateArticles userPFP={userPFP} userNik={'userNik'} />
@@ -28,7 +28,7 @@ function UserWall() {
         </div>
         <div>
           <MutualFriends />
-          <TopicWiseArticle />
+          {/* <TopicWiseArticle /> */}
         </div>
       </div>
     </>
