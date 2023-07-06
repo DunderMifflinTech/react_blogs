@@ -1,0 +1,9 @@
+.comments-container{
+    max-height: 10000px;
+    transition: max-height 1.5s;
+}
+
+.comments-container.active{
+    max-height: 0px;
+    transition: max-height 0.5s;
+}

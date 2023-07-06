@@ -44,6 +44,9 @@ function Post({ children }) {
             <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[20px]">
               Yeehaw this is my first post!
             </div>
+            <div className="flex justify-center pt-[25px] pb-[15px]">
+              <hr className="w-[94.5%]" />
+            </div>
             <div className="flex flex-row-reverse select-none">
               <div
                 onClick={() => setLikeVar((lv) => !lv)}
@@ -77,10 +80,8 @@ function Post({ children }) {
             </div>
           </div>
         </div>
-            {isCommentSectionOpen && (<div className="flex justify-center">
-              <hr className="w-[94.5%]" />
-            </div>)}
-            <Comment showComments = {isCommentSectionOpen}>{children}</Comment>
+            <Comment showComments = {isCommentSectionOpen}></Comment>
+            <Comment showComments = {isCommentSectionOpen}></Comment>
       </div>
     </div>
   );

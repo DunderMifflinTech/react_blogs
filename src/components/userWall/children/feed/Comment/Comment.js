@@ -2,20 +2,21 @@ import { React, useState } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import userPFP from '../../../../../images/userPFP.png';
 import Reply from '../Reply/Reply';
+import './Comment.css'
 
 export default function Comment({showComments}) {
   const [likeVar, setLikeVar] = useState(false);
   const [areRepliesOpen, setAreRepliesOpen] = useState(false);
   return (
     <>
-      <div className='p-[20px]'>
-        <div className="commenters-info-container flex">
+      <div className={(showComments ? '' :' active ') + ' comments-container overflow-hidden'}>
+        <div className="commenters-info-container flex px-[20px] py-[10px]">
           <div className="h-[35px] w-[35px]">
             {' '}
             {/* //! UserImage*/}
             <img
               src={userPFP}
-              className="h-[35px] w-[35px] rounded-full absolute"
+              className="h-[35px] w-[35px] rounded-full"
             />
           </div>
           <div className="flex w-11/12">
@@ -72,7 +73,8 @@ export default function Comment({showComments}) {
           </div>
         </div>
         {areRepliesOpen && (
-          <div className="pl-[50px]">
+          <div className="pl-[50px] px-[20px] pb-[20px]">
+            <Reply />
             <Reply />
             <Reply />
           </div>
