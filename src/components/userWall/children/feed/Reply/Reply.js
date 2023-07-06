@@ -7,21 +7,16 @@ export default function Reply() {
   return (
     <>
       <div className="commenters-info-container flex pt-[20px]">
-        <div className="h-[35px] w-[35px] z-10">
+        <div className="h-[35px] w-[35px]">
           {' '}
           {/* //! UserImage*/}
           <img src={userPFP} className="h-[35px] w-[35px] rounded-full" />
         </div>
-        <div className="flex w-11/12 relative right-[15px]">
+        <div className="flex w-11/12">
           {' '}
           {/* //! comment and arrow head */}
-          <div className="bg-[#f2f2f2] w-[30px] h-[30px]">
-            {' '}
-            {/*//! Arrow head of comments sections */}
-            <div className="bg-white w-[30px] h-[30px] rounded-tr-[50%_80%]"></div>
-          </div>
           <div className=" ">
-            <div className="pb-[10px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
+            <div className="ml-[10px] pb-[10px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
               {' '}
               {/* //! the comments body */}
               <ul className="pl-[10px]">
@@ -38,7 +33,7 @@ export default function Reply() {
                 eiusmod tempor incididunt.
               </div>
             </div>
-            <div className="w-full pl-[10px] flex ">
+            <div className="w-full pl-[30px] flex ">
               {' '}
               {/*//! like and reply button for a comment */}
                 <div

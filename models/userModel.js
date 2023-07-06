@@ -42,6 +42,11 @@ const userSchema = mongoose.Schema({
       required: false,
     },
   ],
+  posts:[
+    {
+      type: ObjectID
+    }
+  ],
 });
 
 userSchema.pre('save', async function () {

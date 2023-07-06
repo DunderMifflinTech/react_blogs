@@ -1,10 +1,10 @@
 const { ObjectID } = require('bson');
 const multer = require('multer');
 const mongoose = require('mongoose');
-// const __DBURL =
-//   'mongodb+srv://admin:admin123@mastercluster.dxy63ez.mongodb.net/General?retryWrites=true&w=majority';
-// mongoose.set('strictQuery', false);
-// mongoose.connect(__DBURL, () => console.log('Post DB connected'));
+const __DBURL =
+  'mongodb+srv://admin:admin123@mastercluster.dxy63ez.mongodb.net/General?retryWrites=true&w=majority';
+mongoose.set('strictQuery', false);
+mongoose.connect(__DBURL, () => console.log('Post DB connected'));
 
 const postsSchema = mongoose.Schema({
     owner: {

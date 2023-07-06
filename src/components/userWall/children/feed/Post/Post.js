@@ -3,16 +3,14 @@ import userPFP from '../../../../../images/userPFP.png';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { TbShare3 } from 'react-icons/tb';
 import { BiComment } from 'react-icons/bi';
-import {IconContext} from 'react-icons'; 
+import { IconContext } from 'react-icons';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Post.css';
+import Comment from '../Comment/Comment';
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 function Post({ children }) {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
-  const handleCommentClick = () => {
-    setIsCommentSectionOpen(true);
-  };
   const [likeVar, setLikeVar] = useState(false);
   return (
     <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
@@ -51,31 +49,38 @@ function Post({ children }) {
                 onClick={() => setLikeVar((lv) => !lv)}
                 className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
               >
-                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">18</span>
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">
+                  18
+                </span>
                 {likeVar ? (
                   <FcLike size={20} className="like-enabled-icon" />
                 ) : (
-                  <FcLikePlaceholder  size={20} />
+                  <FcLikePlaceholder size={20} />
                 )}
               </div>
               <div className="share pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
-                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">4</span>
-                <TbShare3 color = 'DimGrey' size={20} />
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">
+                  4
+                </span>
+                <TbShare3 color="DimGrey" size={20} />
               </div>
-              <div
-                className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center"
-                onClick={handleCommentClick}
-              >
-                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">55</span>
-                <BiComment color = 'DimGrey'  size={20} />
+              <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
+                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">
+                  55
+                </span>
+                <BiComment
+                  onClick={() => setIsCommentSectionOpen((icso) => !icso)}
+                  color="DimGrey"
+                  size={20}
+                />
               </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-center">
-          <hr className="w-[94.5%]"/>
-        </div>
-        <div className="p-[20px]">{children}</div>
+            {isCommentSectionOpen && (<div className="flex justify-center">
+              <hr className="w-[94.5%]" />
+            </div>)}
+            <Comment showComments = {isCommentSectionOpen}>{children}</Comment>
       </div>
     </div>
   );
