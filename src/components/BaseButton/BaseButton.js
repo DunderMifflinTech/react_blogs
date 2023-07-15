@@ -5,10 +5,13 @@ import {
   SOLID_THEME_COMMON_CLASSES,
   WHITE_THEME_COMMON_CLASSES,
   RED_THEME_COMMON_CLASSES,
+  DISABLED_CLASS,
 } from '../../constants/baseComponentsClasses';
 
-function BaseButton({ children, variant, className, ...restProps }) {
+function BaseButton({ children, variant, className, disabled, ...restProps }) {
   function getClasses() {
+    if(disabled)
+      return DISABLED_CLASS;
     if (variant === 'solid')
       return SOLID_THEME_COMMON_CLASSES + ' hover:outline-[white]';
     if (variant === 'ghost')
@@ -22,7 +25,7 @@ function BaseButton({ children, variant, className, ...restProps }) {
 
   return (
     <button
-      className={`${getClasses()} active:scale-95 ${className}`}
+      className={`${getClasses()} ${className}` + (disabled ? ' ' : ' active:scale-95')}
       {...restProps}
     >
       {children}

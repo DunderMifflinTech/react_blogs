@@ -7,4 +7,6 @@ export const SOLID_THEME_COMMON_CLASSES =
 export const BLACK_THEME_COMMON_CLASSES =
   'h-[48px] outline-1 outline-transparent outline-double bg-[#2B2C34] text-white hover:bg-[#2B2C34] border-none px-4 rounded hover:bg-gray-50 transition-all font-semibold hover:shadow-sm';
 export const RED_THEME_COMMON_CLASSES = 
-'h-[48px] outline-1 outline-transparent outline-double bg-[#c92424] text-white hover:bg-[#a31c1c] border-none px-4 rounded hover:bg-gray-50 transition-all font-semibold hover:shadow-sm';
+  'h-[48px] outline-1 outline-transparent outline-double bg-[#c92424] text-white hover:bg-[#a31c1c] border-none px-4 rounded hover:bg-gray-50 transition-all font-semibold hover:shadow-sm';
+export const DISABLED_CLASS = 
+  'h-[48px] outline-1 outline-transparent backdrop-blur-[2px] outline-double bg-[#d1d1d1dd] border-none px-4 rounded transition-all font-semibold hover:shadow-sm hover:bg-[#c3c3c3dd]';

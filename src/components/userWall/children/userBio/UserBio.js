@@ -8,15 +8,22 @@ import { BsSave } from 'react-icons/bs';
 import Cropper from 'react-easy-crop';
 import getCroppedImg, { dataURLtoFile, generateDownload } from './utils';
 import axios from 'axios';
+import { SERVER_URL } from '../../../../Secrets';
 
 import BaseButton from '../../../BaseButton/BaseButton';
 
-const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeModal}) => {
+const ImageModal = ({
+  userPFP,
+  userNik,
+  canModalClose,
+  setCanModalClose,
+  closeModal,
+}) => {
   const [img, setImg] = useState(userPFP);
   const [croppedArea, setCroppedArea] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const step = useRef(0);
+  const [uploadedImg, setUploadedImg] = useState(null);
   const inputRef = useRef();
 
   const onCropComplete = useCallback(
@@ -36,7 +43,7 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
     }
   };
 
-  const handleImgSave = async () => {
+  const handleImageUpload = async () => {
     const canvas = await getCroppedImg(img, croppedArea);
     const canvasDataURL = canvas.toDataURL('image/jpeg');
     const convertedURLtoFile = dataURLtoFile(
@@ -46,31 +53,44 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
     try {
       const formData = new FormData();
       formData.append('croppedImage', convertedURLtoFile);
-      const response = await axios.post(
-        `http://localhost:3001/users/save-profile-picture`,
-        formData
-      );
-      console.log(response.data);
+      formData.append('email', 'admin@gmail.com');
+      await axios.post(
+        `${SERVER_URL}/users/save-profile-picture`,
+        formData 
+      ).then((response)=>{
+        closeModal();
+        var pfpimg = document.createElement('img');
+        // console.log(response.data.data);
+        pfpimg.src = response.data.data;
+        document.querySelector("body").appendChild(pfpimg);
+      })
+      // console.log(response.data);
     } catch (err) {
       console.warn(err);
     }
+  };
+
+  const handleImgDeletion = () => {
+    setImg(null);
   };
 
   return (
     <div
       onClick={() => {
         document.body.style.overflow = '';
-        if(canModalClose)
-          closeModal();
-        else 
-          setCanModalClose(true);
+        if (canModalClose) closeModal();
+        else setCanModalClose(true);
       }}
       className="w-full h-full backdrop-blur-sm backdrop-brightness-50 fixed bottom-0 left-0 z-[1] flex justify-center items-center"
     >
       <div
-        onClick={(e)=>e.stopPropagation()}
-        onMouseDown={()=>{setCanModalClose(false)}}
-        onMouseUp={()=>{setCanModalClose(true)}}
+        onClick={(e) => e.stopPropagation()}
+        onMouseDown={() => {
+          setCanModalClose(false);
+        }}
+        onMouseUp={() => {
+          setCanModalClose(true);
+        }}
         className="rounded-lg w-[700px] h-[540px] bg-[#fff] "
       >
         <div className="flex flex-row justify-between p-[10px] pl-[18px] pb-[25px]">
@@ -94,7 +114,7 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
             cropShape="round"
             onCropChange={setCrop}
             onCropComplete={onCropComplete}
-            // onZoomChange={setZoom}
+            onZoomChange={img == null ? null : setZoom}
           />
         </div>
         <input
@@ -107,17 +127,19 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
         <div className="h-[40px] flex">
           {' '}
           {/* //* INPUT SLIDER */}
-          <input
-            type="range"
-            value={zoom}
-            min={1}
-            max={2}
-            step={0.001}
-            onChange={(e) => {
-              setZoom(e.target.value);
-            }}
-            className="block m-auto zoom-range w-[50%] h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-300"
-          />
+          {img == null ? null : (
+            <input
+              type="range"
+              value={zoom}
+              min={1}
+              max={3}
+              step={0.001}
+              onChange={(e) => {
+                setZoom(e.target.value);
+              }}
+              className="block m-auto zoom-range w-[50%] h-1 rounded-lg appearance-none cursor-pointer dark:bg-gray-300"
+            />
+          )}
         </div>
         <div className=" h-[85px] p-[15px] flex place-content-center place-items-center">
           <BaseButton //* UPLOAD BUTTON
@@ -135,14 +157,15 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
             children={
               <>
                 <BsSave
-                  onClick={handleImgSave}
+                  // onClick={handleImgSave}
                   size={20}
                   className="mr-[10px]"
                 />
                 <span>Save</span>
               </>
             }
-            onClick={handleImgSave}
+            onClick={handleImageUpload}
+            disabled={img == null ? true : false}
             variant={'solid'}
             className={' flex flex-row h-[40px] mr-[10px] place-items-center'}
           />
@@ -153,7 +176,9 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
                 <span>Delete</span>
               </>
             }
+            disabled={img == null ? true : false}
             variant={'red'}
+            onClick={handleImgDeletion}
             className={'flex flex-row h-[40px] mr-[10px] place-items-center'}
           />
         </div>
@@ -161,6 +186,7 @@ const ImageModal = ({userPFP, userNik, canModalClose, setCanModalClose, closeMod
     </div>
   );
 };
+
 function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
   const [imgHover, setImgHover] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -171,11 +197,10 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
     setIsModalOpen(true);
   };
 
-  const closeModal = ()=>{
+  const closeModal = () => {
     document.body.style.overflow = '';
     setIsModalOpen(false);
-  }
-
+  };
   return (
     <>
       {isModalOpen ? (
@@ -183,9 +208,9 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           setIsModalOpen={setIsModalOpen}
           userPFP={userPFP}
           userNik={userNik}
-          canModalClose = {canModalClose}
-          setCanModalClose = {setCanModalClose}
-          closeModal = {closeModal}
+          canModalClose={canModalClose}
+          setCanModalClose={setCanModalClose}
+          closeModal={closeModal}
         />
       ) : null}
       <div className=" h-[120px] flex flex-row bg-[#ffff] rounded-2xl border-[0.5px] border-[#fff]  shadow-[-6px_6px_14px_2px_rgb(185,185,185)]">

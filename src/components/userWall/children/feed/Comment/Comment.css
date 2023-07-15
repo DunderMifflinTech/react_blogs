@@ -1,9 +1,10 @@
 .comments-container{
-    max-height: 10000px;
-    transition: max-height 1.5s;
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 0.5s, opactiy 0s;
 }
 
-.comments-container.active{
+.comments-container.hide{
     max-height: 0px;
     transition: max-height 0.5s;
 }

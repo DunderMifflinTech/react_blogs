@@ -82,6 +82,7 @@ function Post({ children }) {
         </div>
             <Comment showComments = {isCommentSectionOpen}></Comment>
             <Comment showComments = {isCommentSectionOpen}></Comment>
+            <Comment showComments = {isCommentSectionOpen}></Comment>
       </div>
     </div>
   );

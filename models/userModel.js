@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
     unique: true,
   },
 
+  profilePictureURL: {
+    type: String,
+    required: false,
+    unique: false
+  },
+
   dateCreated: {
     type: Date,
     required: true,
@@ -46,7 +52,7 @@ const userSchema = mongoose.Schema({
     {
       type: ObjectID
     }
-  ],
+  ],  
 });
 
 userSchema.pre('save', async function () {

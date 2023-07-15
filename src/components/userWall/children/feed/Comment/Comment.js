@@ -7,9 +7,10 @@ import './Comment.css'
 export default function Comment({showComments}) {
   const [likeVar, setLikeVar] = useState(false);
   const [areRepliesOpen, setAreRepliesOpen] = useState(false);
+  
   return (
     <>
-      <div className={(showComments ? '' :' active ') + ' comments-container overflow-hidden'}>
+      <div className={(showComments ? '' :' hide ') + ' comments-container overflow-hidden'}>
         <div className="commenters-info-container flex px-[20px] py-[10px]">
           <div className="h-[35px] w-[35px]">
             {' '}
