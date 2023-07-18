@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
-import { userLogOut } from '../../redux/auth/authActions';
-import { connect } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 
 function Navbar({isLoggedIn, userLogOut}) {
+  const dispatch = useDispatch();
   const handleClick = () => {
     const navbarMenu = document.getElementsByClassName('navbar-menu')[0];
     const hamburgerMenu = document.getElementsByClassName('hamburgerMenu')[0];
@@ -15,11 +15,11 @@ function Navbar({isLoggedIn, userLogOut}) {
 
   const navigate = useNavigate();
   const handleLogout = async() => {
-    let confirmLogout = await userLogOut();
-    if(confirmLogout){
+    try{
+      dispatch(userLogout());
       navigate('/login');
-    } else {
-      alert('som ting wong');
+    } catch(err){
+      alert('some Error occured, please try again is some time\n' + err.message);
     }
   };
   
@@ -62,16 +62,4 @@ function Navbar({isLoggedIn, userLogOut}) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: state.auth.isLoggedIn,
-  };
-};
-
-const dispatchStateToProps = (dispatch) => {
-  return {
-    userLogOut: () => dispatch(userLogOut()),
-  };
-};
-
-export default connect(mapStateToProps, dispatchStateToProps)(Navbar);
+export default Navbar;

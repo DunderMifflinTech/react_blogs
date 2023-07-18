@@ -1,13 +1,17 @@
 import React from 'react';
 import BaseButton from '../BaseButton/BaseButton';
 import { useState, useEffect } from 'react';
-import { userLogin, userSignUp } from '../../redux/auth/authActions';
-import axios from 'axios';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  userLogin as UserLogin,
+  userSignup as UserSignup,
+} from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
 
-function Login({ isLoggedIn, userLogin, userSignUp }) {
+function Login({ userLogin, userSignUp }) {
+  const dispatch = useDispatch();
+  // const isLoggedIn= useSelector(state=> state.auth.isLoggedIn);
   const [login, setLogin] = useState(true); //to see if the user wants to login or sign up
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -30,11 +34,10 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
       password: password,
     };
 
-    const authSuccess = await userLogin(userCredentials);
-
-    if (authSuccess) {
+    try {
+      const res = await dispatch(UserLogin(userCredentials)).unwrap();
       navigate('/user-wall');
-    } else {
+    } catch (err) {
       setIsInvalid(true);
       setTimer((prevState) => [
         ...prevState,
@@ -46,16 +49,15 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
   };
 
   const handleSignUp = async () => {
-    navigate('/user-wall');
     let userCredentials = {
       name: name,
       email: email,
       password: password,
     };
-
-    const authSuccess = await userSignUp(userCredentials);
-    if (authSuccess) {
-    } else {
+    try {
+      await dispatch(UserSignup(userCredentials)).unwrap();
+      navigate('/user-wall');
+    } catch (err) {
       setIsInvalid(true);
       setTimer((prevState) => [
         ...prevState,
@@ -65,6 +67,20 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
       ]);
     }
   };
+
+  // const handleSignUp = async () => {
+  //   navigate('/user-wall');
+  //   let userCredentials = {
+  //     name: name,
+  //     email: email,
+  //     password: password,
+  //   };
+
+  //   const authSuccess = await userSignUp(userCredentials);
+  //   if (authSuccess) {
+  //   } else {
+  //   }
+  // };
 
   return login ? (
     <>
@@ -107,17 +123,17 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
               </p>
             </div>
           </form>
-            <div className="flex justify-center">
-              <BaseButton
-                variant={'solid'}
-                type = {'submit'}
-                onSubmit = {handleLogin}
-                onClick={handleLogin}
-                className="w-[120px]"
-              >
-                Submit
-              </BaseButton>
-            </div>
+          <div className="flex justify-center">
+            <BaseButton
+              variant={'solid'}
+              type={'submit'}
+              onSubmit={handleLogin}
+              onClick={handleLogin}
+              className="w-[120px]"
+            >
+              Submit
+            </BaseButton>
+          </div>
         </div>
       </div>
     </>
@@ -186,17 +202,4 @@ function Login({ isLoggedIn, userLogin, userSignUp }) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggedIn: state.auth.isLoggedIn,
-  };
-};
-
-const dispatchStateToProps = (dispatch) => {
-  return {
-    userLogin: (userCredentials) => dispatch(userLogin(userCredentials)),
-    userSignUp: (userCredentials) => dispatch(userSignUp(userCredentials)),
-  };
-};
-
-export default connect(mapStateToProps, dispatchStateToProps)(Login);
+export default Login;

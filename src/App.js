@@ -21,11 +21,11 @@ function App() {
       <Navbar />
       <Routes>
         <Route path ='/login' element = {<Login/>}/>
-        {/* <Route element = {<ProtectedRoutes/>}> */}
+        <Route element = {<ProtectedRoutes/>}>
           <Route path="/" element={<Home />} />
           <Route path="/articles" element={<Article info={BlogData[0]} />} />
           <Route path = "/user-wall" element = {<UserWall/>}/>
-        {/* </Route> */}
+        </Route>
         <Route path="/p" element={<Playground />} />
         <Route path ='/play' element={<Playaround/>} />
       </Routes>
