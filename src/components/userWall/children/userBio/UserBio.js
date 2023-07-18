@@ -55,12 +55,11 @@ const ImageModal = ({
       formData.append('croppedImage', convertedURLtoFile);
       formData.append('email', 'admin@gmail.com');
       await axios.post(
-        `${SERVER_URL}/users/save-profile-picture`,
+        `${process.env.REACT_APP_API_URL}/users/save-profile-picture`,
         formData 
       ).then((response)=>{
         closeModal();
         var pfpimg = document.createElement('img');
-        // console.log(response.data.data);
         pfpimg.src = response.data.data;
         document.querySelector("body").appendChild(pfpimg);
       })

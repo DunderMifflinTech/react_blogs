@@ -60,7 +60,6 @@ module.exports.authUserLogin = async function authUserLogin(req, res) {
 
 module.exports.authUserSignup = async function authUserSignup(req, res) {
   try {
-    console.log(req)
     let user = req.body;
     let doesUserExist = await userModel.findOne({ email: req.body.email });
     if (doesUserExist) {

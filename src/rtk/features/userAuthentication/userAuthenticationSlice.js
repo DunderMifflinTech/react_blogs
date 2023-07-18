@@ -1,24 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-// require('dotenv').config();
-const server_url = process.env.SERVER_URL;
+const api_url = process.env.REACT_APP_API_URL;
 const initialState = {
   loading: false,
   isLoggedIn: false,
   error: '',
 };
 
+console.log(api_url)
+
 export const userLogin = createAsyncThunk('auth/userLogin', async (userCredentials) => {
-  return axios.post('http://localhost:3001' + '/auth/login', userCredentials).then(res=>res.data);
+  return axios.post(api_url + '/auth/login', userCredentials).then(res=>res.data);
 });
 
 export const userSignup = createAsyncThunk('auth/userSignup', async (userCredentials) => {
-  return axios.post('http://localhost:3001' + '/auth/signup', userCredentials).then((res)=>res.data);
+  return axios.post(api_url + '/auth/signup', userCredentials).then((res)=>res.data);
 });
 
 export const userLogout = createAsyncThunk('auth/logout', async (userCredentials) => {
-  return axios.get('http://localhost:3001' + '/auth/logout', userCredentials);
+  return axios.get(api_url + '/auth/logout', userCredentials).then((res)=>res.data);
 });
 
 const userAuthenticationSlice = createSlice({
