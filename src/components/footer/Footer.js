@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import {FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter, FaGithub} from "react-icons/fa"
 import { NavLink } from 'react-router-dom';
@@ -22,6 +23,7 @@ function Footer() {
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaFacebookF/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaInstagram/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaLinkedinIn/></a>
+           
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaTwitter/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaGithub/></a>
               </ul>

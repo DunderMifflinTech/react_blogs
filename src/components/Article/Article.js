@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import LoremIpsum from 'react-lorem-ipsum';
-import './Articls.css'
+import './Articles.css'
 
 function Article({ info }) {
   return (
