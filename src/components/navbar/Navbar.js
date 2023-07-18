@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import { useDispatch } from 'react-redux';
+import { reset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 
-function Navbar() {
+function Navbar({isLoggedIn, userLogOut}) {
+  const dispatch = useDispatch();
   const handleClick = () => {
     const navbarMenu = document.getElementsByClassName('navbar-menu')[0];
     const hamburgerMenu = document.getElementsByClassName('hamburgerMenu')[0];
@@ -10,11 +13,22 @@ function Navbar() {
     hamburgerMenu.classList.toggle('active');
   };
 
+  const navigate = useNavigate();
+  const handleLogout = async() => {
+    try{
+      dispatch(reset());
+      dispatch(userLogout()).unwrap();
+      navigate('/login');
+    } catch(err){
+      alert('some Error occured, please try again is some time\n' + err.message);
+    }
+  };
+  
   return (
     <div>
-      <nav className="navbar bg-[#EFF0F3] h-20 w-full border-y-2 flex justify-between items-center relative">
+      <nav className="navbar bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
         <ul className="cursor-pointer flex">
-          <NavLink to="/">
+          <NavLink to="/user-wall">
             <li className=" user-name text-[2rem] ml-[2rem] font-bold list-none ">
               Name
             </li>
@@ -33,13 +47,15 @@ function Navbar() {
         </button>
         <ul onClick={handleClick} className="navbar-menu flex justify-end pr-8">
           <li className="pr-10">
-            <NavLink to="/home">Home</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li className="pr-10">
             <Link to="/articles">My Articles</Link>
           </li>
           <li className="pr-10">
-            <NavLink to="/search">Search</NavLink>
+            <NavLink onClick={handleLogout} to="/login">
+              Logout
+            </NavLink>
           </li>
         </ul>
       </nav>

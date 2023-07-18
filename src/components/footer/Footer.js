@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 function Footer() {
   return (
-    <div className="footer-body w-full mt-[100px] pt-[100px] pb-[20px] bg-[#eff0f3] flex flex-col items-center border-t-[1px]">
+    <div className="footer-body w-full mt-[100px] pt-[100px] pb-[20px] bg-[#ffff] flex flex-col items-center border-t-[1px]">
       <div className="flex justify-evenly w-full">
         <div className="site-logo">
           <ul className="cursor-pointer flex mr-[2rem]">
@@ -23,7 +23,6 @@ function Footer() {
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaFacebookF/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaInstagram/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaLinkedinIn/></a>
-           
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaTwitter/></a>
                     <a className="cursor-pointer hover:scale-150 hover:text-[#6246ea] transition-all delay-75"><FaGithub/></a>
               </ul>
@@ -95,7 +94,7 @@ function Footer() {
         </div>
       </div>
       <div className="font-thin pt-[100px]">
-      © 2022 BlogIO, Inc. All rights reserved.
+      © 2023 BlogIT, Inc. All rights reserved.
       </div>
     </div>
   );
