@@ -38,7 +38,12 @@ module.exports.authUserLogin = async function authUserLogin(req, res) {
         let token = jwt.sign({ payload: user['_id'] }, _JWT_TOKEN_);
         res.cookie('login_token', token, { secure: true, httpOnly: true });
         res.json({
-          message: 'User logged in',
+          data: {
+            _id: dbUser._id,
+            email: dbUser.email,
+            name: dbUser.name,
+            profilePictureURL: dbUser.profilePictureURL,
+          },
         });
       } else {
         console.log('wrong pass');

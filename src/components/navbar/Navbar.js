@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { useDispatch } from 'react-redux';
-import { userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
+import { reset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 
 function Navbar({isLoggedIn, userLogOut}) {
   const dispatch = useDispatch();
@@ -16,7 +16,8 @@ function Navbar({isLoggedIn, userLogOut}) {
   const navigate = useNavigate();
   const handleLogout = async() => {
     try{
-      dispatch(userLogout());
+      dispatch(reset());
+      dispatch(userLogout()).unwrap();
       navigate('/login');
     } catch(err){
       alert('some Error occured, please try again is some time\n' + err.message);
