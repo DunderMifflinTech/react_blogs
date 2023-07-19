@@ -8,9 +8,12 @@ import { BsSave } from 'react-icons/bs';
 import Cropper from 'react-easy-crop';
 import getCroppedImg, { dataURLtoFile, generateDownload } from './utils';
 import axios from 'axios';
+import unknownPerson from '../../../../images/UnknownPerson.jpg';
 import { SERVER_URL } from '../../../../Secrets';
-
+// import {createImage} from './utils'
 import BaseButton from '../../../BaseButton/BaseButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProfilePicture } from '../../../../rtk/features/userAuthentication/userAuthenticationSlice';
 
 const ImageModal = ({
   userPFP,
@@ -19,6 +22,8 @@ const ImageModal = ({
   setCanModalClose,
   closeModal,
 }) => {
+  const dispatch = useDispatch();
+  const email = useSelector((state) => state.auth.email);
   const [img, setImg] = useState(userPFP);
   const [croppedArea, setCroppedArea] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -53,16 +58,19 @@ const ImageModal = ({
     try {
       const formData = new FormData();
       formData.append('croppedImage', convertedURLtoFile);
-      formData.append('email', 'admin@gmail.com');
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/users/save-profile-picture`,
-        formData 
-      ).then((response)=>{
-        closeModal();
-        var pfpimg = document.createElement('img');
-        pfpimg.src = response.data.data;
-        document.querySelector("body").appendChild(pfpimg);
-      })
+      formData.append('email', email);
+      await axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/users/save-profile-picture`,
+          formData
+        )
+        .then((response) => {
+          dispatch(updateProfilePicture(response.data.data));
+          closeModal();
+          // var pfpimg = document.createElement('img');
+          // pfpimg.src = response.data.data;
+          // document.querySelector("body").appendChild(pfpimg);
+        });
       // console.log(response.data);
     } catch (err) {
       console.warn(err);
@@ -105,16 +113,18 @@ const ImageModal = ({
           />
         </div>
         <div className=" relative container-cropper w-full h-[350px] overflow-hidden">
-          <Cropper
-            image={img}
-            crop={crop}
-            zoom={zoom}
-            showGrid={false}
-            cropShape="round"
-            onCropChange={setCrop}
-            onCropComplete={onCropComplete}
-            onZoomChange={img == null ? null : setZoom}
-          />
+          {img && (
+            <Cropper
+              image={img}
+              crop={crop}
+              zoom={zoom}
+              showGrid={false}
+              cropShape="round"
+              onCropChange={setCrop}
+              onCropComplete={onCropComplete}
+              onZoomChange={img == null ? null : setZoom}
+            />
+          )}
         </div>
         <input
           ref={inputRef}
@@ -155,16 +165,11 @@ const ImageModal = ({
           <BaseButton //* SAVE BUTTON
             children={
               <>
-                <BsSave
-                  // onClick={handleImgSave}
-                  size={20}
-                  className="mr-[10px]"
-                />
+                <BsSave size={20} className="mr-[10px]" />
                 <span>Save</span>
               </>
             }
             onClick={handleImageUpload}
-            disabled={img == null ? true : false}
             variant={'solid'}
             className={' flex flex-row h-[40px] mr-[10px] place-items-center'}
           />
@@ -187,6 +192,7 @@ const ImageModal = ({
 };
 
 function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
+  const profilePicture = useSelector((state) => state.auth.profilePictureURL);
   const [imgHover, setImgHover] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [canModalClose, setCanModalClose] = useState(true);
@@ -205,7 +211,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
       {isModalOpen ? (
         <ImageModal
           setIsModalOpen={setIsModalOpen}
-          userPFP={userPFP}
+          userPFP={profilePicture === undefined ? null : profilePicture}
           userNik={userNik}
           canModalClose={canModalClose}
           setCanModalClose={setCanModalClose}
@@ -219,8 +225,8 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           className=" relative user-img w-[100px] bg-[#6246EA] shrink-0 h-full flex justify-center items-center"
         >
           <img
-            src={userPFP}
-            className="h-[60px] w-[60px] border-[#525252] border-2 rounded-full"
+            src={profilePicture === undefined ? unknownPerson : profilePicture}
+            className="h-[60px] w-[60px] border-[#525252] border-2 rounded-full object-cover"
             onClick={openModal}
           ></img>
           <BsFillCameraFill

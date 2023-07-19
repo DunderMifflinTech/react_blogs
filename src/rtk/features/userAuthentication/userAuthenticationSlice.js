@@ -29,6 +29,9 @@ const userAuthenticationSlice = createSlice({
   initialState,
   reducers:{
     reset: ()=> initialState,
+    updateProfilePicture: (state, action)=>{
+      state.profilePictureURL = action.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(userLogin.pending, (state) => {
@@ -73,4 +76,4 @@ const userAuthenticationSlice = createSlice({
 console.log(userAuthenticationSlice)
 
 export default userAuthenticationSlice.reducer;
-export const {reset} = userAuthenticationSlice.actions;
+export const {reset, updateProfilePicture} = userAuthenticationSlice.actions;

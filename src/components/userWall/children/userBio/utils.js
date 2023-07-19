@@ -5,7 +5,7 @@
  * @param {number} rotation - optional rotation parameter
  */
 
-const createImage = (url) =>
+export const createImage = (url) =>
 	new Promise((resolve, reject) => {
 		const image = new Image();
 		image.addEventListener("load", () => resolve(image));

@@ -7,6 +7,7 @@ import TopicWiseArticle from './children/topicWisearticle/TopicWiseArticle';
 import UserBio from './children/userBio/UserBio';
 import './UserWall.css';
 import userPFP from './../../images/userPFP.png';
+import { useSelector } from 'react-redux';
 
 function UserWall() {
   return (
@@ -14,7 +15,6 @@ function UserWall() {
       <div className="user-wall-container pl-[3rem] pr-[3rem] pt-[3rem]">
         <div>
           <UserBio
-            userPFP={userPFP}
             userNik={'userNik'}
             UserBio={'userBio'}
           />
