@@ -42,15 +42,26 @@ const upload = (bucketName) =>
     }),
   });
 
-module.exports.saveProfilePicture = async function saveProfilePicture( req, res, next) {
-  const uploadSingle = upload('profile-pictures-db').single('croppedImage');
-  uploadSingle(req, res, async (err)=>{
-    if(err){
-      console.log(err.message);
-      return res.status(400).json({success: false, message: err.message});
-    }
-    const curr_user = await userModel.findOne({email: req.body.email});
-    await curr_user.updateOne({profilePictureURL: req.file.location});
-    res.status(200).json({ data: req.file.location});
-  });
+module.exports.saveProfilePicture = async function saveProfilePicture(
+  req,
+  res,
+  next
+) {
+  
+  if (req!==undefined && req.body !== undefined && req.body.image === null) {
+    const curr_user = await userModel.findOne({ email: req.body.email });
+    await curr_user.updateOne({ profilePictureURL: null });
+    res.status(200).json({ data: null});
+  } else {
+    const uploadSingle = upload('profile-pictures-db').single('croppedImage');
+    uploadSingle(req, res, async (err) => {
+      if (err) {
+        console.log(err.message);
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      const curr_user = await userModel.findOne({ email: req.body.email });
+      await curr_user.updateOne({ profilePictureURL: req.file.location });
+      res.status(200).json({ data: req.file.location });
+    });
+  }
 };

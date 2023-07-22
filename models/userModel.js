@@ -25,6 +25,7 @@ const userSchema = mongoose.Schema({
 
   profilePictureURL: {
     type: String,
+    default: null,
     required: false,
     unique: false
   },

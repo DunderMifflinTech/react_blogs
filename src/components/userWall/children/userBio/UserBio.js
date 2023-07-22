@@ -49,31 +49,40 @@ const ImageModal = ({
   };
 
   const handleImageUpload = async () => {
-    const canvas = await getCroppedImg(img, croppedArea);
-    const canvasDataURL = canvas.toDataURL('image/jpeg');
-    const convertedURLtoFile = dataURLtoFile(
-      canvasDataURL,
-      'cropped-image.jpeg'
-    );
-    try {
-      const formData = new FormData();
-      formData.append('croppedImage', convertedURLtoFile);
-      formData.append('email', email);
+    if (!img) {
       await axios
-        .post(
-          `${process.env.REACT_APP_API_URL}/users/save-profile-picture`,
-          formData
-        )
-        .then((response) => {
-          dispatch(updateProfilePicture(response.data.data));
+        .post(`${process.env.REACT_APP_API_URL}/users/save-profile-picture`, {
+          email: email,
+          image: null,
+        })
+        .then((res) => {
+          dispatch(updateProfilePicture(res.data.data));
           closeModal();
-          // var pfpimg = document.createElement('img');
-          // pfpimg.src = response.data.data;
-          // document.querySelector("body").appendChild(pfpimg);
         });
-      // console.log(response.data);
-    } catch (err) {
-      console.warn(err);
+    } else {
+      const canvas = await getCroppedImg(img, croppedArea);
+      const canvasDataURL = canvas.toDataURL('image/jpeg');
+      const convertedURLtoFile = dataURLtoFile(
+        canvasDataURL,
+        'cropped-image.jpeg'
+      );
+      try {
+        const formData = new FormData();
+        formData.append('croppedImage', convertedURLtoFile);
+        formData.append('email', email);
+        await axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/users/save-profile-picture`,
+            formData
+          )
+          .then((response) => {
+            dispatch(updateProfilePicture(response.data.data));
+            closeModal();
+          });
+        // console.log(response.data);
+      } catch (err) {
+        console.warn(err);
+      }
     }
   };
 
@@ -225,7 +234,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           className=" relative user-img w-[100px] bg-[#6246EA] shrink-0 h-full flex justify-center items-center"
         >
           <img
-            src={profilePicture === undefined ? unknownPerson : profilePicture}
+            src={profilePicture === null ? unknownPerson : profilePicture}
             className="h-[60px] w-[60px] border-[#525252] border-2 rounded-full object-cover"
             onClick={openModal}
           ></img>
