@@ -54,10 +54,14 @@ const userAuthenticationSlice = createSlice({
     builder.addCase(userSignup.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(userSignup.fulfilled, (state) => {
+    builder.addCase(userSignup.fulfilled, (state, action) => {
+      state._id = action.payload._id;
+      state.name = action.payload.name;
+      state.email = action.payload.email;
       state.loading = false;
       state.isLoggedIn = true;
       state.error = '';
+      state.profilePictureURL = null;
     });
     builder.addCase(userSignup.rejected, (state, action) => {
       state.loading = false;

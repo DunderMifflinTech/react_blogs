@@ -78,8 +78,12 @@ module.exports.authUserSignup = async function authUserSignup(req, res) {
     if (savedUser) {
       let token = jwt.sign({ payload: savedUser['_id'] }, _JWT_TOKEN_);
       res.cookie('login_token', token, { httpOnly: true });
+      console.log(savedUser);
       res.json({
-        message: 'user created',
+        _id: savedUser._id,
+        name: savedUser.name,
+        email: savedUser.name,
+        
       });
     } else {
       res.status(500).json({

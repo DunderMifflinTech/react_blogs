@@ -28,6 +28,7 @@ function Login({ userLogin, userSignUp }) {
     };
   }, []);
   const navigate = useNavigate();
+  
   const handleLogin = async () => {
     let userCredentials = {
       email: email,
@@ -67,20 +68,6 @@ function Login({ userLogin, userSignUp }) {
       ]);
     }
   };
-
-  // const handleSignUp = async () => {
-  //   navigate('/user-wall');
-  //   let userCredentials = {
-  //     name: name,
-  //     email: email,
-  //     password: password,
-  //   };
-
-  //   const authSuccess = await userSignUp(userCredentials);
-  //   if (authSuccess) {
-  //   } else {
-  //   }
-  // };
 
   return login ? (
     <>
