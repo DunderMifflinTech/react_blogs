@@ -1,5 +1,4 @@
 const userModel = require('../models/userModel');
-const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const _JWT_TOKEN_ = require('./../secret');
@@ -78,12 +77,11 @@ module.exports.authUserSignup = async function authUserSignup(req, res) {
     if (savedUser) {
       let token = jwt.sign({ payload: savedUser['_id'] }, _JWT_TOKEN_);
       res.cookie('login_token', token, { httpOnly: true });
-      console.log(savedUser);
       res.json({
         _id: savedUser._id,
         name: savedUser.name,
         email: savedUser.name,
-        
+
       });
     } else {
       res.status(500).json({

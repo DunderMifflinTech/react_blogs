@@ -11,49 +11,43 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-
   password: {
     type: String,
     required: true,
   },
-
   email: {
     type: String,
     required: true,
     unique: true,
   },
-
   profilePictureURL: {
     type: String,
     default: null,
     required: false,
-    unique: false
+    unique: false,
   },
-
   dateCreated: {
     type: Date,
     required: true,
     default: Date.now(),
   },
-
   followers: [
     {
       type: ObjectID,
       required: false,
     },
   ],
-
   following: [
     {
       type: ObjectID,
       required: false,
     },
   ],
-  posts:[
+  posts: [
     {
-      type: ObjectID
-    }
-  ],  
+      type: ObjectID,
+    },
+  ],
 });
 
 userSchema.pre('save', async function () {
