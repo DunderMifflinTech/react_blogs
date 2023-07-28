@@ -1,5 +1,7 @@
 const postsModel = require('../models/postModel');
 const userModel = require('../models/userModel');
+const commentsModel = require('../models/commentModel');
+const { ObjectId } = require('mongodb');
 
 module.exports.getAllPosts = async (req, res) => {
   try {
@@ -22,11 +24,14 @@ module.exports.createPost = async (req, res) => {
         body: req.body.body,
       };
       const createdPost = await postsModel.create(newPost);
-      if (!createdPost)
+      const postsComment = await commentsModel.create({
+        postId: createdPost._id,
+      });
+      if (!createdPost || !postsComment)
         res
           .status(500)
-          .json({ message: 'sowething went wrong, please try again later' });
-      console.log(createdPost);
+          .json({ message: 'something went wrong, please try again later' });
+
       res.redirect('/login');
     } catch (err) {
       res.status(500).json({
@@ -68,8 +73,6 @@ module.exports.editPost = async (req, res) => {
   }
 };
 
-
-//! Delete method to be fixed
 module.exports.deletePost = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.user._id);
@@ -79,16 +82,40 @@ module.exports.deletePost = async (req, res) => {
       !user ||
       !post ||
       JSON.stringify(user._id) !== JSON.stringify(post.ownerId)
-    )
+    ) {
       res.status(400).json({ message: 'Bad request, data discrepancy' });
+    }
+    await postsModel.deleteOne({ _id: post._id });
 
-    await postsModel.deleteById(post._id, (err) => {
-      res.status(500).json({
-        message: err,
-      });
-    });
     res.status(202).send(); // 202 means that the request has not been acted upon but will likely succeed
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports.likePost = async (req, res) => {
+  try {
+    const post = await postsModel.findById(req.params.id);
+    if(post.likes.reduce((acc, obj)=> acc && (JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id)), true)){
+      post.likes.push({userId:ObjectId(req.body.user._id)});
+      post.save();
+    }
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports.unlikePost = async (req, res) => {
+  try {
+    const post = await postsModel.findById(req.params.id);
+    if(!post.likes.reduce((acc, obj)=> acc && (JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id)), true)){
+      const arr = post.likes.filter(obj=> JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id))
+      post.likes = [...arr];
+      post.save();
+    }
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };

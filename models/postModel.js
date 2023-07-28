@@ -21,20 +21,20 @@ const postsSchema = mongoose.Schema({
     type: String,
     required: true,
     validate: {
-        validator: function(v){
-        return !v.split(" ").length <= 0
-        }
+      validator: function (v) {
+        return !v.split(' ').length <= 0;
+      },
     },
     maxLength: [1000, 'body length more than 1000 characters'],
   },
   likes: [
     {
-      type: ObjectID,
+      userId: { type: ObjectID },
     },
   ],
   reposts: [
     {
-      type: ObjectID,
+      userId: { type: ObjectID },
     },
   ],
 });

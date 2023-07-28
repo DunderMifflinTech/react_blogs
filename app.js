@@ -6,6 +6,7 @@ const userRoutes = require('./routers/userRouter');
 const authRoutes = require('./routers/authRouter');
 const testRouter = require('./routers/testRouter');
 const postRoutes = require('./routers/postRouter');
+const commentRouter = require('./routers/commentRouter');
 const app = express(); 
 app.use(cors(), express.json(),cookieParser());
 module.exports.port = port = 3001;
@@ -26,6 +27,7 @@ app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/test', testRouter);
 app.use('/post', postRoutes);
+app.use('/comment', commentRouter);
 
 app.get('*', (req, res) => {
   res.send('Error 404 page not found :(');
