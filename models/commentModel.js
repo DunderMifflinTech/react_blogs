@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const __DBURL =
   'mongodb+srv://admin:admin123@mastercluster.dxy63ez.mongodb.net/General?retryWrites=true&w=majority';
 mongoose.set('strictQuery', false);
-mongoose.connect(__DBURL, () => console.log('Post DB connected'));
+mongoose.connect(__DBURL);
 
 const commentsSchema = mongoose.Schema({
   postId: {
@@ -29,14 +29,15 @@ const commentsSchema = mongoose.Schema({
         required: true,
         validate: {
             validator: function(v){
-            return !v.split(" ").length <= 0
+            return !v.trim().length <= 0
             }
         },
       },
-      likes: {
-        type: ObjectID,
-        default: 0,
-      },
+      likes:[
+        {
+          userId: { type: ObjectID },
+        },
+      ],
       replies: [
         {
           ownerId: {
@@ -56,13 +57,13 @@ const commentsSchema = mongoose.Schema({
             required: true,
             validate: {
                 validator: function(v){
-                return !v.split(" ").length <= 0
+                  return !v.trim().length <= 0
                 }
             },
           },
           likes: [
             {
-              type: ObjectID,
+              userId: { type: ObjectID },
             },
           ],
         },

@@ -86,6 +86,7 @@ module.exports.deletePost = async (req, res) => {
       res.status(400).json({ message: 'Bad request, data discrepancy' });
     }
     await postsModel.deleteOne({ _id: post._id });
+    await commentsModel.deleteOne({postId: post._id});
 
     res.status(202).send(); // 202 means that the request has not been acted upon but will likely succeed
   } catch (err) {
@@ -109,7 +110,7 @@ module.exports.likePost = async (req, res) => {
 module.exports.unlikePost = async (req, res) => {
   try {
     const post = await postsModel.findById(req.params.id);
-    if(!post.likes.reduce((acc, obj)=> acc && (JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id)), true)){
+    if(!post.likes.reduce((acc, obj)=> acc && (JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id)), true)){   //!try to use save() instead of updateOne, updateMany,..etc because using save helps us do the prevalidation that is done before saving a document also save() keeps the record of history of the document and the no. of times its been updated represented by the __v field in the document
       const arr = post.likes.filter(obj=> JSON.stringify(obj.userId) !== JSON.stringify(req.body.user._id))
       post.likes = [...arr];
       post.save();
