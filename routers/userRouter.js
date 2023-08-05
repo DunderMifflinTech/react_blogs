@@ -1,18 +1,17 @@
 const express = require('express');
 const userModel = require('../models/userModel');
-const { getAllUsers, saveProfilePicture } = require('../controllers/userController');
+const {
+  getAllUsers,
+  saveProfilePicture,
+  getSelectedUsers,
+} = require('../controllers/userController');
 
 const userRoutes = express.Router();
 
+userRoutes.route('/allusers').get(getAllUsers);
 
+userRoutes.route('/selected-users').get(getSelectedUsers);
 
-userRoutes
-    .route('/allusers')
-    .get(getAllUsers);
-
-userRoutes
-    .route('/save-profile-picture')
-    .post(saveProfilePicture);
-
+userRoutes.route('/save-profile-picture').post(saveProfilePicture);
 
 module.exports = userRoutes;

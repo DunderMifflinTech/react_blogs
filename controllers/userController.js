@@ -1,5 +1,6 @@
 require('dotenv').config();
 const userModel = require('../models/userModel');
+const { ObjectId } = require('mongodb');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
@@ -25,6 +26,23 @@ module.exports.getAllUsers = async function getAllUsers(req, res) {
     res.json({
       message: err.message,
     });
+  }
+};
+
+module.exports.getSelectedUsers = async function getSelectedUsers(req, res) {
+  try{
+    const users = req.body;
+    console.log(users)
+    userData =  await userModel.find({
+      _id: {
+        $in: [...users.map((id)=>ObjectId(id))]
+      }
+    });
+    return res.status(200).json(userData);
+  } catch(err){
+    res.status(500).json({
+      message: err.message
+    })
   }
 };
 

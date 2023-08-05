@@ -4,6 +4,27 @@
     animation-name: like-button-animation;
     animation-duration: 200ms;
 }
+.icon{
+    font-size: 20px;
+}
+
+.comment-input{
+    border: 1.5px solid;
+    border-color: #bebebe;
+    border-radius: 16px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 35px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    resize: none;
+}
+
 
 @keyframes like-button-animation {
     50%{

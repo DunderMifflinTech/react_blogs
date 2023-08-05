@@ -5,16 +5,18 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import userAuthenticationSlice from '../features/userAuthentication/userAuthenticationSlice';
+import postsSlice from '../features/Post/postsSlice';
 const logger = createLogger();
 
 const reducers = combineReducers({
   auth: userAuthenticationSlice,
+  feed: postsSlice,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-//   blacklist: [''],
+  blacklist: ['feed'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
