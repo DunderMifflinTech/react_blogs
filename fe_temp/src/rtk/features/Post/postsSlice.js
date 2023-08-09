@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { fetchRequiredUsers } from '../userCache/useCacheSlice';
-const api_url = import.meta.env.REACT_APP_API_URL;
+const api_url = import.meta.env.VITE_API_URL;
 
 const initialState = {
   posts: [],
@@ -14,8 +14,9 @@ export const fetchUserFeed = createAsyncThunk(
   'feed/fetchUserFeed',
   async (_, {dispatch}) => {
     return axios.get(api_url + '/post/get-all-posts').then((res) => {
-        let users = res.data.data.map((obj)=>obj._id);
-        return dispatch(fetchRequiredUsers(users));
+        // let users = res.data.data.map((obj)=>obj._id);
+        // return dispatch(fetchRequiredUsers(users));
+        return res.data;
     });
   }
 );

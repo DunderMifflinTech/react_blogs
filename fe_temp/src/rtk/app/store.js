@@ -5,12 +5,14 @@ import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import userAuthenticationSlice from '../features/userAuthentication/userAuthenticationSlice';
+import useCacheSlice from '../features/userCache/useCacheSlice';
 import postsSlice from '../features/Post/postsSlice';
 const logger = createLogger();
 
 const reducers = combineReducers({
   auth: userAuthenticationSlice,
   feed: postsSlice,
+  users: useCacheSlice
 });
 
 const persistConfig = {

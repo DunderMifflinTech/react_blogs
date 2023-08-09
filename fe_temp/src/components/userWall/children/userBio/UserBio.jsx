@@ -51,7 +51,7 @@ const ImageModal = ({
   const handleImageUpload = async () => {
     if (!img) {
       await axios
-        .post(`${import.meta.env.REACT_APP_API_URL}/users/save-profile-picture`, {
+        .post(`${import.meta.env.VITE_API_URL}/users/save-profile-picture`, {
           email: email,
           image: null,
         })
@@ -72,7 +72,7 @@ const ImageModal = ({
         formData.append('email', email)
         await axios
           .post(
-            `${import.meta.env.REACT_APP_API_URL}/users/save-profile-picture`,
+            `${import.meta.env.VITE_API_URL}/users/save-profile-picture`,
             formData
           )
           .then((response) => {

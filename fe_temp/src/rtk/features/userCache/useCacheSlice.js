@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 // import { ObjectId } from 'mongodb';
-const api_url = import.meta.env.REACT_APP_API_URL;
+const api_url = import.meta.env.VITE_API_URL;
 
 const initialState = {
   users: [],

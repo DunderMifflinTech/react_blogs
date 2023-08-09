@@ -5,9 +5,9 @@ const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const s3_instance = new aws.S3({
-  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.REACT_APP_AWS_SECRET_KEY,
-  region: process.env.REACT_APP_S3_BUCKET_REGION,
+  accessKeyId: process.env.VITE_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.VITE_AWS_SECRET_KEY,
+  region: process.env.VITE_S3_BUCKET_REGION,
 });
 
 module.exports.getAllUsers = async function getAllUsers(req, res) {

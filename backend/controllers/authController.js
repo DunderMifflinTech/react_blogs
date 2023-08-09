@@ -1,7 +1,7 @@
 const userModel = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const _JWT_TOKEN_ = require('./../secret');
+const _JWT_TOKEN_ = require('../secret');
 
 module.exports.protectRoute = async function protectRoute(req, res, next) {
   if (req) {
