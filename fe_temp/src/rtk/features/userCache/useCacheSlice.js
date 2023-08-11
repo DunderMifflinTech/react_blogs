@@ -26,7 +26,7 @@ export const fetchRequiredUsers = createAsyncThunk(
         return exist_usr_id === req_usr_id;
       });
     });
-    console.log('existing_users : ', existing_users, '\nrequired_users : ', required_users, '\nactually_required_user : ', actually_required_users);
+    // console.log('existing_users : ', existing_users, '\nrequired_users : ', required_users, '\nactually_required_user : ', actually_required_users);
 
     return axios.post(api_url + '/users/selected-users', actually_required_users).then(res=>res.data);
   }

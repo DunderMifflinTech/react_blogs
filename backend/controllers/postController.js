@@ -5,7 +5,6 @@ const { ObjectId } = require('mongodb');
 
 module.exports.getAllPosts = async (req, res) => {
   try {
-    console.log('requested');
     const allPosts = await postsModel.find();
     res.status(200).json({
       data: allPosts,

@@ -7,6 +7,7 @@ import { fetchUserFeed } from '../../../../rtk/features/Post/postsSlice';
 function Feed() {
   const dispatch = useDispatch();
   const postsArray = useSelector((state) => state.feed.posts);
+  const userCache = useSelector(state=> state.userCache.users);
   useEffect(() => {
     const fetchFeed = async () => {
       try {
@@ -18,9 +19,18 @@ function Feed() {
     fetchFeed();
   }, []);
 
+  const getUser = (obj)=>{
+    for(let usr of userCache){
+      if(usr._id === obj.ownerId){
+        return usr;
+      }
+    }
+    return null;
+  }
+
   return (
     <>
-      {postsArray.map((obj)=>(<Post key = {obj._id} props = {obj}/>))}
+      {postsArray.map((obj)=>(<Post key = {obj._id} props = {obj} user = {getUser(obj)}/>)).reverse()}
     </>
   );
 }

@@ -12,8 +12,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import moment from 'moment';
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
-function Post({props}) {
-  // console.log(props);
+function Post({props, user}) {
   const commentSubmitRef = useRef();
   const profilePicture = useSelector((state) => state.auth.profilePictureURL);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
@@ -32,7 +31,6 @@ function Post({props}) {
 
   const displayTime = (t)=>{
     const timeElapsed = (Date.now() - new Date(t))/1000;
-    // console.log(timeElapsed);
     const min = 60;
     const hour = min*60;
     const day = hour*24;
@@ -46,7 +44,7 @@ function Post({props}) {
     } else if(timeElapsed < 3*day) {
       return `${Math.round(timeElapsed/day)}d ago` ;
     } else {
-      return moment(new Date(t)).format("MMM Do 'YY"); 
+      return moment(new Date(t)).format("Do MMM 'YY"); 
     }
   }
 
@@ -67,26 +65,26 @@ function Post({props}) {
             {' '}
             {/* //! the postee's info*/}
             <div>
-              <img src={userPFP} className="h-[48px] w-[48px] rounded-full" />
+              <img src={user?.profilePictureURL || unknownPerson} className="h-[48px] w-[48px] rounded-full object-cover" />
             </div>
             <div>
               <ul className="pl-[10px]">
                 <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
-                  Daniel Carraway
+                  {user?.name}
                 </li>
                 <li className="h-[15px] user-bio list-none text-[12px] text-[#666666]">
                   {' '}
                   {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
                 </li>
                 <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
-                  {displayTime(props.createdAt)}
+                  {displayTime(props?.createdAt)}
                 </li>
               </ul>
             </div>
           </div>
           <div>
             <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[20px]">
-              {props.body}
+              {props.body.split('\n').map(s=><><span>{s}<br/></span></>)}
             </div>
             <div className="flex justify-center pt-[25px] pb-[15px]">
               <hr className="w-[94.5%]" />
@@ -97,7 +95,7 @@ function Post({props}) {
                 className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
               >
                 <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                  {props.likes.length}
+                  {props?.likes?.length}
                 </span>
                 {likeVar ? (
                   <FcLike size={20} className="like-enabled-icon" />
@@ -113,7 +111,7 @@ function Post({props}) {
               </div>
               <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
                 <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                {props.comments}
+                {props?.comments?.length}
                 </span>
                 <BiComment
                   onClick={() => setIsCommentSectionOpen((icso) => !icso)}
@@ -132,7 +130,7 @@ function Post({props}) {
         <div>
           <form className="flex items-center px-[10px] pb-[15px]">
             <img
-              src={profilePicture === null ? unknownPerson : profilePicture}
+              src={profilePicture || unknownPerson}
               className="h-[40px] w-[40px] rounded-full object-cover"
             ></img>
             {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}

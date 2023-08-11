@@ -32,13 +32,11 @@ module.exports.getAllUsers = async function getAllUsers(req, res) {
 module.exports.getSelectedUsers = async function getSelectedUsers(req, res) {
   try{
     const users = req.body;
-    console.log(users)
     userData =  await userModel.find({
       _id: {
         $in: [...users.map((id)=>ObjectId(id))]
       }
     }).clone();
-    console.log(userData);
     return res.status(200).json(userData);
   } catch(err){
     res.status(500).json({
