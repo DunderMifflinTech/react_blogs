@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 import { useDispatch } from 'react-redux';
-import { reset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
+import { reset as userCacheReset } from '../../rtk/features/userCache/useCacheSlice';
+import { reset as authReset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
+import { reset as postsReset } from '../../rtk/features/Post/postsSlice';
 
 function Navbar({isLoggedIn, userLogOut}) {
   const dispatch = useDispatch();
@@ -16,7 +18,9 @@ function Navbar({isLoggedIn, userLogOut}) {
   const navigate = useNavigate();
   const handleLogout = async() => {
     try{
-      dispatch(reset());
+      dispatch(authReset());
+      dispatch(postsReset());
+      dispatch(userCacheReset());
       dispatch(userLogout()).unwrap();
       navigate('/login');
     } catch(err){

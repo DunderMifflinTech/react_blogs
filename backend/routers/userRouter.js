@@ -10,7 +10,7 @@ const userRoutes = express.Router();
 
 userRoutes.route('/allusers').get(getAllUsers);
 
-userRoutes.route('/selected-users').get(getSelectedUsers);
+userRoutes.route('/selected-users').post(getSelectedUsers);
 
 userRoutes.route('/save-profile-picture').post(saveProfilePicture);
 

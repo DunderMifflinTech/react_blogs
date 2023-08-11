@@ -1,36 +1,43 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  createListenerMiddleware,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
-// import { ObjectId } from 'mongodb';
 const api_url = import.meta.env.VITE_API_URL;
-
 const initialState = {
   users: [],
   loading: false,
   error: null,
 };
 
-// const parseObjectId = (id) => JSON.stringify(ObjectId(id));
+export const listenerMiddleware = createListenerMiddleware();
+
+// the actualRequiredUsers variable contains the useers that are actually not present in the userCache and are to be requestd for
+//the .some returns true and [stops] if the CB fucntion returns true once else it returns false if the CB function returns false for all the values
 
 export const fetchRequiredUsers = createAsyncThunk(
   'userCache/fetchRequiredUsers',
-  async (users, { getState }) => {
-    // the actualRequiredUsers variable contains the useers that are actually not present in the userCache and are to be requestd for
-    const state = getState();
-
-    let actualRequiredUsers = users.filter((id, idx) => {
-      return !state.some((state_id) => {
-        //the .some returns true and [stops] if the CB fucntion returns true once else it returns false if the CB function returns false for all the values
-        // return parseObjectId(state_id) === parseObjectId(id);
+  async (_, listenerAPI) => {
+    const existing_users = listenerAPI.getState().userCache.users.map(ele=>ele._id);
+    const required_users = listenerAPI.getState().feed.posts.map(ele=> ele.ownerId);
+    const actually_required_users =required_users.filter(req_usr_id=>{
+      return !existing_users.some(exist_usr_id=>{
+        return exist_usr_id === req_usr_id;
       });
     });
-    // console.log(actualRequiredUsers);
-    if (actualRequiredUsers.length <= 0) return new Promise.resolve();
+    console.log('existing_users : ', existing_users, '\nrequired_users : ', required_users, '\nactually_required_user : ', actually_required_users);
 
-    return axios
-      .get(api_url + '/users/selected-users', actualRequiredUsers)
-      .then((res) => res.data);
+    return axios.post(api_url + '/users/selected-users', actually_required_users).then(res=>res.data);
   }
 );
+
+listenerMiddleware.startListening({
+  type: 'feed/fetchUserFeed/fulfilled',
+  effect: async (action, listenerAPI) => {
+    listenerAPI.dispatch(fetchRequiredUsers());
+  },
+});
 
 const userCacheSlice = createSlice({
   name: 'userCache',

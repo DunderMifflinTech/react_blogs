@@ -14,8 +14,6 @@ export const fetchUserFeed = createAsyncThunk(
   'feed/fetchUserFeed',
   async (_, {dispatch}) => {
     return axios.get(api_url + '/post/get-all-posts').then((res) => {
-        // let users = res.data.data.map((obj)=>obj._id);
-        // return dispatch(fetchRequiredUsers(users));
         return res.data;
     });
   }
