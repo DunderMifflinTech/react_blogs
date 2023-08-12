@@ -27,6 +27,10 @@ const postsSchema = mongoose.Schema({
     },
     maxLength: [1000, 'body length more than 1000 characters'],
   },
+  commentsCount: {
+    type: Number,
+    default: 0
+  },
   likes: [
     {
       userId: { type: ObjectID },

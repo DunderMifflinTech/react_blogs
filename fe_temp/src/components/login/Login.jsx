@@ -69,9 +69,19 @@ function Login({ userLogin, userSignUp }) {
     }
   };
 
+  const handleSumbit = (e)=>{
+    if(e.keyCode == 13){
+      if(login && email && password){
+        handleLogin();
+      } else if(!login && email && name && password && confirmPassword) {
+        handleSignUp()
+      }
+    }
+  }
+
   return login ? (
     <>
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center" onKeyDown={handleSumbit}>
         <div className="w-[430px] h-[500px] p-[30px] mt-[50px] rounded-[12px] flex flex-col justify-around bg-[#fff] transition duration-150 ease-in-out hover:shadow-lg">
           <header className="text-center text-[30px]">Log In</header>
           <form className="h-[200px] flex flex-col justify-around">
@@ -126,7 +136,7 @@ function Login({ userLogin, userSignUp }) {
     </>
   ) : (
     <>
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center" onKeyDown={handleSumbit}>
         <div className="w-[430px] h-[500px] p-[30px] mt-[50px] rounded-[12px] flex flex-col justify-between bg-[#fff] transition duration-150 ease-in-out hover:shadow-lg">
           <div>
             <a

@@ -1,6 +1,6 @@
 const express = require('express');
 const {
-  createCommentByPost,
+  createComment,
   getCommentsByPost,
   editComment,
   deleteComment,
@@ -9,7 +9,7 @@ const {
 } = require('../controllers/commentController');
 const commentRouter = express.Router();
 
-commentRouter.route('/add-comment').post(createCommentByPost);
+commentRouter.route('/add-comment').post(createComment);
 
 commentRouter.route('/get-comments/postid/:postid').get(getCommentsByPost);
 

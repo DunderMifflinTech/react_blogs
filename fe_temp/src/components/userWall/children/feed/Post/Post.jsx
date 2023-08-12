@@ -10,6 +10,7 @@ import Comment from '../Comment/Comment';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import moment from 'moment';
+import axios from 'axios';
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 function Post({props, user}) {
@@ -18,10 +19,7 @@ function Post({props, user}) {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [likeVar, setLikeVar] = useState(false);
   const [comment, setComment] = useState();
-
-  useEffect(()=>{
-    
-  },[])
+  const [commentsArray, setCommentsArray] = useState(null);
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
@@ -55,6 +53,18 @@ function Post({props, user}) {
       setComment('');
     }
   }
+
+  const handleCommentsFetch = async()=>{
+    try{
+      let commentsArr = await axios.get(import.meta.env.VITE_API_URL + `/comment/get-comments/postid/${props._id}`);
+      console.log(commentsArr.data.comments);
+      setCommentsArray(commentsArr.data.comments);
+      
+      setIsCommentSectionOpen((icso) => !icso)
+    }catch(err){
+      console.err(err.message)
+    }
+  }
   return (
     <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
       <div>
@@ -84,7 +94,7 @@ function Post({props, user}) {
           </div>
           <div>
             <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[20px]">
-              {props.body.split('\n').map(s=><><span>{s}<br/></span></>)}
+              {props.body.split('\n').map((s, id)=><span key={id}>{s}<br/></span>)}
             </div>
             <div className="flex justify-center pt-[25px] pb-[15px]">
               <hr className="w-[94.5%]" />
@@ -111,10 +121,10 @@ function Post({props, user}) {
               </div>
               <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
                 <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                {props?.comments?.length}
+                {props?.commentsCount}
                 </span>
                 <BiComment
-                  onClick={() => setIsCommentSectionOpen((icso) => !icso)}
+                  onClick={handleCommentsFetch}
                   color="DimGrey"
                   size={20}
                 />
@@ -123,9 +133,19 @@ function Post({props, user}) {
           </div>
         </div>
         <div>
+          {/* <Comment showComments={isCommentSectionOpen}></Comment>
           <Comment showComments={isCommentSectionOpen}></Comment>
-          <Comment showComments={isCommentSectionOpen}></Comment>
-          <Comment showComments={isCommentSectionOpen}></Comment>
+          <Comment showComments={isCommentSectionOpen}></Comment> */}
+
+          {commentsArray?.length > 0 && 
+            commentsArray.map(ele=>{
+              return(
+                <Comment key = {ele._id} showComments={isCommentSectionOpen}>{ele.body}</Comment>
+              )
+            })
+          }
+
+
         </div>
         <div>
           <form className="flex items-center px-[10px] pb-[15px]">

@@ -32,7 +32,7 @@ module.exports.createPost = async (req, res) => {
           .status(500)
           .json({ message: 'something went wrong, please try again later' });
 
-      res.redirect('/login');
+      res.status(201).redirect('/login');   // 201 = created 202 = accepted
     } catch (err) {
       res.status(500).json({
         message: err.message,

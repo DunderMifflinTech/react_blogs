@@ -1,7 +1,8 @@
 const { ObjectId } = require('mongodb');
 const commentsModel = require('../models/commentModel');
+const postsModel = require('../models/postModel');
 
-module.exports.createCommentByPost = async (req, res) => {
+module.exports.createComment = async (req, res) => {
   try {
     const commentsSection = await commentsModel.findOne({
       postId: ObjectId(req.body.postId),
@@ -12,6 +13,9 @@ module.exports.createCommentByPost = async (req, res) => {
         body: req.body.body,
       });
       commentsSection.save();
+      post = await postsModel.findById(req.body.postId);
+      post.commentsCount = commentsSection.comments.length;
+      post.save();
       res.status(200).send();
     } else {
       res.status(400).send();
@@ -76,6 +80,9 @@ module.exports.deleteComment = async (req, res) => {
         );
       });
       commentsSection.save();
+      post = await postsModel.findById(req.body.postId);
+      post.commentsCount = commentsSection.comments.length;
+      post.save();
       res.status(200).send();
     } else {
       res.status(400).send();

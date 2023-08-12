@@ -4,7 +4,7 @@ import userPFP from '../../../../../images/userPFP.png';
 import Reply from '../Reply/Reply';
 import './Comment.css'
 
-export default function Comment({showComments}) {
+export default function Comment({showComments, children}) {
   const [likeVar, setLikeVar] = useState(false);
   const [areRepliesOpen, setAreRepliesOpen] = useState(false);
   
@@ -35,12 +35,7 @@ export default function Comment({showComments}) {
                   </li>
                 </ul>
                 <div className="m-[10px] font-sans font-normal text-sm text-[#303030] ">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                  irure dolor in reprehenderit in voluptate velit esse cillum
-                  dolore eu fugiat nulla pariatur.
+                  {children}
                 </div>
               </div>
               <div className="w-full  pl-[30px] flex ">
