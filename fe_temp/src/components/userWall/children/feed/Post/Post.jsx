@@ -7,10 +7,13 @@ import { VscSend } from 'react-icons/vsc';
 import './Post.css';
 import unknownPerson from '../../../../../images/UnknownPerson.jpg';
 import Comment from '../Comment/Comment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import moment from 'moment';
 import axios from 'axios';
+import { fetchRequiredUsers } from '../../../../../rtk/features/userCache/useCacheSlice';
+import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
+const api_url = import.meta.env.VITE_API_URL;
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 function Post({props, user}) {
@@ -20,6 +23,10 @@ function Post({props, user}) {
   const [likeVar, setLikeVar] = useState(false);
   const [comment, setComment] = useState();
   const [commentsArray, setCommentsArray] = useState(null);
+  const [commentsAdded, setCommentsAdded] = useState(0);
+  const dispatch = useDispatch();
+  const users =  useSelector(state=>state.userCache.users);
+  const auth =  useSelector(state=>state.auth);
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
@@ -46,25 +53,61 @@ function Post({props, user}) {
     }
   }
 
-  const handleFormSubmit = (e)=>{
+  const handleFormSubmit = async (e)=>{
     e.preventDefault();
     if(comment.toString().trim().length > 0){
       //TODO: handle comment submit action
+      let commentData = {
+        ownerId: auth._id,
+        postId: props._id,
+        body: comment
+      }
+      await axios.post(api_url + '/comment/add-comment', commentData)
       setComment('');
+      setCommentsAdded(s => s+1);
+      handleCommentsFetch(true);
     }
   }
 
-  const handleCommentsFetch = async()=>{
-    try{
-      let commentsArr = await axios.get(import.meta.env.VITE_API_URL + `/comment/get-comments/postid/${props._id}`);
-      console.log(commentsArr.data.comments);
-      setCommentsArray(commentsArr.data.comments);
-      
-      setIsCommentSectionOpen((icso) => !icso)
-    }catch(err){
-      console.err(err.message)
+  const getUser = (obj)=>{
+    for(let usr of users){
+      if(usr._id === obj.ownerId){
+        return usr;
+      }
+    }
+    return null;
+  }
+  
+  const handleCommentsFetch = async(force)=>{
+    if(force){
+      try{
+        let commentsArr = await axios.get(import.meta.env.VITE_API_URL + `/comment/get-comments/postid/${props._id}`);
+        setCommentsArray(commentsArr.data.comments);
+        let userData = [];
+        for(let comment of commentsArr.data.comments){
+          userData.push(comment.ownerId);
+          for(let reply of comment.replies){
+            userData.push(reply.ownerId);
+          }
+        }
+        await dispatch(fetchRequiredUsers(userData)).unwrap();
+        if(force)
+          setIsCommentSectionOpen(true);
+        else
+          setIsCommentSectionOpen((icso) => !icso);
+      }catch(err){
+        console.log(err.message)
+      }
+    } else {
+      setIsCommentSectionOpen((icso) => !icso);
+      return;
     }
   }
+
+  const handleAddComment = ()=>{
+    handleCommentsFetch(!(!!commentsArray));
+  }
+
   return (
     <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
       <div>
@@ -121,10 +164,10 @@ function Post({props, user}) {
               </div>
               <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
                 <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                {props?.commentsCount}
+                {props?.commentsCount + commentsAdded}
                 </span>
                 <BiComment
-                  onClick={handleCommentsFetch}
+                  onClick={handleAddComment}
                   color="DimGrey"
                   size={20}
                 />
@@ -133,19 +176,13 @@ function Post({props, user}) {
           </div>
         </div>
         <div>
-          {/* <Comment showComments={isCommentSectionOpen}></Comment>
-          <Comment showComments={isCommentSectionOpen}></Comment>
-          <Comment showComments={isCommentSectionOpen}></Comment> */}
-
           {commentsArray?.length > 0 && 
             commentsArray.map(ele=>{
               return(
-                <Comment key = {ele._id} showComments={isCommentSectionOpen}>{ele.body}</Comment>
+                <Comment key = {ele._id} showComments={isCommentSectionOpen} data = {ele} user = {getUser(ele)} />
               )
             })
           }
-
-
         </div>
         <div>
           <form className="flex items-center px-[10px] pb-[15px]">

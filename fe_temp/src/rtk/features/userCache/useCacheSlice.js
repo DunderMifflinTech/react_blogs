@@ -18,17 +18,26 @@ export const listenerMiddleware = createListenerMiddleware();
 
 export const fetchRequiredUsers = createAsyncThunk(
   'userCache/fetchRequiredUsers',
-  async (_, listenerAPI) => {
-    const existing_users = listenerAPI.getState().userCache.users.map(ele=>ele._id);
-    const required_users = listenerAPI.getState().feed.posts.map(ele=> ele.ownerId);
-    const actually_required_users =required_users.filter(req_usr_id=>{
-      return !existing_users.some(exist_usr_id=>{
+  async (data, listenerAPI) => {
+    let required_users;
+    if (data) required_users = data;
+    else
+      required_users = listenerAPI
+        .getState()
+        .feed.posts.map((ele) => ele.ownerId);
+
+    const existing_users = listenerAPI
+      .getState()
+      .userCache.users.map((ele) => ele._id);
+    const actually_required_users = required_users.filter((req_usr_id) => {
+      return !existing_users.some((exist_usr_id) => {
         return exist_usr_id === req_usr_id;
       });
     });
     // console.log('existing_users : ', existing_users, '\nrequired_users : ', required_users, '\nactually_required_user : ', actually_required_users);
-
-    return axios.post(api_url + '/users/selected-users', actually_required_users).then(res=>res.data);
+    return axios
+      .post(api_url + '/users/selected-users', actually_required_users)
+      .then((res) => res.data);
   }
 );
 

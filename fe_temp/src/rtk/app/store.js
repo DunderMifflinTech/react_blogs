@@ -18,7 +18,8 @@ const reducers = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['feed'],
+  //remove userCaceh from blacklist
+  blacklist: ['feed', 'userCache'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
