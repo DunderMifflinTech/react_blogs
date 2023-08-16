@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
 import './CreateArticles.css';
-import {
-  FcPicture,
-  FcCollaboration,
-  FcVideoCall,
-  FcDocument,
-} from 'react-icons/fc';
+import { BsFillPostcardHeartFill } from 'react-icons/bs';
+import { HiMiniPhoto } from 'react-icons/hi2';
+import { MdArticle } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
-import Tags from '../../../helperComponents/Tags.jsx';
 import BaseButton from '../../../BaseButton/BaseButton';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserFeed } from '../../../../rtk/features/Post/postsSlice';
 import UnknownPerson from '../../../../images/UnknownPerson.jpg'
 
-const PostModal = ({ userPFP, userNik, setIsModalOpen }) => {
+const PostModal = ({ userNik, setIsModalOpen }) => {
   const [postContent, setPostContent] = useState('');
   const state = useSelector(state=>state.auth);
   const dispatch = useDispatch();
@@ -70,7 +66,7 @@ const PostModal = ({ userPFP, userNik, setIsModalOpen }) => {
           <div className="flex">
             <img
               src={state.profilePictureURL || UnknownPerson}
-              className="m-[20px] h-[50px] w-[50px] rounded-full mr-[16px] inline"
+              className="m-[20px] h-[50px] w-[50px] rounded-full mr-[16px] inline object-cover"
             />
             <div className="pt-[25px] text-base font-semibold">{userNik}</div>
           </div>
@@ -133,22 +129,18 @@ function CreateArticles({ userPFP, userNik, ...restOfProps }) {
             </span>
           </button>
         </div>
-        <div className=" pt-[15px] pr-[15px] pb-[10px] pl-[50px] flex flex-row justify-around">
-          <div className="cursor-pointer rounded-lg h-[35px] w-[85px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
-            <FcCollaboration size={25} className="inline mr-[10px]" />
+        <div className=" pt-[15px] pr-[15px] pb-[10px] pl-[50px] flex flex-row justify-evenly">
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+            <BsFillPostcardHeartFill size={25} color='3D3D3D' className="inline mr-[10px]" />
             <span>Post</span>
           </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[85px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
-            <FcPicture size={25} className="inline mr-[10px]" />
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+            <HiMiniPhoto size={25} color='3D3D3D' className="inline mr-[10px]" />
             <span>Photo</span>
           </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[85px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
-            <FcVideoCall size={25} className="inline mr-[10px]" />
-            <span>Video</span>
-          </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[125px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
-            <FcDocument size={25} className="inline mr-[10px]" />
-            <span>New Article</span>
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+            <MdArticle size={25} color='3D3D3D' className="inline mr-[10px]" />
+            <span>Article</span>
           </div>
         </div>
       </div>

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 function UserWall() {
   return (
     <>
-      <div className="user-wall-container pl-[3rem] pr-[3rem] pt-[3rem]">
+      <div className="user-wall-container pl-[3rem] pr-[3rem] pt-[3rem] mb-[200px]">
         <div>
           <UserBio
             userNik={'userNik'}
