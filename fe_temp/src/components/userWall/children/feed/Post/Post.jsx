@@ -16,6 +16,7 @@ import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
 const api_url = import.meta.env.VITE_API_URL;
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
+
 function Post({props, user}) {
   const commentSubmitRef = useRef();
   const profilePicture = useSelector((state) => state.auth.profilePictureURL);
@@ -24,6 +25,7 @@ function Post({props, user}) {
   const [comment, setComment] = useState();
   const [commentsArray, setCommentsArray] = useState(null);
   const [commentsAdded, setCommentsAdded] = useState(0);
+  const [openedReplySection, setOpenedReplySection] = useState(null);
   const dispatch = useDispatch();
   const users =  useSelector(state=>state.userCache.users);
   const auth =  useSelector(state=>state.auth);
@@ -179,7 +181,7 @@ function Post({props, user}) {
           {commentsArray?.length > 0 && 
             commentsArray.map(ele=>{
               return(
-                <Comment key = {ele._id} showComments={isCommentSectionOpen} data = {ele} user = {getUser(ele)} />
+                <Comment key = {ele._id} openedReplySection = {{openedReplySection, setOpenedReplySection}} showComments={isCommentSectionOpen} data = {ele} user = {getUser(ele)} />
               )
             })
           }
@@ -193,6 +195,7 @@ function Post({props, user}) {
             {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
             <TextareaAutosize
               onChange={(e)=>setComment(e.target.value.trimStart())}
+              onFocus={()=>setOpenedReplySection(null)}
               value = {comment}
               placeholder="Write a comment..."
               className="comment-input"

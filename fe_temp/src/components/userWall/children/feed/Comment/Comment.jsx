@@ -1,14 +1,33 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { HiReply } from 'react-icons/hi';
 import Reply from '../Reply/Reply';
 import './Comment.css';
 import { useSelector } from 'react-redux';
+import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
+import { VscSend } from 'react-icons/vsc';
 
-export default function Comment({ showComments, data, user }) {
+export default function Comment({ openedReplySection, showComments, data, user }) {
   const [likeVar, setLikeVar] = useState(false);
-  const [areRepliesOpen, setAreRepliesOpen] = useState(false);
+  const [reply, setReply] = useState('');
+  const auth = useSelector(state=>state.auth);
   const users = useSelector((state) => state.userCache.users);
+
+  const handleFormSubmit = async (e)=>{
+    e.preventDefault();
+    if(reply.toString().trim().length > 0){
+      let replyData = {
+        ownerId: auth._id,
+        postId: props._id,
+        body: comment
+      }
+      await axios.post(api_url + '/comment/add-comment', commentData)
+      setComment('');
+      setCommentsAdded(s => s+1);
+      handleCommentsFetch(true);
+    }
+  }
 
   const getUser = (obj) => {
     for (let usr of users) {
@@ -63,7 +82,7 @@ export default function Comment({ showComments, data, user }) {
                     {user?.name}
                   </li>
                   <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
-                    {displayTime(data.createdAt)}
+                    {displayTime(data?.createdAt)}
                   </li>
                 </ul>
                 <div className="m-[10px] font-sans font-normal text-sm text-[#303030] ">
@@ -91,26 +110,54 @@ export default function Comment({ showComments, data, user }) {
                   )}
                 </div>
                 <button
-                  onClick={() => {
-                    data.replies.length > 0
-                      ? setAreRepliesOpen((aro) => !aro)
-                      : null;
-                  }}
+                  onClick={() => openedReplySection.setOpenedReplySection(data._id)}
                   className="font-sans font-normal text-sm text-[#434343]"
                 >
-                  {areRepliesOpen ? 'close' : `${data.replies.length} replies`}
+                  {<HiReply color="DimGrey" size={15} />}
                 </button>
               </div>
             </div>
           </div>
         </div>
-        {areRepliesOpen && (
-          <div className="pl-[50px] px-[20px] pb-[20px]">
-            {data?.replies?.length > 0 &&
-              data.replies.map((ele) => (
-                <Reply key = {ele._id} id={ele._id} data={ele} user={getUser(ele)} />
-              ))}
-          </div>
+        {openedReplySection.openedReplySection === data._id && (
+          <>
+            {data?.replies?.length > 0 && (
+              <div className="pl-[50px] px-[20px] pb-[20px]">
+                {data.replies.map((ele) => (
+                  <Reply
+                    key={ele._id}
+                    id={ele._id}
+                    data={ele}
+                    user={getUser(ele)}
+                  />
+                ))}
+              </div>
+            )}
+            <div>
+              <form className="flex items-center pl-[50px] pr-[10px] pb-[20px]">
+                <img
+                  src={auth?.profilePictureURL || UnknownPerson}
+                  className="h-[35px] w-[35px] rounded-full object-cover"
+                ></img>
+                {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
+                <TextareaAutosize
+                  onChange={(e) => setReply(e.target.value.trimStart())}
+                  value={reply}
+                  placeholder="Write a reply..."
+                  className="comment-input"
+                  // onKeyDown={handleKeyDown}
+                />
+                <button
+                  onClick={handleFormSubmit}
+                  // ref={commentSubmitRef}
+                  type={'submit'}
+                  className="pr-[18px]"
+                >
+                  <VscSend size={25} color="DimGrey" />
+                </button>
+              </form>
+            </div>
+          </>
         )}
       </div>
     </>

@@ -1,10 +1,9 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg'
 
 export default function Reply({user, data}) {
   const [likeVar, setLikeVar] = useState(false);
-
   const displayTime = (t)=>{
     const timeElapsed = (Date.now() - new Date(t))/1000;
     const min = 60;

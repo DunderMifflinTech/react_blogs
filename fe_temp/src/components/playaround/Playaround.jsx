@@ -2,33 +2,22 @@ import React, { useState, useRef, useEffect } from 'react';
 import './playaround.css';
 
 function Playaround() {
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   return (
     <>
-      <div className="parent h-[400px] w-[400px] bg-red-600">
-        <button className="bg-white" onClick={() => setIsActive((ia) => !ia)}>
-          activate
-        </button>
-        {isActive && <Child/>}
-      </div>
+      <button onClick={()=>setIsActive(s=>!s)}>activate karo</button>
+      {isActive && <Child />}
     </>
   );
 }
 
-function Child({show}) {
+function Child() {
   useEffect(()=>{
-    console.log('rendered in playaround');
-
-  }, []);
-  const square = useRef(null);
-  return(
-    <>
-      <div
-        ref={square}
-        className={(show? "h-[400px] opacity-100 " :"h-[0px] ") + "transition-all duration-300 ease-in-out  w-[100px] bg-slate-400"}
-      ></div>
-    </>
-  );
+    return ()=>{
+      console.log('clean-up function')
+    }
+  })
+  return <div className="h-[200px] w-[200px] bg-slate-500">this is a div</div>;
 }
 
 export default Playaround;
