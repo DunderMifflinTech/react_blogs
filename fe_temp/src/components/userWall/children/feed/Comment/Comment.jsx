@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react';
+import { React, useEffect, useRef, useState } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { HiReply } from 'react-icons/hi';
 import Reply from '../Reply/Reply';
@@ -7,27 +7,44 @@ import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { VscSend } from 'react-icons/vsc';
+import moment from 'moment';
+import axios from 'axios';
 
-export default function Comment({ openedReplySection, showComments, data, user }) {
+export default function Comment({
+  openedReplySection,
+  showComments,
+  postId,
+  data,
+  user,
+  handleCommentsFetch,
+}) {
   const [likeVar, setLikeVar] = useState(false);
   const [reply, setReply] = useState('');
-  const auth = useSelector(state=>state.auth);
+  const replySubmitRef = useRef();
+  const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.userCache.users);
-
-  const handleFormSubmit = async (e)=>{
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if(reply.toString().trim().length > 0){
-      let replyData = {
-        ownerId: auth._id,
-        postId: props._id,
-        body: comment
+    try {
+      if (reply.toString().trim().length > 0) {
+        let replyData = {
+          ownerId: auth._id,
+          postId: postId,
+          commentId: data._id,
+          body: reply,
+        };
+        await axios
+          .post(import.meta.env.VITE_API_URL + '/reply/add-reply', replyData)
+          .then(async () => {
+            console.log('-----------------REPLY PASTED-----------------');
+            setReply('');
+            await handleCommentsFetch(true);
+          });
       }
-      await axios.post(api_url + '/comment/add-comment', commentData)
-      setComment('');
-      setCommentsAdded(s => s+1);
-      handleCommentsFetch(true);
+    } catch (err) {
+      console.log(err.message);
     }
-  }
+  };
 
   const getUser = (obj) => {
     for (let usr of users) {
@@ -54,6 +71,12 @@ export default function Comment({ openedReplySection, showComments, data, user }
       return `${Math.round(timeElapsed / day)}d ago`;
     } else {
       return moment(new Date(t)).format("Do MMM 'YY");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      replySubmitRef.current.click();
     }
   };
   return (
@@ -110,10 +133,17 @@ export default function Comment({ openedReplySection, showComments, data, user }
                   )}
                 </div>
                 <button
-                  onClick={() => openedReplySection.setOpenedReplySection(data._id)}
+                  onClick={() =>
+                    openedReplySection.setOpenedReplySection(data._id)
+                  }
                   className="font-sans font-normal text-sm text-[#434343]"
                 >
-                  {<HiReply color="DimGrey" size={15} />}
+                  {
+                    <div className='flex flex-row justify-center items-center'>
+                      <div className='pr-[5px]'>{data?.replies?.length}</div>
+                      <HiReply color="DimGrey" size={15}/>
+                    </div>
+                  }
                 </button>
               </div>
             </div>
@@ -139,17 +169,16 @@ export default function Comment({ openedReplySection, showComments, data, user }
                   src={auth?.profilePictureURL || UnknownPerson}
                   className="h-[35px] w-[35px] rounded-full object-cover"
                 ></img>
-                {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
                 <TextareaAutosize
                   onChange={(e) => setReply(e.target.value.trimStart())}
                   value={reply}
                   placeholder="Write a reply..."
                   className="comment-input"
-                  // onKeyDown={handleKeyDown}
+                  onKeyDown={handleKeyDown}
                 />
                 <button
                   onClick={handleFormSubmit}
-                  // ref={commentSubmitRef}
+                  ref={replySubmitRef}
                   type={'submit'}
                   className="pr-[18px]"
                 >
