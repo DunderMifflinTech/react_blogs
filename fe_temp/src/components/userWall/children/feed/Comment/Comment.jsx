@@ -83,10 +83,10 @@ export default function Comment({
     <>
       <div
         className={
-          (showComments ? '' : ' hide ') + ' comments-container overflow-hidden'
+          (showComments ? '' : ' hide ') + ' comments-container overflow-hidden max-h-fit'
         }
       >
-        <div className="commenters-info-container flex px-[20px] py-[10px]">
+        <div className="commenters-info-container flex px-[20px] pb-[10px]">
           <div className="h-[35px] w-[35px]">
             {' '}
             {/* //! UserImage*/}
@@ -97,7 +97,7 @@ export default function Comment({
           </div>
           <div className="flex w-11/12">
             <div className="">
-              <div className="ml-[10px] pb-[10px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
+              <div className="ml-[10px] pb-[5px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
                 {' '}
                 {/* //! the comments body */}
                 <ul className="pl-[10px]">
@@ -108,7 +108,7 @@ export default function Comment({
                     {displayTime(data?.createdAt)}
                   </li>
                 </ul>
-                <div className="m-[10px] font-sans font-normal text-sm text-[#303030] ">
+                <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
                   {data?.body}
                 </div>
               </div>
@@ -133,15 +133,17 @@ export default function Comment({
                   )}
                 </div>
                 <button
-                  onClick={() =>
-                    openedReplySection.setOpenedReplySection(data._id)
-                  }
+                  onClick={() => {
+                    openedReplySection.openedReplySection === data._id
+                      ? openedReplySection.setOpenedReplySection(null)
+                      : openedReplySection.setOpenedReplySection(data._id);
+                  }}
                   className="font-sans font-normal text-sm text-[#434343]"
                 >
                   {
-                    <div className='flex flex-row justify-center items-center'>
-                      <div className='pr-[5px]'>{data?.replies?.length}</div>
-                      <HiReply color="DimGrey" size={15}/>
+                    <div className="flex flex-row justify-center items-center">
+                      <div className="pr-[5px]">{data?.replies?.length}</div>
+                      <HiReply color="DimGrey" size={15} />
                     </div>
                   }
                 </button>

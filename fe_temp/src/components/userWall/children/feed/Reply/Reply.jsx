@@ -25,7 +25,7 @@ export default function Reply({user, data}) {
   }
   return (
     <>
-      <div className="commenters-info-container flex pt-[20px]">
+      <div className="commenters-info-container flex pb-[10px]">
         <div className="h-[35px] w-[35px]">
           {' '}
           {/* //! UserImage*/}
@@ -35,7 +35,7 @@ export default function Reply({user, data}) {
           {' '}
           {/* //! comment and arrow head */}
           <div className=" ">
-            <div className="ml-[10px] pb-[10px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
+            <div className="ml-[10px] pb-[5px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
               {' '}
               {/* //! the comments body */}
               <ul className="pl-[10px]">
@@ -46,7 +46,7 @@ export default function Reply({user, data}) {
                   {displayTime(data.createdAt)}
                 </li>
               </ul>
-              <div className="m-[10px] font-sans font-normal text-sm text-[#303030] ">
+              <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
                 {data.body}
               </div>
             </div>
