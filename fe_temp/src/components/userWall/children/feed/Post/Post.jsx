@@ -13,11 +13,14 @@ import moment from 'moment';
 import axios from 'axios';
 import { fetchRequiredUsers } from '../../../../../rtk/features/userCache/useCacheSlice';
 import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
+import { FiEdit2 } from 'react-icons/fi';
+import { MdDeleteOutline } from 'react-icons/md';
+import { IconContext } from 'react-icons';
 const api_url = import.meta.env.VITE_API_URL;
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 
-function Post({ props, user }) {
+function Post({ props, user, modalState }) {
   const commentSubmitRef = useRef();
   const profilePicture = useSelector((state) => state.auth.profilePictureURL);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
@@ -26,6 +29,7 @@ function Post({ props, user }) {
   const [commentsArray, setCommentsArray] = useState(null);
   const [commentsAdded, setCommentsAdded] = useState(0);
   const [openedReplySection, setOpenedReplySection] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.userCache.users);
   const auth = useSelector((state) => state.auth);
@@ -81,7 +85,6 @@ function Post({ props, user }) {
   };
 
   const handleCommentsFetch = async (force) => {
-    //TODO: HANDLE THE PROMISE HELL HERE
     if (force) {
       try {
         console.log('-----------------FETCHING COMMENTS-----------------');
@@ -130,127 +133,168 @@ function Post({ props, user }) {
     handleCommentsFetch(!!!commentsArray);
   };
 
+  const onEditButtonClick = () => {
+    modalState.setIsModalOpen(props._id);
+    document.body.style.overflow = 'hidden';
+  };
   return (
-    <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
-      <div>
-        <div className="post-container p-[15px]">
-          {' '}
-          {/*// ! contains the whole post in this div */}
-          <div className="postee-info-container flex">
+    <>
+      <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
+        <div>
+          <div
+            className="post-container p-[15px]"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             {' '}
-            {/* //! the postee's info*/}
-            <div>
-              <img
-                src={user?.profilePictureURL || unknownPerson}
-                className="h-[48px] w-[48px] rounded-full object-cover"
-              />
+            {/*// ! contains the whole post in this div */}
+            <div className="postee-info-container flex justify-between">
+              {' '}
+              {/* //! the postee's info*/}
+              <div className="flex">
+                <div>
+                  <img
+                    src={user?.profilePictureURL || unknownPerson}
+                    className="h-[48px] w-[48px] rounded-full object-cover"
+                  />
+                </div>
+                <div>
+                  <ul className="pl-[10px]">
+                    <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
+                      {user?.name}
+                    </li>
+                    <li className="h-[15px] user-bio list-none text-[12px] text-[#666666]">
+                      {' '}
+                      {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
+                    </li>
+                    <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                      {displayTime(props?.createdAt)}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              {auth._id === props.ownerId && (
+                <div className="flex">
+                  <button
+                    className={
+                      (isHovered ? 'opacity-1' : 'opacity-0') +
+                      ' .change-button w-[20px] h-[20px] m-[5px] transition-all ease-in-out'
+                    }
+                    onClick={onEditButtonClick}
+                  >
+                    <IconContext.Provider
+                      value={{ color: '#696969', className: 'edit-button' }}
+                    >
+                      <FiEdit2 />
+                    </IconContext.Provider>
+                  </button>
+                  <button
+                    className={
+                      (isHovered ? 'opacity-1' : 'opacity-0') +
+                      ' .delete-button w-[20px] h-[20px] m-[5px] transition-all ease-in-out'
+                    }
+                  >
+                    <IconContext.Provider
+                      value={{ color: '#696969', className: 'delete-button' }}
+                    >
+                      <MdDeleteOutline size={17} />
+                    </IconContext.Provider>
+                  </button>
+                </div>
+              )}
             </div>
             <div>
-              <ul className="pl-[10px]">
-                <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
-                  {user?.name}
-                </li>
-                <li className="h-[15px] user-bio list-none text-[12px] text-[#666666]">
-                  {' '}
-                  {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
-                </li>
-                <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
-                  {displayTime(props?.createdAt)}
-                </li>
-              </ul>
+              <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[25px] pl-[5px]">
+                {props.body.split('\n').map((s, id) => (
+                  <span key={id}>
+                    {s}
+                    <br />
+                  </span>
+                ))}
+              </div>
+              <div className="flex justify-center pt-[15px] pb-[15px]">
+                <hr className="w-[94.5%]" />
+              </div>
+              <div className="flex flex-row-reverse justify-evenly select-none">
+                <div
+                  onClick={() => setLikeVar((lv) => !lv)}
+                  className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
+                >
+                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                    {props?.likes?.length}
+                  </span>
+                  {likeVar ? (
+                    <FcLike size={20} className="like-enabled-icon" />
+                  ) : (
+                    <FcLikePlaceholder size={20} />
+                  )}
+                </div>
+                <div className="share pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
+                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                    4
+                  </span>
+                  <TbShare3 color="DimGrey" size={20} />
+                </div>
+                <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
+                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                    {props?.commentsCount + commentsAdded}
+                  </span>
+                  <BiComment
+                    onClick={handleAddComment}
+                    color="DimGrey"
+                    size={20}
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div>
-            <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[20px]">
-              {props.body.split('\n').map((s, id) => (
-                <span key={id}>
-                  {s}
-                  <br />
-                </span>
-              ))}
-            </div>
-            <div className="flex justify-center pt-[25px] pb-[15px]">
-              <hr className="w-[94.5%]" />
-            </div>
-            <div className="flex flex-row-reverse justify-evenly select-none">
-              <div
-                onClick={() => setLikeVar((lv) => !lv)}
-                className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
+            {commentsArray?.length > 0 &&
+              commentsArray.map((ele) => {
+                return (
+                  <Comment
+                    key={ele._id}
+                    postId={props._id}
+                    openedReplySection={{
+                      openedReplySection,
+                      setOpenedReplySection,
+                    }}
+                    showComments={isCommentSectionOpen}
+                    data={ele}
+                    user={getUser(ele)}
+                    handleCommentsFetch={handleCommentsFetch}
+                  />
+                );
+              })}
+          </div>
+          <div>
+            <form className="flex items-center px-[10px] pb-[15px]">
+              <img
+                src={profilePicture || unknownPerson}
+                className="h-[40px] w-[40px] rounded-full object-cover"
+              ></img>
+              {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
+              <TextareaAutosize
+                onChange={(e) => setComment(e.target.value.trimStart())}
+                onFocus={() => setOpenedReplySection(null)}
+                value={comment}
+                placeholder="Write a comment..."
+                className="comment-input"
+                onKeyDown={handleKeyDown}
+              />
+              <button
+                onClick={handleFormSubmit}
+                ref={commentSubmitRef}
+                type={'submit'}
+                className="pr-[18px]"
               >
-                <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                  {props?.likes?.length}
-                </span>
-                {likeVar ? (
-                  <FcLike size={20} className="like-enabled-icon" />
-                ) : (
-                  <FcLikePlaceholder size={20} />
-                )}
-              </div>
-              <div className="share pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
-                <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                  4
-                </span>
-                <TbShare3 color="DimGrey" size={20} />
-              </div>
-              <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
-                <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
-                  {props?.commentsCount + commentsAdded}
-                </span>
-                <BiComment
-                  onClick={handleAddComment}
-                  color="DimGrey"
-                  size={20}
-                />
-              </div>
-            </div>
+                <VscSend size={25} color="DimGrey" />
+              </button>
+            </form>
           </div>
         </div>
-        <div>
-          {commentsArray?.length > 0 &&
-            commentsArray.map((ele) => {
-              return (
-                <Comment
-                  key={ele._id}
-                  postId={props._id}
-                  openedReplySection={{
-                    openedReplySection,
-                    setOpenedReplySection,
-                  }}
-                  showComments={isCommentSectionOpen}
-                  data={ele}
-                  user={getUser(ele)}
-                  handleCommentsFetch={handleCommentsFetch}
-                />
-              );
-            })}
-        </div>
-        <div>
-          <form className="flex items-center px-[10px] pb-[15px]">
-            <img
-              src={profilePicture || unknownPerson}
-              className="h-[40px] w-[40px] rounded-full object-cover"
-            ></img>
-            {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
-            <TextareaAutosize
-              onChange={(e) => setComment(e.target.value.trimStart())}
-              onFocus={() => setOpenedReplySection(null)}
-              value={comment}
-              placeholder="Write a comment..."
-              className="comment-input"
-              onKeyDown={handleKeyDown}
-            />
-            <button
-              onClick={handleFormSubmit}
-              ref={commentSubmitRef}
-              type={'submit'}
-              className="pr-[18px]"
-            >
-              <VscSend size={25} color="DimGrey" />
-            </button>
-          </form>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 
