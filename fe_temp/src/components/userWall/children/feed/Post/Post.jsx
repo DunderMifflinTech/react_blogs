@@ -134,9 +134,12 @@ function Post({ props, user, modalState }) {
   };
 
   const onEditButtonClick = () => {
-    modalState.setIsModalOpen(props._id);
-    document.body.style.overflow = 'hidden';
+    modalState.openModal('EDIT', auth._id, props._id, props.body);
   };
+
+  const onDeleteButtonClick = ()=>{
+    modalState.openModal('DELETE', auth._id, props._id, props.body);
+  }
   return (
     <>
       <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
@@ -182,7 +185,7 @@ function Post({ props, user, modalState }) {
                     }
                     onClick={onEditButtonClick}
                   >
-                    <IconContext.Provider
+                    <IconContext.Provider //* EDIT BUTTON
                       value={{ color: '#696969', className: 'edit-button' }}
                     >
                       <FiEdit2 />
@@ -193,8 +196,9 @@ function Post({ props, user, modalState }) {
                       (isHovered ? 'opacity-1' : 'opacity-0') +
                       ' .delete-button w-[20px] h-[20px] m-[5px] transition-all ease-in-out'
                     }
+                    onClick={onDeleteButtonClick}
                   >
-                    <IconContext.Provider
+                    <IconContext.Provider  //* DELETE BUTTON
                       value={{ color: '#696969', className: 'delete-button' }}
                     >
                       <MdDeleteOutline size={17} />
