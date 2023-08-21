@@ -7,6 +7,7 @@ import Modal from '../../../helperComponents/Modal/Modal';
 function Feed() {
   const dispatch = useDispatch();
   const postsArray = useSelector((state) => state.feed.posts);
+  const feed = useSelector((state)=>state.feed);
   const userCache = useSelector((state) => state.userCache.users);
   const [isModalOpen, setIsModalOpen] = useState(false); //* this state is used to toggle the opening and closing of the edit/delete modal that resides in this component.
   const [modalParams, setModalParams] = useState({
@@ -67,7 +68,8 @@ function Feed() {
           modalParamsState={{ modalParams, setModalParams }}
         />
       )}
-      {postsArray
+      {feed.loading ? <span>loading</span> : 
+      (postsArray
         .map((obj) => (
           <Post
             key={obj._id}
@@ -76,7 +78,7 @@ function Feed() {
             modalState={{ isModalOpen, setIsModalOpen, openModal }}
           />
         ))
-        .reverse()}
+        .reverse())}
     </>
   );
 }

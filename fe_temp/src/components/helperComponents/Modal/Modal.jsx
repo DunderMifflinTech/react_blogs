@@ -8,7 +8,6 @@ import { fetchUserFeed } from '../../../rtk/features/Post/postsSlice';
 import axios from 'axios';
 
 const Modal = ({ modalState, modalParamsState }) => {
-    // console.log(modalParamsState.modalParams.editValue);
   const [canModalClose, setCanModalClose] = useState(true);
   const dispatch = useDispatch();
 
@@ -39,14 +38,20 @@ const Modal = ({ modalState, modalParamsState }) => {
       modalState.setIsModalOpen(false);
       await dispatch(fetchUserFeed()).unwrap();
     } catch (err) {
-      alert(
-        'something went wrong, please try again later. error: \n' + err
-      );
+      alert('something went wrong, please try again later. error: \n' + err);
     }
   };
 
   const onDeleteButtonClick = async () => {
     try {
+      let payload = {
+        user: { _id: modalParamsState.modalParams.userId },
+        post: { _id: modalParamsState.modalParams.postId },
+      };
+      await axios.delete(import.meta.env.VITE_API_URL + '/post/delete-post', { data : payload });
+      document.body.style.overflow = '';
+      modalState.setIsModalOpen(false);
+      await dispatch(fetchUserFeed()).unwrap();
     } catch (e) {
       alert(
         'something went wrong, please try again later. error: \n' + e.message
@@ -94,7 +99,7 @@ const Modal = ({ modalState, modalParamsState }) => {
                 value={modalParamsState.modalParams.editValue}
                 onChange={(e) => {
                   modalParamsState.setModalParams((prev) => {
-                    return { ...prev, editValue: e.target.value.trimStart()};
+                    return { ...prev, editValue: e.target.value.trimStart() };
                   });
                 }}
               ></textarea>
@@ -134,6 +139,7 @@ const Modal = ({ modalState, modalParamsState }) => {
               }
               variant={'red'}
               className={' flex flex-row h-[40px] mr-[10px] place-items-center'}
+              onClick={onDeleteButtonClick}
             />
           )}
         </div>

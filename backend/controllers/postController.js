@@ -77,7 +77,6 @@ module.exports.deletePost = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.user._id);
     const post = await postsModel.findById(req.body.post._id);
-
     if (
       !user ||
       !post ||

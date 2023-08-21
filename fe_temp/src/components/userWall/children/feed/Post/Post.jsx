@@ -21,8 +21,6 @@ const api_url = import.meta.env.VITE_API_URL;
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 
 function Post({ props, user, modalState }) {
-  const commentSubmitRef = useRef();
-  const profilePicture = useSelector((state) => state.auth.profilePictureURL);
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [likeVar, setLikeVar] = useState(false);
   const [comment, setComment] = useState();
@@ -30,9 +28,13 @@ function Post({ props, user, modalState }) {
   const [commentsAdded, setCommentsAdded] = useState(0);
   const [openedReplySection, setOpenedReplySection] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
-  const dispatch = useDispatch();
+  const profilePicture = useSelector((state) => state.auth.profilePictureURL);
   const users = useSelector((state) => state.userCache.users);
   const auth = useSelector((state) => state.auth);
+  const commentSubmitRef = useRef();
+  const apiCallRef = useRef();
+  const likesCount = useRef();
+  const dispatch = useDispatch();
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
@@ -137,9 +139,38 @@ function Post({ props, user, modalState }) {
     modalState.openModal('EDIT', auth._id, props._id, props.body);
   };
 
-  const onDeleteButtonClick = ()=>{
-    modalState.openModal('DELETE', auth._id, props._id, props.body);
-  }
+  const onLikeButtonClick = () => {
+    likeVar ? likesCount.current.innerText-- : likesCount.current.innerText++;
+    setLikeVar((lv) => !lv);
+    return async () => {
+      if (likeVar) {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.post(
+            import.meta.env.VITE_API_URL + `/post/unlike/id/${props._id}`,
+            {
+              user: { _id: auth._id },
+            }
+          );
+          console.log('unlike req sent');
+        }, 1000);
+      } else {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.post(
+            import.meta.env.VITE_API_URL + `/post/like/id/${props._id}`,
+            {
+              user: { _id: auth._id },
+            }
+          );
+          console.log('like req sent');
+        }, 500);
+      }
+    };
+  };
+  const onDeleteButtonClick = () => {
+    modalState.openModal('DELETE', auth._id, props._id);
+  };
   return (
     <>
       <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
@@ -198,7 +229,7 @@ function Post({ props, user, modalState }) {
                     }
                     onClick={onDeleteButtonClick}
                   >
-                    <IconContext.Provider  //* DELETE BUTTON
+                    <IconContext.Provider //* DELETE BUTTON
                       value={{ color: '#696969', className: 'delete-button' }}
                     >
                       <MdDeleteOutline size={17} />
@@ -221,10 +252,13 @@ function Post({ props, user, modalState }) {
               </div>
               <div className="flex flex-row-reverse justify-evenly select-none">
                 <div
-                  onClick={() => setLikeVar((lv) => !lv)}
-                  className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
+                  onClick={() => onLikeButtonClick()()}
+                  className="like hover:cursor-pointer pr-[20px] w-[10px] flex text-[14px] items-center"
                 >
-                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                  <span
+                    ref={likesCount}
+                    className="pr-[7px] font-sans font-normal w-[10px] text-[15px] text-[#4f4f4fd4]"
+                  >
                     {props?.likes?.length}
                   </span>
                   {likeVar ? (
