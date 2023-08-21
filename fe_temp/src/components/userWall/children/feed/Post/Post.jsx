@@ -36,6 +36,17 @@ function Post({ props, user, modalState }) {
   const likesCount = useRef();
   const dispatch = useDispatch();
 
+  useEffect(()=>{
+    if(props.likes.some(obj=>obj.userId === auth._id)){
+      console.log('liked hai');
+      setLikeVar(true);
+    }
+  }, [])
+
+  const hasUserLiked = (id) => {
+    return 
+  };
+
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
       commentSubmitRef.current.click();
@@ -168,9 +179,11 @@ function Post({ props, user, modalState }) {
       }
     };
   };
+
   const onDeleteButtonClick = () => {
     modalState.openModal('DELETE', auth._id, props._id);
   };
+
   return (
     <>
       <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
@@ -251,13 +264,13 @@ function Post({ props, user, modalState }) {
                 <hr className="w-[94.5%]" />
               </div>
               <div className="flex flex-row-reverse justify-evenly select-none">
-                <div
+                <div //*LIKE BUTTON
                   onClick={() => onLikeButtonClick()()}
-                  className="like hover:cursor-pointer pr-[20px] w-[10px] flex text-[14px] items-center"
+                  className="like hover:cursor-pointer w-[50px] flex text-[14px] items-center"
                 >
                   <span
                     ref={likesCount}
-                    className="pr-[7px] font-sans font-normal w-[10px] text-[15px] text-[#4f4f4fd4]"
+                    className=" font-sans font-normal w-[30px] pr-[5px] text-end text-[15px] text-[#4f4f4fd4]"
                   >
                     {props?.likes?.length}
                   </span>
@@ -267,14 +280,16 @@ function Post({ props, user, modalState }) {
                     <FcLikePlaceholder size={20} />
                   )}
                 </div>
-                <div className="share pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
-                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                <div //* REPOST BUTTON
+                 className="share hover:cursor-pointer w-[50px] flex text-[13px] items-center">
+                  <span className="w-[30px] pr-[5px] text-end font-sans font-normal text-[15px] text-[#4f4f4fd4]">
                     4
                   </span>
                   <TbShare3 color="DimGrey" size={20} />
                 </div>
-                <div className="comment pr-[20px] hover:cursor-pointer flex text-[13px] items-center">
-                  <span className="pr-[7px] font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                <div //* COMMENTS BUTTON
+                 className="comment hover:cursor-pointer w-[50px] flex text-[13px] items-center">
+                  <span className="w-[30px] pr-[5px] text-end font-sans font-normal text-[15px] text-[#4f4f4fd4]">
                     {props?.commentsCount + commentsAdded}
                   </span>
                   <BiComment
