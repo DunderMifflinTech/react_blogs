@@ -25,12 +25,23 @@
   resize: none;
 }
 
+.edit-button {
+  transition: all ease-in-out 150ms;
+}
+
+.delete-button {
+  transition: all ease-in-out 150ms;
+}
+
 .edit-button:hover path {
-    stroke: rgb(40, 160, 0);
+  color: rgb(63, 63, 63);
+  stroke-width: 10%;
+  transform: scale(1.02, 1.02);
 }
 
 .delete-button:hover path {
-    color: rgb(220, 0, 0);
+  color: rgb(63, 63, 63);
+  transform: scale(1.05, 1.05);
 }
 
 @keyframes like-button-animation {

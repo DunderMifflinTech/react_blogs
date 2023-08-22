@@ -3,12 +3,17 @@ import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { HiReply } from 'react-icons/hi';
 import Reply from '../Reply/Reply';
 import './Comment.css';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { VscSend } from 'react-icons/vsc';
 import moment from 'moment';
 import axios from 'axios';
+import { FiEdit2 } from 'react-icons/fi';
+import { MdDeleteOutline } from 'react-icons/md';
+import { IconContext } from 'react-icons';
+import PopUp from '../../../../helperComponents/PopUp/PopUp';
 
 export default function Comment({
   openedReplySection,
@@ -23,6 +28,11 @@ export default function Comment({
   const replySubmitRef = useRef();
   const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.userCache.users);
+  const likesCount = useRef();
+  const apiCallRef = useRef();
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(true);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -36,7 +46,6 @@ export default function Comment({
         await axios
           .post(import.meta.env.VITE_API_URL + '/reply/add-reply', replyData)
           .then(async () => {
-            console.log('-----------------REPLY PASTED-----------------');
             setReply('');
             await handleCommentsFetch(true);
           });
@@ -79,14 +88,61 @@ export default function Comment({
       replySubmitRef.current.click();
     }
   };
+
+  const onLikeButtonClick = () => {
+    console.log('here');
+    likeVar ? likesCount.current.innerText-- : likesCount.current.innerText++;
+    // setLikeVar((lv) => !lv);
+    return async () => {
+      if (likeVar) {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.patch(
+            import.meta.env.VITE_API_URL + `/comment/unlike-comment`,
+            {
+              userId: auth._id,
+              postId: postId,
+              commentId: data._id,
+            }
+          );
+          console.log('unlike req sent');
+        }, 1000);
+      } else {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.post(import.meta.env.VITE_API_URL + `/comment/like-comment`, {
+            userId: auth._id,
+            postId: postId,
+            commentId: data._id,
+          });
+          console.log('like req sent');
+        }, 500);
+      }
+    };
+  };
+
+  const onEditButtonClick = () => {};
+
+  const onDeleteButtonClick = () => {
+    modalState.openModal('DELETE', auth._id, props._id);
+  };
+
   return (
     <>
       <div
         className={
-          (showComments ? '' : ' hide ') + ' comments-container overflow-hidden max-h-fit'
+          (showComments ? '' : ' hide ') +
+          ' comments-container max-h-fit'
         }
       >
-        <div className="commenters-info-container flex px-[20px] pb-[10px]">
+        <div
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            setIsPopUpOpen(false);
+          }}
+          className="commenters-info-container flex px-[20px] pb-[10px]"
+        >
           <div className="h-[35px] w-[35px]">
             {' '}
             {/* //! UserImage*/}
@@ -96,27 +152,49 @@ export default function Comment({
             />
           </div>
           <div className="flex w-11/12">
-            <div className="">
-              <div className="ml-[10px] pb-[5px] pr-[10px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full">
-                {' '}
-                {/* //! the comments body */}
-                <ul className="pl-[10px]">
-                  <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
-                    {user?.name}
-                  </li>
-                  <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
-                    {displayTime(data?.createdAt)}
-                  </li>
-                </ul>
-                <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
-                  {data?.body}
+            <div>
+              <div className="ml-[10px] pb-[5px] pr-[3px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full flex justify-between">
+                <div className="w-full">
+                  <ul className="pl-[10px]">
+                    <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
+                      {user?.name}
+                    </li>
+                    <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                      {displayTime(data?.createdAt)}
+                    </li>
+                  </ul>
+                  <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
+                    {data?.body}
+                  </div>
+                </div>
+                <div className="w-[16px] flex justify-center items-center">
+                  {auth._id === data.ownerId && (
+                    <div
+                      className={`${
+                        isHovered && 'opacity-100 '
+                      } opacity-0 flex flex-col justify-center items-center transition-all duration-300 relative`}
+                    >
+                      {(isHovered || isPopUpOpen) && (
+                        <button onClick={() => setIsPopUpOpen((prev) => !prev)}>
+                          <BsThreeDotsVertical />
+                        </button>
+                      )}
+                      {<PopUp isPopUpOpen = {isPopUpOpen} />}
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="w-full  pl-[30px] flex ">
+              <div className="w-full pl-[30px] flex ">
                 {' '}
                 {/*//! like and reply button for a comment */}
-                <div className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center">
-                  <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">
+                <button
+                  onClick={() => onLikeButtonClick()()}
+                  className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
+                >
+                  <span
+                    ref={likesCount}
+                    className="pr-[7px] font-sans font-normal text-sm text-[#434343]"
+                  >
                     {data?.likes?.length}
                   </span>
                   {likeVar ? (
@@ -131,7 +209,7 @@ export default function Comment({
                       size={15}
                     />
                   )}
-                </div>
+                </button>
                 <button
                   onClick={() => {
                     openedReplySection.openedReplySection === data._id
@@ -154,7 +232,7 @@ export default function Comment({
         {openedReplySection.openedReplySection === data._id && (
           <>
             {data?.replies?.length > 0 && (
-              <div className="pl-[50px] px-[20px] pb-[20px]">
+              <div className="pl-[50px] px-[20px] ">
                 {data.replies.map((ele) => (
                   <Reply
                     key={ele._id}

@@ -38,14 +38,9 @@ function Post({ props, user, modalState }) {
 
   useEffect(()=>{
     if(props.likes.some(obj=>obj.userId === auth._id)){
-      console.log('liked hai');
       setLikeVar(true);
     }
   }, [])
-
-  const hasUserLiked = (id) => {
-    return 
-  };
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
