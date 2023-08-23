@@ -27,7 +27,7 @@ function Child({ isActive }) {
       <div
         onAnimationEnd={onAnimationEnd}
         style = {{animation: `${isActive ? 'child-opening-animation' : 'child-closing-animation'} 300ms`}}
-        className={(isActive ? 'h-[200px]' : 'h-0') + " w-[200px] bg-slate-500 child"}
+        className={(isActive ? 'h-[200px]' : 'h-0') + " w-[200px] bg-slate-500 child "}
       >
         this is a div
       </div>

@@ -10,9 +10,6 @@ import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { VscSend } from 'react-icons/vsc';
 import moment from 'moment';
 import axios from 'axios';
-import { FiEdit2 } from 'react-icons/fi';
-import { MdDeleteOutline } from 'react-icons/md';
-import { IconContext } from 'react-icons';
 import PopUp from '../../../../helperComponents/PopUp/PopUp';
 
 export default function Comment({
@@ -31,7 +28,11 @@ export default function Comment({
   const likesCount = useRef();
   const apiCallRef = useRef();
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const [editState, setEditState] = useState('');
+  const [editValue, setEditValue] = useState(data?.body);
   const [isHovered, setIsHovered] = useState(true);
+  const textArea = useRef();
+  const EditedCommentSubmitRef = useRef();
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -85,7 +86,9 @@ export default function Comment({
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
-      replySubmitRef.current.click();
+      editState === data._id
+        ? EditedCommentSubmitRef.current.click()
+        : replySubmitRef.current.click();
     }
   };
 
@@ -121,17 +124,46 @@ export default function Comment({
     };
   };
 
-  const onEditButtonClick = () => {};
+  const onEditButtonClick = () => {
+    setEditState(data._id);
+  };
 
   const onDeleteButtonClick = () => {
     modalState.openModal('DELETE', auth._id, props._id);
   };
 
-  return (
+  const handleEditedCommentSubmission = async (e) => {
+    e.preventDefault();
+    if (editValue.toString().trim().length > 0) {
+      let commentData = {
+        ownerId: auth._id,
+        postId: postId,
+        commentId: data._id,
+        body: editValue,
+      };
+      await axios
+        .patch(
+          import.meta.env.VITE_API_URL + '/comment/edit-comment',
+          commentData
+        )
+        .then(() => {
+          setEditState('');
+          setIsPopUpOpen(false);
+          setEditValue(data?.body);
+          handleCommentsFetch(true);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (editState === data._id) textArea.current.focus();
+  });
+
+  return !(editState === data._id) ? (
     <>
       <div
         className={
-          (showComments ? '' : ' hide ') +
+          (showComments ? '' : ' hide overflow-hidden ') +
           ' comments-container max-h-fit'
         }
       >
@@ -174,12 +206,24 @@ export default function Comment({
                         isHovered && 'opacity-100 '
                       } opacity-0 flex flex-col justify-center items-center transition-all duration-300 relative`}
                     >
-                      {(isHovered || isPopUpOpen) && (
-                        <button onClick={() => setIsPopUpOpen((prev) => !prev)}>
-                          <BsThreeDotsVertical />
-                        </button>
-                      )}
-                      {<PopUp isPopUpOpen = {isPopUpOpen} />}
+                      <div className="w-[16px] h-[25px]">
+                        {(isHovered || isPopUpOpen) && (
+                          <button
+                            onClick={() => setIsPopUpOpen((prev) => !prev)}
+                          >
+                            <BsThreeDotsVertical />
+                          </button>
+                        )}
+                      </div>
+                      {
+                        <PopUp
+                          isPopUpOpen={isPopUpOpen}
+                          data={[
+                            { children: 'Edit', func: onEditButtonClick },
+                            { children: 'Delete', func: onDeleteButtonClick },
+                          ]}
+                        />
+                      }
                     </div>
                   )}
                 </div>
@@ -246,7 +290,7 @@ export default function Comment({
             <div>
               <form className="flex items-center pl-[50px] pr-[10px] pb-[20px]">
                 <img
-                  src={auth?.profilePictureURL || UnknownPerson}
+                  src={user?.profilePictureURL || UnknownPerson}
                   className="h-[35px] w-[35px] rounded-full object-cover"
                 ></img>
                 <TextareaAutosize
@@ -268,6 +312,38 @@ export default function Comment({
             </div>
           </>
         )}
+      </div>
+    </>
+  ) : (
+    <>
+      <div>
+        <form className="flex items-center pl-[20px] pb-[15px]">
+          <img
+            src={auth.profilePictureURL || unknownPerson}
+            className="h-[35px] w-[35px] rounded-full object-cover"
+          ></img>
+          <TextareaAutosize
+            ref={textArea}
+            onChange={(e) => setEditValue(e.target.value.trimStart())}
+            value={editValue}
+            placeholder="Write a comment..."
+            className="comment-input"
+            onBlur={() => {
+              setEditState('');
+              setIsPopUpOpen(false);
+              setEditValue(data?.body);
+            }}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            onClick={handleEditedCommentSubmission}
+            ref={EditedCommentSubmitRef}
+            type={'submit'}
+            className="pr-[18px]"
+          >
+            <VscSend size={25} color="DimGrey" />
+          </button>
+        </form>
       </div>
     </>
   );
