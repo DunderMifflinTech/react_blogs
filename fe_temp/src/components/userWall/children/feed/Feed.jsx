@@ -18,7 +18,7 @@ function Feed() {
   }); //* modalType is used to set the type of modal ie edit/delete. editValue is used to supply the edit value to the modal.
 
   const openModal = (type, userId, postid, body) => {
-    console.log(type, userId, postid, body);
+    // console.log(type, userId, postid, body);
     if (type === 'DELETE') {
       setModalParams((prev) => {
         return { ...prev, userId: userId, modalType: 'DELETE', postId: postid };
@@ -34,8 +34,6 @@ function Feed() {
         };
       });
       setIsModalOpen(postid);
-    } else {
-      console.log('default modal');
     }
     document.body.style.overflow = 'hidden';
   };

@@ -24,13 +24,13 @@ const PopUp = ({ isPopUpOpen, data }) => {
         }
       >
         <button
-          className="comment-edit-button border-b border-b-[#bebebe] font-sans font-normal text-xs text-[#666666]"
+          className="comment-edit-button border-b border-b-[#bebebe] font-sans font-normal text-xs text-[#3f3f3f]"
           onClick={data[0].func}
         >
           {data[0].children}
         </button>
         <button
-          className="font-sans font-normal text-xs text-[#303030]"
+          className="comment-delete-button font-sans font-normal text-xs text-[#3f3f3f]"
           onClick={data[1].func}
         >
           {data[1].children}

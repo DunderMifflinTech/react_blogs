@@ -1,4 +1,10 @@
 
+.comment-edit-button, .comment-delete-button{
+  &:hover{
+    background-color: #ffffff;
+  }
+}
+
 @keyframes kebab-menu-open {
     0% {
       height: 0px;
@@ -30,3 +36,4 @@
       opacity: 0;
     }
   }
+

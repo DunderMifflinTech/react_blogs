@@ -4,13 +4,14 @@ import { HiReply } from 'react-icons/hi';
 import Reply from '../Reply/Reply';
 import './Comment.css';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { VscSend } from 'react-icons/vsc';
 import moment from 'moment';
 import axios from 'axios';
 import PopUp from '../../../../helperComponents/PopUp/PopUp';
+import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
 
 export default function Comment({
   openedReplySection,
@@ -23,6 +24,7 @@ export default function Comment({
   const [likeVar, setLikeVar] = useState(false);
   const [reply, setReply] = useState('');
   const replySubmitRef = useRef();
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.userCache.users);
   const likesCount = useRef();
@@ -128,8 +130,23 @@ export default function Comment({
     setEditState(data._id);
   };
 
-  const onDeleteButtonClick = () => {
-    modalState.openModal('DELETE', auth._id, props._id);
+  const onDeleteButtonClick = async () => {
+    try {
+      const payload = {
+        ownerId: auth._id,
+        postId: postId,
+        commentId: data._id,
+      };
+      await axios
+        .delete(import.meta.env.VITE_API_URL + '/comment/delete-comment', {
+          data: payload,
+        })
+        .then(async() => {
+          await handleCommentsFetch(true);
+        });
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   const handleEditedCommentSubmission = async (e) => {

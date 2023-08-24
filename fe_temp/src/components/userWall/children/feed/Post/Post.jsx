@@ -176,7 +176,6 @@ function Post({ props, user, modalState }) {
   };
 
   const onDeleteButtonClick = () => {
-    modalState.openModal('DELETE', auth._id, props._id);
   };
 
   return (
@@ -311,6 +310,7 @@ function Post({ props, user, modalState }) {
                     data={ele}
                     user={getUser(ele)}
                     handleCommentsFetch={handleCommentsFetch}
+                    modalState = {modalState}
                   />
                 );
               })}
@@ -321,7 +321,6 @@ function Post({ props, user, modalState }) {
                 src={profilePicture || unknownPerson}
                 className="h-[40px] w-[40px] rounded-full object-cover"
               ></img>
-              {/* <textarea onKeyDown={handleTextAreaSize} placeholder={'Write a comment'} className='w-full comment-input'></textarea> */}
               <TextareaAutosize
                 onChange={(e) => setComment(e.target.value.trimStart())}
                 onFocus={() => setOpenedReplySection(null)}
