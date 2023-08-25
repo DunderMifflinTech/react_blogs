@@ -1,11 +1,17 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
-import {BsThreeDotsVertical} from 'react-icons/bs';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import moment from 'moment';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Reply({ user, data }) {
+export default function Reply({ data, commentId, user, postId }) {
+  const auth = useSelector(state=>state.auth)
   const [likeVar, setLikeVar] = useState(false);
+  const likesCount = useRef();
+  const apiCallRef = useRef();
+
   const displayTime = (t) => {
     const timeElapsed = (Date.now() - new Date(t)) / 1000;
     const min = 60;
@@ -24,6 +30,43 @@ export default function Reply({ user, data }) {
       return moment(new Date(t)).format("Do MMM 'YY");
     }
   };
+
+  const onLikeButtonClick = () => {
+    likeVar ? likesCount.current.innerText-- : likesCount.current.innerText++;
+    return async () => {
+      if (likeVar) {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.patch(import.meta.env.VITE_API_URL + `/reply/unlike-reply`, {
+            userId: auth._id,
+            postId: postId,
+            commentId: commentId,
+            replyId: data._id,
+          });
+          console.log('unlike req sent');
+        }, 500);
+        setLikeVar((lv) => !lv);
+      } else {
+        clearTimeout(apiCallRef.current);
+        apiCallRef.current = setTimeout(() => {
+          axios.post(import.meta.env.VITE_API_URL + `/reply/like-reply`, {
+            userId: auth._id,
+            postId: postId,
+            commentId: commentId,
+            replyId: data._id,
+          });
+          console.log('like req sent');
+        }, 500);
+        setLikeVar((lv) => !lv);
+      }
+    };
+  };
+
+  useEffect(()=>{
+    if(data.likes.some(obj=> obj.userId === auth._id))
+      setLikeVar(true);
+  },[])
+
   return (
     <>
       <div className="commenters-info-container flex pb-[10px]">
@@ -55,26 +98,29 @@ export default function Reply({ user, data }) {
                   {data.body}
                 </div>
               </div>
-              <div className='flex justify-end items-center'>
-                <BsThreeDotsVertical/>
+              <div className="flex justify-end items-center">
+                <BsThreeDotsVertical />
               </div>
             </div>
             <div className="w-full pl-[30px] flex ">
               {' '}
               {/*//! like and reply button for a comment */}
               <div className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center">
-                <span className="pr-[7px] font-sans font-normal text-sm text-[#434343]">
+                <span
+                  ref={likesCount}
+                  className="pr-[7px] font-sans font-normal text-sm text-[#434343]"
+                >
                   {data.likes.length}
                 </span>
                 {likeVar ? (
                   <FcLike
-                    onClick={() => setLikeVar((lv) => !lv)}
+                    onClick={() => onLikeButtonClick()()}
                     size={15}
                     className="like-enabled-icon"
                   />
                 ) : (
                   <FcLikePlaceholder
-                    onClick={() => setLikeVar((lv) => !lv)}
+                    onClick={() => onLikeButtonClick()()}
                     size={15}
                   />
                 )}

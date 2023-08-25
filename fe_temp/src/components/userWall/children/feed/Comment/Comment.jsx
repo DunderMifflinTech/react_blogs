@@ -23,18 +23,23 @@ export default function Comment({
 }) {
   const [likeVar, setLikeVar] = useState(false);
   const [reply, setReply] = useState('');
-  const replySubmitRef = useRef();
-  const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
-  const users = useSelector((state) => state.userCache.users);
-  const likesCount = useRef();
-  const apiCallRef = useRef();
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [editState, setEditState] = useState('');
   const [editValue, setEditValue] = useState(data?.body);
   const [isHovered, setIsHovered] = useState(true);
+  const auth = useSelector((state) => state.auth);
+  const users = useSelector((state) => state.userCache.users);
+  const dispatch = useDispatch();
+  const replySubmitRef = useRef();
+  const likesCount = useRef();
+  const apiCallRef = useRef();
   const textArea = useRef();
   const EditedCommentSubmitRef = useRef();
+  // console.log(data);
+  useEffect(()=>{
+  if(data.likes.some(obj=> obj.userId === auth._id))
+      setLikeVar(true);
+  },[])
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -95,7 +100,6 @@ export default function Comment({
   };
 
   const onLikeButtonClick = () => {
-    console.log('here');
     likeVar ? likesCount.current.innerText-- : likesCount.current.innerText++;
     // setLikeVar((lv) => !lv);
     return async () => {
@@ -111,7 +115,8 @@ export default function Comment({
             }
           );
           console.log('unlike req sent');
-        }, 1000);
+        }, 500);
+        setLikeVar((lv) => !lv);
       } else {
         clearTimeout(apiCallRef.current);
         apiCallRef.current = setTimeout(() => {
@@ -122,6 +127,7 @@ export default function Comment({
           });
           console.log('like req sent');
         }, 500);
+        setLikeVar((lv) => !lv);
       }
     };
   };
@@ -249,7 +255,6 @@ export default function Comment({
                 {' '}
                 {/*//! like and reply button for a comment */}
                 <button
-                  onClick={() => onLikeButtonClick()()}
                   className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center"
                 >
                   <span
@@ -260,13 +265,13 @@ export default function Comment({
                   </span>
                   {likeVar ? (
                     <FcLike
-                      onClick={() => setLikeVar((lv) => !lv)}
+                    onClick={() => onLikeButtonClick()()}
                       size={15}
                       className="like-enabled-icon"
                     />
                   ) : (
                     <FcLikePlaceholder
-                      onClick={() => setLikeVar((lv) => !lv)}
+                    onClick={() => onLikeButtonClick()()}
                       size={15}
                     />
                   )}
@@ -297,9 +302,10 @@ export default function Comment({
                 {data.replies.map((ele) => (
                   <Reply
                     key={ele._id}
-                    id={ele._id}
                     data={ele}
+                    commentId = {data._id}
                     user={getUser(ele)}
+                    postId = {postId}
                   />
                 ))}
               </div>
