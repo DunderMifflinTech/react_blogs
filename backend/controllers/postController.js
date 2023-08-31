@@ -22,10 +22,12 @@ module.exports.createPost = async (req, res) => {
       newPost = {
         ownerId: user._id,
         body: req.body.body,
+        createdAt: Date.now()
       };
       const createdPost = await postsModel.create(newPost);
       const postsComment = await commentsModel.create({
         postId: createdPost._id,
+        createdAt: Date.now()
       });
       if (!createdPost || !postsComment)
         res

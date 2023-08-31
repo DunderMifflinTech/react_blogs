@@ -26,7 +26,7 @@ export default function Comment({
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [editState, setEditState] = useState('');
   const [editValue, setEditValue] = useState(data?.body);
-  const [isHovered, setIsHovered] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
   const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.userCache.users);
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export default function Comment({
   const apiCallRef = useRef();
   const textArea = useRef();
   const EditedCommentSubmitRef = useRef();
-  // console.log(data);
+
   useEffect(()=>{
   if(data.likes.some(obj=> obj.userId === auth._id))
       setLikeVar(true);
@@ -306,6 +306,7 @@ export default function Comment({
                     commentId = {data._id}
                     user={getUser(ele)}
                     postId = {postId}
+                    handleCommentsFetch = {handleCommentsFetch}
                   />
                 ))}
               </div>
@@ -342,7 +343,7 @@ export default function Comment({
       <div>
         <form className="flex items-center pl-[20px] pb-[15px]">
           <img
-            src={auth.profilePictureURL || unknownPerson}
+            src={auth.profilePictureURL || UnknownPerson}
             className="h-[35px] w-[35px] rounded-full object-cover"
           ></img>
           <TextareaAutosize

@@ -11,6 +11,7 @@ module.exports.createComment = async (req, res) => {
       commentsSection.comments.push({
         ownerId: req.body.ownerId,
         body: req.body.body,
+        createdAt: Date.now()
       });
       commentsSection.save();
       post = await postsModel.findById(req.body.postId);

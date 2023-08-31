@@ -54,7 +54,7 @@ function Post({ props, user, modalState }) {
     const hour = min * 60;
     const day = hour * 24;
 
-    if (timeElapsed < 5 * min) {
+    if (timeElapsed/min < 5) {
       return 'just now';
     } else if (timeElapsed < hour) {
       return `${Math.round(timeElapsed / min)}min ago`;
@@ -176,6 +176,7 @@ function Post({ props, user, modalState }) {
   };
 
   const onDeleteButtonClick = () => {
+    modalState.openModal('DELETE', auth._id, props._id, props.body);
   };
 
   return (

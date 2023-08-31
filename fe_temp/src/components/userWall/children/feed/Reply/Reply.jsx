@@ -1,16 +1,26 @@
 import { React, useState, useEffect, useRef } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import moment from 'moment';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import PopUp from '../../../../helperComponents/PopUp/PopUp';
+import { VscSend } from 'react-icons/vsc';
 
-export default function Reply({ data, commentId, user, postId }) {
-  const auth = useSelector(state=>state.auth)
+export default function Reply({ data, commentId, user, postId, handleCommentsFetch }) {
+  const auth = useSelector((state) => state.auth);
   const [likeVar, setLikeVar] = useState(false);
+  const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const [editState, setEditState] = useState('');
+  const [editValue, setEditValue] = useState(data?.body);
+  const [isHovered, setIsHovered] = useState(false);
+  const users = useSelector((state) => state.userCache.users);
   const likesCount = useRef();
-  const apiCallRef = useRef();
+  const apiCallRef = useRef()
+  const textArea = useRef();
+  const EditedCommentSubmitRef = useRef();
 
   const displayTime = (t) => {
     const timeElapsed = (Date.now() - new Date(t)) / 1000;
@@ -62,14 +72,79 @@ export default function Reply({ data, commentId, user, postId }) {
     };
   };
 
-  useEffect(()=>{
-    if(data.likes.some(obj=> obj.userId === auth._id))
-      setLikeVar(true);
-  },[])
+  const handleKeyDown = (e) => {
+    if (e.keyCode == 13 && e.shiftKey == false) {
+      editState === data._id
+        ? EditedCommentSubmitRef.current.click()
+        : replySubmitRef.current.click();
+    }
+  };
 
-  return (
+  const onEditButtonClick = () => {
+    setEditState(data._id);
+  };
+
+  const onDeleteButtonClick = async () => {
+    try {
+      const payload = {
+        ownerId: auth._id,
+        postId: postId,
+        commentId: commentId,
+        replyId : data._id
+      };
+      await axios
+        .delete(import.meta.env.VITE_API_URL + '/reply/delete-reply', {
+          data: payload,
+        })
+        .then(async() => {
+          await handleCommentsFetch(true);
+        });
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const handleEditedCommentSubmission = async (e) => {
+    e.preventDefault();
+    if (editValue.toString().trim().length > 0) {
+      let replyData = {
+        ownerId: auth._id,
+        postId: postId,
+        commentId: commentId,
+        replyId : data._id,
+        body: editValue,
+      };
+      await axios
+        .patch(
+          import.meta.env.VITE_API_URL + '/reply/edit-reply',
+          replyData
+        )
+        .then(() => {
+          setEditState('');
+          setIsPopUpOpen(false);
+          setEditValue(data?.body);
+          handleCommentsFetch(true);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (editState === data._id) textArea.current.focus();
+  });
+
+  useEffect(() => {
+    if (data.likes.some((obj) => obj.userId === auth._id)) setLikeVar(true);
+  }, []);
+
+  return !(editState === data._id) ? (
     <>
-      <div className="commenters-info-container flex pb-[10px]">
+      <div 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setIsPopUpOpen(false);
+        }}
+        className="commenters-info-container flex pb-[10px]">
         <div className="h-[35px] w-[35px]">
           {' '}
           {/* //! UserImage*/}
@@ -99,7 +174,32 @@ export default function Reply({ data, commentId, user, postId }) {
                 </div>
               </div>
               <div className="flex justify-end items-center">
-                <BsThreeDotsVertical />
+              {auth._id === data.ownerId && (
+                    <div
+                      className={`${
+                        isHovered && 'opacity-100 '
+                      } opacity-0 flex flex-col justify-center items-center transition-all duration-300 relative`}
+                    >
+                      <div className="w-[16px] h-[25px]">
+                        {(isHovered || isPopUpOpen) && (
+                          <button
+                            onClick={() => setIsPopUpOpen((prev) => !prev)}
+                          >
+                            <BsThreeDotsVertical />
+                          </button>
+                        )}
+                      </div>
+                      {
+                        <PopUp
+                          isPopUpOpen={isPopUpOpen}
+                          data={[
+                            { children: 'Edit', func: onEditButtonClick },
+                            { children: 'Delete', func: onDeleteButtonClick },
+                          ]}
+                        />
+                      }
+                    </div>
+                  )}
               </div>
             </div>
             <div className="w-full pl-[30px] flex ">
@@ -128,6 +228,38 @@ export default function Reply({ data, commentId, user, postId }) {
             </div>
           </div>
         </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <div>
+        <form className="flex items-center pl-[20px] pb-[15px]">
+          <img
+            src={auth.profilePictureURL || UnknownPerson}
+            className="h-[35px] w-[35px] rounded-full object-cover"
+          ></img>
+          <TextareaAutosize
+            ref={textArea}
+            onChange={(e) => setEditValue(e.target.value.trimStart())}
+            value={editValue}
+            placeholder="Write a comment..."
+            className="comment-input"
+            onBlur={() => {
+              setEditState('');
+              setIsPopUpOpen(false);
+              setEditValue(data?.body);
+            }}
+            onKeyDown={handleKeyDown}
+          />
+          <button
+            onClick={handleEditedCommentSubmission}
+            ref={EditedCommentSubmitRef}
+            type={'submit'}
+            className="pr-[18px]"
+          >
+            <VscSend size={25} color="DimGrey" />
+          </button>
+        </form>
       </div>
     </>
   );
