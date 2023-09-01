@@ -205,10 +205,10 @@ function Post({ props, user, modalState }) {
                 </div>
                 <div>
                   <ul className="pl-[10px]">
-                    <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
-                      {user?.name}
+                    <li className="h-[15px] text-[16px] user-name list-none font-nunito font-medium flex items-center">
+                      <a className='hover:text-[#6246EA] hover:cursor-pointer hover'>{user?.name}</a>
                     </li>
-                    <li className="h-[15px] user-bio list-none text-[12px] text-[#666666]">
+                    <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
                       {' '}
                       {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
                     </li>
