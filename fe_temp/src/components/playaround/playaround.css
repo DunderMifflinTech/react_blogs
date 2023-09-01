@@ -1,0 +1,21 @@
+.child {
+  overflow-y: hidden;
+}
+
+@keyframes child-opening-animation {
+  0% {
+    height: 0px;
+  }
+  100% {
+    height: 200px;
+  }
+}
+
+@keyframes child-closing-animation {
+  0% {
+    height: 200px;
+  }
+  100% {
+    height: 0px;
+  }
+}
