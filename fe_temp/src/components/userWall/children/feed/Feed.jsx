@@ -3,6 +3,7 @@ import Post from './Post/Post';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserFeed } from '../../../../rtk/features/Post/postsSlice';
 import Modal from '../../../helperComponents/Modal/Modal';
+import SkeletonFeed from './SkeletonFeed';
 
 function Feed() {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ function Feed() {
           modalParamsState={{ modalParams, setModalParams }}
         />
       )}
-      {feed.loading ? <span>loading</span> : 
+      {feed.loading ? <SkeletonFeed cards = {5}/> : 
       (postsArray
         .map((obj) => (
           <Post

@@ -16,7 +16,10 @@ import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
 import { FiEdit2 } from 'react-icons/fi';
 import { MdDeleteOutline } from 'react-icons/md';
 import { IconContext } from 'react-icons';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 const api_url = import.meta.env.VITE_API_URL;
+
 
 const bio = 'To do is to be, to be is to do, scooby dooby doo';
 
