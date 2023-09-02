@@ -29,7 +29,6 @@ export default function Comment({
   const [isHovered, setIsHovered] = useState(false);
   const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.userCache.users);
-  const dispatch = useDispatch();
   const replySubmitRef = useRef();
   const likesCount = useRef();
   const apiCallRef = useRef();
@@ -211,14 +210,14 @@ export default function Comment({
               <div className="ml-[10px] pb-[5px] pr-[3px] pt-[5px] rounded-b-xl rounded-tr-xl bg-[#f2f2f2] w-full flex justify-between">
                 <div className="w-full">
                   <ul className="pl-[10px]">
-                    <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
+                    <li className="h-[15px] user-name list-none font-nunito text-[14px] font-bold flex items-center">
                       {user?.name}
                     </li>
-                    <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                    <li className="time-stamp h-[15px] list-none font-nunito text-[13px] text-[#666666]">
                       {displayTime(data?.createdAt)}
                     </li>
                   </ul>
-                  <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
+                  <div className="mx-[10px] mt-[7px] font-nunito text-[15px] text-[#404040] font-extrabold ">
                     {data?.body}
                   </div>
                 </div>
@@ -259,7 +258,7 @@ export default function Comment({
                 >
                   <span
                     ref={likesCount}
-                    className="pr-[7px] font-sans font-normal text-sm text-[#434343]"
+                    className="pr-[7px] font-nunito text-[12px] text-[#272727] font-extrabold"
                   >
                     {data?.likes?.length}
                   </span>
@@ -286,7 +285,7 @@ export default function Comment({
                 >
                   {
                     <div className="flex flex-row justify-center items-center">
-                      <div className="pr-[5px]">{data?.replies?.length}</div>
+                      <div className="pr-[5px] font-nunito text-[12px] text-[#272727] font-extrabold">{data?.replies?.length}</div>
                       <HiReply color="DimGrey" size={15} />
                     </div>
                   }
@@ -321,7 +320,7 @@ export default function Comment({
                   onChange={(e) => setReply(e.target.value.trimStart())}
                   value={reply}
                   placeholder="Write a reply..."
-                  className="comment-input"
+                  className="comment-input font-nunito text-[13px] text-[#272727] font-extrabold"
                   onKeyDown={handleKeyDown}
                 />
                 <button

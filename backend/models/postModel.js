@@ -25,7 +25,7 @@ const postsSchema = mongoose.Schema({
         return !v.split(' ').length <= 0;
       },
     },
-    maxLength: [1000, 'body length more than 1000 characters'],
+    maxLength: [3000, 'body length more than 3000 characters'],
   },
   commentsCount: {
     type: Number,

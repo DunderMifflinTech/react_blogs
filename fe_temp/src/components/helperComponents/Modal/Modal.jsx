@@ -95,7 +95,7 @@ const Modal = ({ modalState, modalParamsState }) => {
             <div className="flex flex-col">
               <textarea
                 placeholder={'Update your post here...'}
-                className="post-div p-[20px] w-full h-[250px] overflow-y-scroll"
+                className="post-div p-[20px] w-full h-[250px] overflow-y-scroll font-nunito text-[16px] font-semibold text-[#303030]"
                 value={modalParamsState.modalParams.editValue}
                 onChange={(e) => {
                   modalParamsState.setModalParams((prev) => {

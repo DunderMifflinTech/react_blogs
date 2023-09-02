@@ -162,14 +162,14 @@ export default function Reply({ data, commentId, user, postId, handleCommentsFet
               {/* //! the comments body */}
               <div>
                 <ul className="pl-[10px]">
-                  <li className="h-[15px] user-name list-none text-[12px] font-bold flex items-center">
+                  <li className="h-[15px] user-name list-none font-nunito text-[14px] font-bold flex items-center">
                     {user?.name}
                   </li>
-                  <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                  <li className="time-stamp h-[15px] list-none text-[#666666] font-nunito text-[13px] font-bold">
                     {displayTime(data.createdAt)}
                   </li>
                 </ul>
-                <div className="mx-[10px] mt-[7px] font-sans font-normal text-sm text-[#303030] ">
+                <div className="mx-[10px] mt-[7px] font-nunito text-[15px] text-[#404040] font-extrabold ">
                   {data.body}
                 </div>
               </div>
@@ -208,7 +208,7 @@ export default function Reply({ data, commentId, user, postId, handleCommentsFet
               <div className="like hover:cursor-pointer pr-[20px] flex text-[14px] items-center">
                 <span
                   ref={likesCount}
-                  className="pr-[7px] font-sans font-normal text-sm text-[#434343]"
+                  className="pr-[7px] font-nunito text-[12px] text-[#272727] font-extrabold"
                 >
                   {data.likes.length}
                 </span>

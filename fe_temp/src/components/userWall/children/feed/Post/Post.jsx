@@ -212,7 +212,7 @@ function Post({ props, user, modalState }) {
                       {' '}
                       {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
                     </li>
-                    <li className="time-stamp h-[15px] list-none text-[#666666] text-[12px]">
+                    <li className="time-stamp h-[15px] font-nunito text-[13px] list-none text-[#666666]">
                       {displayTime(props?.createdAt)}
                     </li>
                   </ul>
@@ -250,7 +250,7 @@ function Post({ props, user, modalState }) {
               )}
             </div>
             <div>
-              <div className="post-body font-sans font-normal text-sm text-[#303030] pt-[25px] pl-[5px]">
+              <div className="post-body font-nunito text-[16px] font-semibold text-[#303030] pt-[25px] pl-[5px]">
                 {props.body.split('\n').map((s, id) => (
                   <span key={id}>
                     {s}
@@ -264,11 +264,11 @@ function Post({ props, user, modalState }) {
               <div className="flex flex-row-reverse justify-evenly select-none">
                 <div //*LIKE BUTTON
                   onClick={() => onLikeButtonClick()()}
-                  className="like hover:cursor-pointer w-[50px] flex text-[14px] items-center"
+                  className="like hover:cursor-pointer w-[50px] flex items-center"
                 >
                   <span
                     ref={likesCount}
-                    className=" font-sans font-normal w-[30px] pr-[5px] text-end text-[15px] text-[#4f4f4fd4]"
+                    className=" font-nunito text-[14px] text-[#272727] font-extrabold w-[30px] pr-[5px] text-end"
                   >
                     {props?.likes?.length}
                   </span>
@@ -280,14 +280,14 @@ function Post({ props, user, modalState }) {
                 </div>
                 <div //* REPOST BUTTON
                  className="share hover:cursor-pointer w-[50px] flex text-[13px] items-center">
-                  <span className="w-[30px] pr-[5px] text-end font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                  <span className="w-[30px] pr-[5px] text-end font-nunito text-[14px] text-[#272727] font-extrabold">
                     4
                   </span>
                   <TbShare3 color="DimGrey" size={20} />
                 </div>
                 <div //* COMMENTS BUTTON
                  className="comment hover:cursor-pointer w-[50px] flex text-[13px] items-center">
-                  <span className="w-[30px] pr-[5px] text-end font-sans font-normal text-[15px] text-[#4f4f4fd4]">
+                  <span className="w-[30px] pr-[5px] text-end font-nunito text-[14px] text-[#272727] font-extrabold">
                     {props?.commentsCount + commentsAdded}
                   </span>
                   <BiComment
@@ -330,7 +330,7 @@ function Post({ props, user, modalState }) {
                 onFocus={() => setOpenedReplySection(null)}
                 value={comment}
                 placeholder="Write a comment..."
-                className="comment-input"
+                className="comment-input font-nunito text-[13px] text-[#272727] font-extrabold"
                 onKeyDown={handleKeyDown}
               />
               <button

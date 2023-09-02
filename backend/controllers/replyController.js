@@ -21,6 +21,7 @@ module.exports.addReply = async (req, res) => {
       commentsSection.comments[reply_idx].replies.push({
         ownerId: req.body.ownerId,
         body: req.body.body,
+        createdAt: Date.now(),
       });
       commentsSection.save();
     } else {
