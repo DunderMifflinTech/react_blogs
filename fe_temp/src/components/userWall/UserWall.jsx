@@ -7,13 +7,13 @@ import TopicWiseArticle from './children/topicWisearticle/TopicWiseArticle';
 import UserBio from './children/userBio/UserBio';
 import './UserWall.css';
 import userPFP from './../../images/userPFP.png';
-import { useSelector } from 'react-redux';
+
 
 function UserWall() {
   return (
     <>
       <div className="user-wall-container pl-[3rem] pr-[3rem] pt-[3rem] mb-[200px]">
-        <div>
+        <div className='lg:mb-[30px]'>
           <UserBio
             userNik={'userNik'}
             UserBio={'userBio'}
@@ -22,11 +22,9 @@ function UserWall() {
         </div>
         <div>
           <CreateArticles userPFP={userPFP} userNik={'userNik'} />
-          <Feed>
-            
-          </Feed>
+          <Feed/>
         </div>
-        <div>
+        <div className='lg:hidden'>
           <MutualFriends />
           {/* <TopicWiseArticle /> */}
         </div>

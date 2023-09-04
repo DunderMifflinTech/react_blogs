@@ -29,7 +29,7 @@ function App() {
         <Route path="/p" element={<Playground />} />
         <Route path='/play' element={<Playaround />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

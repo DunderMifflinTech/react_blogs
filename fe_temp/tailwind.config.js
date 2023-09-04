@@ -8,6 +8,15 @@ export default {
     fontFamily: {
       'nunito': ['nunito', 'sans-serif'],
     },
+    screens: {
+      '2xl': {'max': '1535px'},
+      'xl': {'max': '1279px'},
+      'lg': {'max': '1023px'},
+      'md': {'max': '767px'},
+      'sm': {'max': '639px'},
+      'xsm': {'max': '420px'},
+      '2xsm': {'max': '320px'},
+    },
     extend: {},
   },
   plugins: [],

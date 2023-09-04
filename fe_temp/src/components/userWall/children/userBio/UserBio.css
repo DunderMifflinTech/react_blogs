@@ -1,3 +1,19 @@
-.user-img {
-  border-radius: 10px 100px 100px 10px;
+/* .user-img {
+  border-radius: 60px 100px 100px 60px;
+} */
+
+.pfpbg {
+  clip-path: ellipse(50px 90px at 35% 50%);
+}
+
+@media (max-width: 360px) {
+  .pfpbg {
+    clip-path: ellipse(45px 120px at 35% 50%);
+  }
+}
+
+@media (min-width: 640px) {
+  .pfpbg {
+    clip-path: ellipse(55px 110px at 35% 50%);
+  }
 }

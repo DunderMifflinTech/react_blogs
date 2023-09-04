@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './CreateArticles.css';
 import { BsFillPostcardHeartFill } from 'react-icons/bs';
 import { HiMiniPhoto } from 'react-icons/hi2';
@@ -98,6 +98,25 @@ const PostModal = ({ userNik, setIsModalOpen }) => {
 function CreateArticles({ userPFP, userNik, ...restOfProps }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const state = useSelector(state=>state.auth);
+  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+
+  	function getCurrentDimension(){
+    	return {
+      		width: window.innerWidth,
+      		height: window.innerHeight
+    	}
+  	}
+
+  	useEffect(() => {
+    		const updateDimension = () => {
+      			setScreenSize(getCurrentDimension())
+    		}
+    		window.addEventListener('resize', updateDimension);
+        // console.log('resize', screenSize);
+    		return(() => {
+        		window.removeEventListener('resize', updateDimension);
+    		})
+  	}, [screenSize])
   const openModal = () => {
     document.body.style.overflow = 'hidden';
     setIsModalOpen(true);
@@ -128,18 +147,18 @@ function CreateArticles({ userPFP, userNik, ...restOfProps }) {
             </span>
           </button>
         </div>
-        <div className=" pt-[15px] pr-[15px] pb-[10px] pl-[50px] flex flex-row justify-evenly">
-          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+        <div className=" pt-[15px] pr-[15px] pb-[10px] pl-[50px] flex flex-row justify-evenly xsm:px-0 2xsm:flex 2xsm:flex-col 2xsm:items-center 2xsm:justify-center">
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
             <BsFillPostcardHeartFill size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold'>Post</span>
+            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Post</span>
           </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
             <HiMiniPhoto size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold'>Photo</span>
+            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Photo</span>
           </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out">
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
             <MdArticle size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold'>Article</span>
+            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Article</span>
           </div>
         </div>
       </div>

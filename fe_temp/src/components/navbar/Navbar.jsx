@@ -30,14 +30,14 @@ function Navbar({isLoggedIn, userLogOut}) {
   
   return (
     <div>
-      <nav className="navbar bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
+      <nav className="navbar font-nunito bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
         <ul className="cursor-pointer flex">
           <NavLink to="/user-wall">
-            <li className=" user-name text-[2rem] ml-[2rem] font-bold list-none ">
+            <li className=" user-name text-[2rem] font-extrabold ml-[2rem] list-none ">
               Name
             </li>
           </NavLink>
-          <li className="user-name-blog mt-[1.2rem] text-[#6246EA] font-[600] list-none">
+          <li className="user-name-blog mt-[1.2rem] font-extrabold text-[#6246EA] list-none">
             .Blog
           </li>
         </ul>
