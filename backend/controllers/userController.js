@@ -91,9 +91,9 @@ module.exports.getUsersByName = async function getUsersByName(req, res) {
     await userModel
       .find({ name: new RegExp('^' + userName, 'i') })
       .then((response) => {
-        response = response.map((obj) => {delete obj.password; return obj});
-        console.log(response);
-        res.send({ data : response });
+        let response_new = response.map((obj) => {delete obj.password; return obj});
+        console.log(response_new);
+        res.send({ data : response_new });
       });
   } catch (error) {
     res.status(500).send({error});
