@@ -2,13 +2,14 @@ import React from 'react';
 import './Navbar.css';
 import SearchBar from './SearchBar/SearchBar';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reset as userCacheReset } from '../../rtk/features/userCache/useCacheSlice';
 import { reset as authReset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 import { reset as postsReset } from '../../rtk/features/Post/postsSlice';
 
 function Navbar({isLoggedIn, userLogOut}) {
   const dispatch = useDispatch();
+  const auth = useSelector(state=> state.auth);
   const handleClick = () => {
     const navbarMenu = document.getElementsByClassName('navbar-menu')[0];
     const hamburgerMenu = document.getElementsByClassName('hamburgerMenu')[0];
@@ -50,7 +51,7 @@ function Navbar({isLoggedIn, userLogOut}) {
           <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
           <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
         </button>
-        <SearchBar/>
+        {auth?.isLoggedIn && <SearchBar/>}
         <ul onClick={handleClick} className="navbar-menu flex justify-end pr-8">
           <li className="pr-10">
             <NavLink to="/">Home</NavLink>
