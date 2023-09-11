@@ -89,7 +89,7 @@ module.exports.getUsersByName = async function getUsersByName(req, res) {
   const userName = req.params.userName;
   try {
     await userModel
-      .find({ name: new RegExp('^' + userName, 'i') })
+      .find({ name: new RegExp('^' + userName, 'i') }).lean()
       .then((response) => {
         response = response.map((obj) => {delete obj.password; return obj});
         console.log(response);
