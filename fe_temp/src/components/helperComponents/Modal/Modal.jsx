@@ -69,7 +69,7 @@ const Modal = ({ modalState, modalParamsState }) => {
         className={
           (modalParamsState.modalParams.modalType === 'EDIT'
             ? 'w-[600px] h-[400px]'
-            : 'w-[430px] h-[215px]') +
+            : 'w-[430px] h-[230px]') +
           ' modal-body-container rounded-lg bg-[#fff]'
         }
       >

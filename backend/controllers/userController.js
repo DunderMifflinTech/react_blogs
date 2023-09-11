@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 const aws = require('aws-sdk');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+
 const s3_instance = new aws.S3({
   accessKeyId: process.env.VITE_AWS_ACCESS_KEY,
   secretAccessKey: process.env.VITE_AWS_SECRET_KEY,
@@ -30,18 +31,20 @@ module.exports.getAllUsers = async function getAllUsers(req, res) {
 };
 
 module.exports.getSelectedUsers = async function getSelectedUsers(req, res) {
-  try{
+  try {
     const users = req.body;
-    userData =  await userModel.find({
-      _id: {
-        $in: [...users.map((id)=>ObjectId(id))]
-      }
-    }).clone();
+    userData = await userModel
+      .find({
+        _id: {
+          $in: [...users.map((id) => ObjectId(id))],
+        },
+      })
+      .clone();
     return res.status(200).json(userData);
-  } catch(err){
+  } catch (err) {
     res.status(500).json({
-      message: err.message
-    })
+      message: err.message,
+    });
   }
 };
 
@@ -64,11 +67,10 @@ module.exports.saveProfilePicture = async function saveProfilePicture(
   res,
   next
 ) {
-  
-  if (req!==undefined && req.body !== undefined && req.body.image === null) {
+  if (req !== undefined && req.body !== undefined && req.body.image === null) {
     const curr_user = await userModel.findOne({ email: req.body.email });
     await curr_user.updateOne({ profilePictureURL: null });
-    res.status(200).json({ data: null});
+    res.status(200).json({ data: null });
   } else {
     const uploadSingle = upload('profile-pictures-db').single('croppedImage');
     uploadSingle(req, res, async (err) => {
@@ -80,5 +82,20 @@ module.exports.saveProfilePicture = async function saveProfilePicture(
       await curr_user.updateOne({ profilePictureURL: req.file.location });
       res.status(200).json({ data: req.file.location });
     });
+  }
+};
+
+module.exports.getUsersByName = async function getUsersByName(req, res) {
+  const userName = req.params.userName;
+  try {
+    await userModel
+      .find({ name: new RegExp('^' + userName, 'i') })
+      .then((response) => {
+        response = response.map((obj) => {delete obj.password; return obj});
+        console.log(response);
+        res.send({ data : response });
+      });
+  } catch (error) {
+    res.status(500).send({error});
   }
 };

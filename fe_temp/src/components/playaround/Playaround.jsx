@@ -1,54 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
+import {useTransition} from 'react-spring';
 import './playaround.css';
-import SkeletonPlay from './SkeletonPlay';
 
-
-function Playaround() {
-  const [play, setPlay] = useState('skeleton');
-  const [isActive, setIsActive] = useState(false);
-  if (play === 'modal') {
-    return (
-      <>
-        <button onClick={() => setIsActive((s) => !s)}>activate karo</button>
-        {<Child isActive={isActive} />}
-      </>
-    );
-  } else if (play === 'skeleton') {
-    return (
-      <>
-        <SkeletonPlay />
-      </>
-    );
-  }
-}
-
-function Child({ isActive }) {
-  const [shouldRender, setShouldRender] = useState(isActive);
-
-  useEffect(() => {
-    if (isActive) setShouldRender(true);
-  }, [isActive]);
-
-  const onAnimationEnd = () => {
-    if (!isActive) setShouldRender(false);
-  };
+function Playaround({}) {
   return (
-    shouldRender && (
-      <div
-        onAnimationEnd={onAnimationEnd}
-        style={{
-          animation: `${
-            isActive ? 'child-opening-animation' : 'child-closing-animation'
-          } 300ms`,
-        }}
-        className={
-          (isActive ? 'h-[200px]' : 'h-0') + ' w-[200px] bg-slate-500 child '
-        }
-      >
-        this is a div
+    <>
+      <div className="bg-[#a61300db] w-full h-full">
+        <PopUp />
       </div>
-    )
+    </>
   );
 }
+
+const PopUp = ({ shouldRender }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  return (
+    <>
+      <div className="w-full h-[1000px]">
+        <button className="bg-white border-[#bababa] rounded px-2 m-auto"
+        onClick={()=>setIsVisible(v=>!v)}>
+          {!isVisible ? 'mount' : 'unmount'}
+        </button>
+        <div className="container">
+          {isVisible ? <div className="item"></div> : null}
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Playaround;

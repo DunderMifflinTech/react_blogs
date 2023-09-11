@@ -82,7 +82,7 @@ function Post({ props, user, modalState }) {
       await axios.post(api_url + '/comment/add-comment', commentData);
       setComment('');
       setCommentsAdded((s) => s + 1);
-      handleCommentsFetch(true);
+      setTimeout(()=>handleCommentsFetch(true), 100);
     }
   };
 
