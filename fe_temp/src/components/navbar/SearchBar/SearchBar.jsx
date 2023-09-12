@@ -8,7 +8,7 @@ import axios from 'axios';
 function SearchBar() {
   const userSearchRef = useRef();
   const [searchUser, setSearchUser] = useState('');
-  const [isFocused, setIsFocused] = useState(true);
+  const [isFocused, setIsFocused] = useState(false);
   const [searchState, setSearchState] = useState({
     loading: false,
     usersList: [],
