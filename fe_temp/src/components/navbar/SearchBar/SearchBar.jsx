@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 import FoundUsers from '../FoundUsers/FoundUsers';
-import Skeleton from 'react-loading-skeleton'
+import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
 
 function SearchBar() {
+  const userSearchRef = useRef();
   const [searchUser, setSearchUser] = useState('');
   const [isFocused, setIsFocused] = useState(true);
   const [searchState, setSearchState] = useState({
@@ -13,20 +15,23 @@ function SearchBar() {
   });
 
   const inputChange = async (e) => {
-    let name = e.target.value.trimStart();
+    clearTimeout(userSearchRef.current);
     setSearchState((prev) => {
-      return {...prev, loading: true };
+      return { ...prev, loading: true };
     });
-    await axios
-      .get(import.meta.env.VITE_API_URL + `/users/search/user-name/${name}`)
-      .then((res) => {
-        setSearchState((p) => {
-          return {
-            loading: false,
-            usersList: res.data.data,
-          };
+    userSearchRef.current = setTimeout(async () => {
+      let name = e.target.value.trimStart();
+      await axios
+        .get(import.meta.env.VITE_API_URL + `/users/search/user-name/${name}`)
+        .then((res) => {
+          setSearchState((p) => {
+            return {
+              loading: false,
+              usersList: res.data.data,
+            };
+          });
         });
-      });
+    }, 200);
   };
   return (
     <>
@@ -52,8 +57,18 @@ function SearchBar() {
         ></input>
         {isFocused &&
           searchUser.length > 0 &&
+          (searchState.loading ? (
+            <div className="bg-white h-[150px] w-[300px] border-b rounded-b-2xl absolute top-[40px] shadow-md z-10 flex flex-col justify-center items-center">
+              <div className="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          ) : (
             <FoundUsers users={searchState.usersList} />
-        }
+          ))}
       </div>
     </>
   );
