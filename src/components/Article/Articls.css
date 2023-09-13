@@ -1,0 +1,8 @@
+.blogAbstract:hover{
+    height: 17.35vh;
+    background-color: #fcfcfc;
+}
+
+.blogAbstract:hover + .user-block {
+    height: 0px;
+}
