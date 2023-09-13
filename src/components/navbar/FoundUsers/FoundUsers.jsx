@@ -3,7 +3,7 @@ import UnknownPerson from '../../../images/UnknownPerson.jpg';
 
 const FoundUsers = ({ users }) => {
   return (
-    <div className="bg-white w-[300px] border-b rounded-b-2xl absolute top-[40px] shadow-md z-10 flex flex-col justify-center items-center">
+    <div className="bg-white w-[300px] max-h-[450px] overflow-y-scroll border-b rounded-b-2xl absolute top-[40px] shadow-md z-10 flex flex-col justify-center items-center">
       {users?.length > 0 ? (
         users.map((obj, idx) => {
           return (
