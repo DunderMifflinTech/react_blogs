@@ -1,5 +1,6 @@
 import { React, useState, useEffect, useRef } from 'react';
 import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { NavLink } from 'react-router-dom'
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
@@ -163,7 +164,7 @@ export default function Reply({ data, commentId, user, postId, handleCommentsFet
               <div>
                 <ul className="pl-[10px]">
                   <li className="h-[15px] user-name list-none font-nunito text-[14px] font-bold flex items-center">
-                    {user?.name}
+                   <NavLink to={`/user/${user?._id}`}>{user?.name}</NavLink>
                   </li>
                   <li className="time-stamp h-[15px] list-none text-[#666666] font-nunito text-[13px] font-bold">
                     {displayTime(data.createdAt)}

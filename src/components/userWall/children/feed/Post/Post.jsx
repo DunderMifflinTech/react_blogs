@@ -8,6 +8,7 @@ import './Post.css';
 import unknownPerson from '../../../../../images/UnknownPerson.jpg';
 import Comment from '../Comment/Comment';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
 import moment from 'moment';
 import axios from 'axios';
@@ -38,6 +39,7 @@ function Post({ props, user, modalState }) {
   const apiCallRef = useRef();
   const likesCount = useRef();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(()=>{
     if(props.likes.some(obj=>obj.userId === auth._id)){
@@ -206,7 +208,7 @@ function Post({ props, user, modalState }) {
                 <div>
                   <ul className="pl-[10px]">
                     <li className="h-[15px] text-[16px] user-name list-none font-nunito font-medium flex items-center">
-                      <a className='hover:text-[#6246EA] hover:cursor-pointer hover'>{user?.name}</a>
+                      <NavLink to={`/user/${user?._id}`} className='hover:text-[#6246EA] hover:cursor-pointer hover'>{user?.name}</NavLink>
                     </li>
                     <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
                       {' '}

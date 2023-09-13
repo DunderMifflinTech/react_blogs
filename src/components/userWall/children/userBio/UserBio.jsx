@@ -9,8 +9,7 @@ import Cropper from 'react-easy-crop';
 import getCroppedImg, { dataURLtoFile, generateDownload } from './utils';
 import axios from 'axios';
 import unknownPerson from '../../../../images/UnknownPerson.jpg';
-import { SERVER_URL } from '../../../../Secrets';
-// import {createImage} from './utils'
+import { NavLink, useNavigate } from 'react-router-dom';
 import BaseButton from '../../../BaseButton/BaseButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfilePicture } from '../../../../rtk/features/userAuthentication/userAuthenticationSlice';
@@ -206,6 +205,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
   const [imgHover, setImgHover] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [canModalClose, setCanModalClose] = useState(true);
+  const navigate = useNavigate();
 
   const openModal = () => {
     document.body.style.overflow = 'hidden';
@@ -234,7 +234,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
           onMouseLeave={() => setImgHover(false)}
           className=" relative overflow-y-visible user-img xsm:w-[100px] w-[120px] h-100 flex justify-center items-center"
         >
-          <div className='relative w-[full]'>
+          <div className="relative w-[full]">
             <img
               src={profilePicture === null ? unknownPerson : profilePicture}
               className="relative h-[60px] w-[60px] border-[#525252] border-2 rounded-full object-cover"
@@ -252,12 +252,14 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
               }
             />
           </div>
-          <div className='pfpbg absolute h-full w-full bg-[#6246EA] -z-10'></div>
+          <div className="pfpbg absolute h-full w-full bg-[#6246EA] -z-10"></div>
         </div>
         <div className="w-full pt-[10px] flex flex-col justify-between">
           <div className="flex items-center justify-center text-[20px] font-nunito font-medium cursor-pointer">
-            {auth.name}
-            <span className="text-[#6246ea]">{'.Nik'}</span>
+            <NavLink to={`/user/${auth._id}`}>
+              {auth.name}
+              <span className="text-[#6246ea]">{'.Nik'}</span>
+            </NavLink>
           </div>
           <div className="text-[12px] text-center font-nunito text-[#8a8a8a] font-bold px-[10px] pt-[5px] pb-[15px]">
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
