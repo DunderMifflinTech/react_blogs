@@ -23,7 +23,7 @@ const ImageModal = ({
   closeModal,
 }) => {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.auth.email);
+  const auth = useSelector((state) => state.auth);
   const [img, setImg] = useState(userPFP);
   const [croppedArea, setCroppedArea] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -52,7 +52,7 @@ const ImageModal = ({
     if (!img) {
       await axios
         .post(`${import.meta.env.VITE_API_URL}/users/save-profile-picture`, {
-          email: email,
+          id: auth._id,
           image: null,
         })
         .then((res) => {
@@ -69,7 +69,7 @@ const ImageModal = ({
       try {
         const formData = new FormData();
         formData.append('croppedImage', convertedURLtoFile);
-        formData.append('email', email);
+        formData.append('id', auth._id);
         await axios
           .post(
             `${import.meta.env.VITE_API_URL}/users/save-profile-picture`,
