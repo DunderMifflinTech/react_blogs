@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* outline: 1px solid limegreen !important; */
+}
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #F3F2EE;
+    /* background-image: radial-gradient(#6246ea 4%, transparent 4%); */
+    background-size: 45px 45px;
+    background-position: 0 0, 30px 30px;
+    background-repeat: repeat;
+}
+
+.transition-pop {
+    transition: all 200ms cubic-bezier(0, 3.66, 0.14, -0.73) 70ms;
+}
+
+.transition-pop:hover {
+    transform: scale(1.1);
+}
