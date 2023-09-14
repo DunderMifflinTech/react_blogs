@@ -5,6 +5,7 @@ import Reply from '../Reply/Reply';
 import './Comment.css';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom'
 import TextareaAutosize from 'react-textarea-autosize';
 import UnknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { VscSend } from 'react-icons/vsc';
@@ -211,7 +212,7 @@ export default function Comment({
                 <div className="w-full">
                   <ul className="pl-[10px]">
                     <li className="h-[15px] user-name list-none font-nunito text-[14px] font-bold flex items-center">
-                      {user?.name}
+                      <NavLink to = {`/user/${user?._id}`}>{user?.name}</NavLink>
                     </li>
                     <li className="time-stamp h-[15px] list-none font-nunito text-[13px] text-[#666666]">
                       {displayTime(data?.createdAt)}
