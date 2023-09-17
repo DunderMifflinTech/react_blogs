@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchRequiredUsers } from '../userCache/useCacheSlice';
+import axios from 'axios';
 const api_url = import.meta.env.VITE_API_URL;
 
 const initialState = {
@@ -12,7 +11,7 @@ const initialState = {
 
 export const fetchUserFeed = createAsyncThunk(
   'feed/fetchUserFeed',
-  async (_, {dispatch}) => {
+  async () => {
     return axios.get(api_url + '/post/get-all-posts').then((res) => {
         return res.data;
     });

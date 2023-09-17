@@ -132,7 +132,7 @@ function Post({ props, user, modalState }) {
                   else setIsCommentSectionOpen((icso) => !icso);
                 });
             });
-        }, 100);
+        }, 300);
       } catch (err) {
         console.log(err.message);
       }
