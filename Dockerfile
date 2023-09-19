@@ -4,11 +4,11 @@ RUN mkdir /work
 
 WORKDIR /work
 
-COPY . ./work
+COPY . .
 
 RUN npm install
 
 RUN npm run build
 
-RUN npm run preview
+CMD [ "npm", "run", "preview" ]
 
