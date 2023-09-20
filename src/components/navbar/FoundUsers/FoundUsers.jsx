@@ -3,7 +3,7 @@ import UnknownPerson from '../../../images/UnknownPerson.jpg';
 
 const FoundUsers = ({ users }) => {
   return (
-    <div className="bg-white w-[300px] max-h-[450px] overflow-y-scroll border-b rounded-b-2xl absolute top-[40px] shadow-md z-10 flex flex-col justify-center items-center">
+    <div className="bg-white w-[300px] sm:w-[240px] max-h-[450px] overflow-y-scroll border-b rounded-b-2xl absolute top-[40px] shadow-md z-10 flex flex-col justify-center items-center">
       {users?.length > 0 ? (
         users.map((obj, idx) => {
           return (
@@ -12,7 +12,7 @@ const FoundUsers = ({ users }) => {
               className={
                 (idx === 0 ? ' mt-[16px]' : ' ') +
                 (idx === users?.length - 1 ? ' mb-[16px]' : ' ') +
-                ' h-[70px] w-11/12 mt-[7px] rounded-xl hover:bg-[#f8f8f8] hover:shadow-sm transition-shadow duration-300 ease-in-out flex'
+                ' h-[70px] w-11/12 sm:w-[240px] mt-[7px] rounded-xl hover:bg-[#f8f8f8] hover:shadow-sm transition-shadow duration-300 ease-in-out flex'
               }
             >
               <div className="h-[40px] w-[40px] ml-[5px] mt-[10px]">

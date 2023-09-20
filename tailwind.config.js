@@ -9,6 +9,9 @@ export default {
       'nunito': ['nunito', 'sans-serif'],
     },
     screens: {
+      '5xl':{'max': '8000px'},
+      '4xl': {'max': '3000px'},
+      '3xl': {'max': '2000px'},
       '2xl': {'max': '1535px'},
       'xl': {'max': '1279px'},
       'lg': {'max': '1023px'},
