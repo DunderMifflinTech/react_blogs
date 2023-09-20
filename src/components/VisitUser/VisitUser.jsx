@@ -7,7 +7,6 @@ import UserBio from '../userWall/children/userBio/UserBio';
 import VisitingBio from './VisitingBio/VisitingBio';
 
 const VisitUser = () => {
-  const visitingUser = useSelector((state) => state.visitingUser);
   const dispatch = useDispatch();
   const userId = useParams().param;
   useEffect(() => {
@@ -19,11 +18,12 @@ const VisitUser = () => {
       });
   }, []);
   return (
-    <div className="user-wall-container pl-[3rem] pr-[3rem] pt-[3rem] mb-[200px]">
-      <div></div>
-      <div><VisitingBio/></div>
-      <div></div>
-    </div>
+    <>
+      <div>
+        <VisitingBio />
+        <div></div>
+      </div>
+    </>
   );
 };
 
