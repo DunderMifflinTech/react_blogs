@@ -5,6 +5,8 @@ import { fetchVisitingUser } from '../../rtk/features/VisitingUser/visitingUser'
 import { useParams } from 'react-router-dom';
 import UserBio from '../userWall/children/userBio/UserBio';
 import VisitingBio from './VisitingBio/VisitingBio';
+import Details from './Details/Details';
+import FollowingGrid from './FollowingGrid/FollowingGrid';
 
 const VisitUser = () => {
   const dispatch = useDispatch();
@@ -21,7 +23,13 @@ const VisitUser = () => {
     <>
       <div>
         <VisitingBio />
-        <div></div>
+        <div>
+          <div>
+            <div><Details/></div>
+            <div><FollowingGrid/></div>
+          </div>
+          <div></div>
+        </div>
       </div>
     </>
   );

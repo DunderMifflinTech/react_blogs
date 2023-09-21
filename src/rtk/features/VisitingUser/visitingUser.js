@@ -44,6 +44,7 @@ export const visitingUserSlice = createSlice({
       state.user.name = action.payload[0].name;
       state.user.email = action.payload.email;
       state.user.profilePictureURL = action.payload[0].profilePictureURL;
+      state.user.backgroundPictureURL = action.payload[0].backgroundPictureURL;
       state.user.dateCreated = action.payload[0].dateCreated;
       state.user.followers = action.payload[0].followers;
       state.user.following = action.payload[0].following;
