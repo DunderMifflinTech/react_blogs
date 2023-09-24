@@ -7,6 +7,7 @@ export default {
   theme: {
     fontFamily: {
       'nunito': ['nunito', 'sans-serif'],
+      'pacifico': ['pacifico', 'sans-serif'],
     },
     screens: {
       '5xl':{'max': '8000px'},
