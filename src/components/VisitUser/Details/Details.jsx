@@ -28,7 +28,7 @@ const Details = () => {
       };
 
   return (
-    <div className="bg-[#fff] w-[450px] h-full m-[20px] rounded-xl">
+    <div className="bg-[#fff] w-[450px] h-full m-[20px] rounded-xl shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
       <div //*  JOINED AT
         className="w-full p-[5px] py-[10px]"
       >

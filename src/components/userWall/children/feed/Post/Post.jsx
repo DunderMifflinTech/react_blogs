@@ -19,6 +19,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { reset } from '../../../../../rtk/features/VisitingUser/visitingUser';
 const api_url = import.meta.env.VITE_API_URL;
 
 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reset as userCacheReset } from '../../rtk/features/userCache/useCacheSlice';
 import { reset as authReset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
 import { reset as postsReset } from '../../rtk/features/Post/postsSlice';
+import { reset } from '../../rtk/features/VisitingUser/visitingUser';
 
 function Navbar({isLoggedIn, userLogOut}) {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ function Navbar({isLoggedIn, userLogOut}) {
   const navigate = useNavigate();
   const handleLogout = async() => {
     try{
+      dispatch(reset());
       dispatch(authReset());
       dispatch(postsReset());
       dispatch(userCacheReset());
