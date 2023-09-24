@@ -7,19 +7,21 @@ import { persistReducer } from 'redux-persist';
 import userAuthenticationSlice from '../features/userAuthentication/userAuthenticationSlice';
 import useCacheSlice, { listenerMiddleware } from '../features/userCache/useCacheSlice';
 import postsSlice from '../features/Post/postsSlice';
+import visitingUserSlice from '../features/VisitingUser/visitingUser';
 const logger = createLogger();
 
 const reducers = combineReducers({
   auth: userAuthenticationSlice,
   feed: postsSlice,
-  userCache: useCacheSlice
+  userCache: useCacheSlice,
+  visitingUser: visitingUserSlice,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  //remove userCaceh from blacklist
-  blacklist: ['feed', 'userCache'],
+  //remove userCache from blacklist
+  blacklist: ['feed', 'visitingUser'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -27,7 +29,8 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 const store = configureStore({
   reducer: persistedReducer,
   devTools: !import.meta.env.PROD,
-  middleware: [logger, thunk, listenerMiddleware.middleware],
+  middleware: [thunk, listenerMiddleware.middleware],
+  // middleware: [logger, thunk, listenerMiddleware.middleware],
 });
 
 export default store;

@@ -1,0 +1,39 @@
+
+.bg-img-cont{
+  transition: 300ms ease-in-out;
+}
+
+.bg-img-cont:hover .background-blur{
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 180%);
+  animation: bgAnimation 300ms ease-in-out;
+
+}
+
+@keyframes bgAnimation {
+    0%{
+      opacity: 0;
+    }
+
+    100%{
+      opacity: 1;
+    }
+}
+
+
+
+.pfpbg1 {
+    clip-path: ellipse(50px 90px at 35% 50%);
+  }
+  
+  @media (max-width: 360px) {
+    .pfpbg1 {
+      clip-path: ellipse(45px 120px at 35% 50%);
+    }
+  }
+  
+  @media (min-width: 640px) {
+    .pfpbg1 {
+      clip-path: ellipse(55px 110px at 35% 50%);
+    }
+  }
+  

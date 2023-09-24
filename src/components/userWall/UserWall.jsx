@@ -22,7 +22,7 @@ function UserWall() {
         </div>
         <div>
           <CreateArticles userPFP={userPFP} userNik={'userNik'} />
-          <Feed/>
+          <Feed kind={'USER_WALL'}/>
         </div>
         <div className='lg:hidden'>
           <MutualFriends />
