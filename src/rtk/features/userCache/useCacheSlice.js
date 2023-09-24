@@ -48,11 +48,18 @@ listenerMiddleware.startListening({
   },
 });
 
+listenerMiddleware.startListening({
+  type: 'feed/fetchPostByUser/fulfilled',
+  effect: async (action, listenerAPI) => {
+    listenerAPI.dispatch(fetchRequiredUsers());
+  },
+});
+
 const userCacheSlice = createSlice({
   name: 'userCache',
   initialState,
   reducers: {
-    reset: () => initialState,
+    resetUserCacheSlice: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchRequiredUsers.pending, (state) => {
@@ -74,4 +81,4 @@ const userCacheSlice = createSlice({
 });
 
 export default userCacheSlice.reducer;
-export const { reset } = userCacheSlice.actions;
+export const { resetUserCacheSlice } = userCacheSlice.actions;

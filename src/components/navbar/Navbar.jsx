@@ -3,10 +3,10 @@ import './Navbar.css';
 import SearchBar from './SearchBar/SearchBar';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { reset as userCacheReset } from '../../rtk/features/userCache/useCacheSlice';
-import { reset as authReset, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
-import { reset as postsReset } from '../../rtk/features/Post/postsSlice';
-import { reset } from '../../rtk/features/VisitingUser/visitingUser';
+import { resetUserCacheSlice } from '../../rtk/features/userCache/useCacheSlice';
+import { resetUserAuthenticationSlice, userLogout } from '../../rtk/features/userAuthentication/userAuthenticationSlice';
+import { resetPostSlice } from '../../rtk/features/Post/postsSlice';
+import { resetVisitingUserSlice } from '../../rtk/features/VisitingUser/visitingUser';
 
 function Navbar({isLoggedIn, userLogOut}) {
   const dispatch = useDispatch();
@@ -21,10 +21,10 @@ function Navbar({isLoggedIn, userLogOut}) {
   const navigate = useNavigate();
   const handleLogout = async() => {
     try{
-      dispatch(reset());
-      dispatch(authReset());
-      dispatch(postsReset());
-      dispatch(userCacheReset());
+      dispatch(resetVisitingUserSlice());
+      dispatch(resetUserAuthenticationSlice());
+      dispatch(resetPostSlice());
+      dispatch(resetUserCacheSlice());
       dispatch(userLogout()).unwrap();
       navigate('/login');
     } catch(err){

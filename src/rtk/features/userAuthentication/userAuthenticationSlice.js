@@ -38,7 +38,7 @@ const userAuthenticationSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: () => initialState,
+    resetUserAuthenticationSlice: () => initialState,
     updateProfilePicture: (state, action) => {
       state.profilePictureURL = action.payload;
     },
@@ -90,4 +90,4 @@ const userAuthenticationSlice = createSlice({
 // console.log(userAuthenticationSlice)
 
 export default userAuthenticationSlice.reducer;
-export const { reset, updateProfilePicture } = userAuthenticationSlice.actions;
+export const { resetUserAuthenticationSlice, updateProfilePicture } = userAuthenticationSlice.actions;

@@ -22,7 +22,7 @@ export const fetchVisitingUser = createAsyncThunk(
   async (data) => {
     return axios
       .post(api_url + '/users/selected-users', [data])
-      .then((res) => {console.log('datat here ------------>', res.data); return res.data});
+      .then((res) => {return res.data});
   }
 );
 
@@ -30,7 +30,7 @@ export const visitingUserSlice = createSlice({
   name: 'visitingUser',
   initialState,
   reducers: {
-    reset: () => initialState,
+    resetVisitingUserSlice: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchVisitingUser.pending, (state) => {
@@ -60,4 +60,4 @@ export const visitingUserSlice = createSlice({
 });
 
 export default visitingUserSlice.reducer;
-export const { reset } = visitingUserSlice.actions;
+export const { resetVisitingUserSlice } = visitingUserSlice.actions;

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import './VisitUser.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchVisitingUser, reset } from '../../rtk/features/VisitingUser/visitingUser';
+import { fetchVisitingUser, resetVisitingUserSlice } from '../../rtk/features/VisitingUser/visitingUser';
+import { resetPostSlice } from '../../rtk/features/Post/postsSlice';
 import { useParams } from 'react-router-dom';
 import UserBio from '../userWall/children/userBio/UserBio';
 import VisitingBio from './VisitingBio/VisitingBio';
@@ -13,7 +14,8 @@ const VisitUser = () => {
   const dispatch = useDispatch();
   const userId = useParams().param;
   useEffect(() => {
-    dispatch(reset())
+    dispatch(resetPostSlice());
+    dispatch(resetVisitingUserSlice());
     dispatch(fetchVisitingUser(userId))
       .unwrap()
       .then((res) => {})
@@ -30,7 +32,7 @@ const VisitUser = () => {
             <div><Details/></div>
             <div><FollowingGrid/></div>
           </div>
-          <div> <PersonalFeed/></div>
+          <div className='w-full'> <PersonalFeed userId = {userId}/></div>
         </div>
       </div>
     </>

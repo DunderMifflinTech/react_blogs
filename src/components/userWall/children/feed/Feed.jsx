@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Post from './Post/Post';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserFeed } from '../../../../rtk/features/Post/postsSlice';
+import { fetchPostByUser, fetchUserFeed, resetPostSlice } from '../../../../rtk/features/Post/postsSlice';
 import Modal from '../../../helperComponents/Modal/Modal';
 import SkeletonFeed from './SkeletonFeed';
 
-function Feed() {
+function Feed({kind, id}) {
   const dispatch = useDispatch();
   const postsArray = useSelector((state) => state.feed.posts);
   const feed = useSelector((state)=>state.feed);
@@ -47,7 +47,18 @@ function Feed() {
         console.log(err);
       }
     };
-    fetchFeed();
+
+    const fetchUsersPosts = async ()=>{
+      try{
+        await dispatch(fetchPostByUser(id)).unwrap();
+      }catch(err){
+        console.log(err);
+      }
+    }
+    if(kind === 'VISIT_USER')
+      fetchUsersPosts()
+    else
+      fetchFeed();
   }, []);
 
   const getUser = (obj) => {
