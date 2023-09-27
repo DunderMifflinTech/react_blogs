@@ -130,7 +130,6 @@ const ImageModal = ({
           image: null,
         })
         .then((res) => {
-          dispatch(updateProfilePicture(res.data.data));
           closeModal();
           window.location.reload(false);
         });
@@ -151,10 +150,9 @@ const ImageModal = ({
             formData
           )
           .then((response) => {
-            dispatch(updateProfilePicture(response.data.data));
             closeModal();
+            window.location.reload(false);
           });
-        // console.log(response.data);
       } catch (err) {
         console.warn(err);
       }
