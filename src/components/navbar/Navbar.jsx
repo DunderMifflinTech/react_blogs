@@ -34,10 +34,10 @@ function Navbar({isLoggedIn, userLogOut}) {
   
   return (
       <div>
-      <nav className="navbar font-nunito bg-[#FFFF] h-20 w-full border-y-2 flex justify-between items-center relative">
+      <nav className="navbar bg-[#FFFF] font-nunito h-20 w-full border-y-2 flex justify-between items-center relative">
         <ul className="cursor-pointer flex">
           <NavLink to="/user-wall">
-            <li className=" user-name text-[2rem] font-extrabold ml-[2rem] list-none ">
+            <li className=" user-name font-nunito text-[2rem] font-extrabold ml-[2rem] list-none ">
               Name
             </li>
           </NavLink>
@@ -54,7 +54,7 @@ function Navbar({isLoggedIn, userLogOut}) {
           <span className="bar h-[3px] w-full bg-[#6246EA] rounded-[10px]"></span>
         </button>
         {auth?.isLoggedIn && <SearchBar/>}
-        <ul onClick={handleClick} className="navbar-menu flex justify-end pr-8">
+        <ul onClick={handleClick} className="navbar-menu flex justify-end font-extrabold pr-8">
           <li className="pr-10">
             <NavLink to="/">Home</NavLink>
           </li>
