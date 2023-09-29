@@ -19,7 +19,8 @@ const Details = () => {
   const [userInfo, setUserInfo] = useState({
     country: null,
     city: null,
-    education: null,
+    education: '',
+    bio: '',
   });
 
   const openModal = () => {
@@ -29,6 +30,11 @@ const Details = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setUserInfo({
+      country: null,
+      city: null,
+      education: null,
+    });
     document.body.style.overflow = '';
   };
 
@@ -52,7 +58,6 @@ const Details = () => {
   };
 
   const setCountry = (e) => {
-    console.log(State.getStatesOfCountry(e.target.value));
     setUserInfo((p) => {
       return { ...p, country: e.target.value };
     });
@@ -62,13 +67,15 @@ const Details = () => {
     <>
       {isModalOpen && (
         <Modal
+          title={'Edit Bio'}
           modalState={{ isModalOpen, setIsModalOpen }}
           openModal={openModal}
           closeModal={closeModal}
         >
           <div className="5xl:w-[700px] bg-white m-[10px] font-nunito font-medium text-[16px] ">
-            <div className='flex flex-row justify-start items-center my-[15px]'>
-              <label
+            <div //* COUNTRY AND STATE
+            className="flex flex-row justify-start items-center my-[15px]">
+              <label //* COUNTRY
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="countries"
               >
@@ -91,7 +98,7 @@ const Details = () => {
                   </option>
                 ))}
               </select>
-              <label
+              <label //* STATE
                 disabled={false}
                 htmlFor="state"
                 className="pl-[20px] pr-[5px]"
@@ -101,7 +108,7 @@ const Details = () => {
               <select
                 className="text-[#6246e9] 5xl:w-[200px]"
                 disabled={false}
-                name="state"
+                id="state"
               >
                 {
                   State.getStatesOfCountry(userInfo.country).map((obj, id) => (
@@ -111,7 +118,8 @@ const Details = () => {
                 }
               </select>
             </div>
-            <div className='flex flex-row justify-start items-center my-[15px]'>
+            <div //* BIO
+             className="flex flex-row justify-start items-start my-[15px]">
               <label
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="userBio"
@@ -125,12 +133,19 @@ const Details = () => {
                 Bio{' '}
               </label>
               <TextareaAutosize
-                  placeholder="Your bio goes here..."
-                  className="font-nunito text-[16px] 5xl:w-[500px] text-[#6246e9] font-medium pl-[10px] w-[300px]"
-                  id='userBio'
-                />
+                placeholder="Your bio goes here..."
+                className="font-nunito text-[16px] 5xl:w-[500px] min-h-[30px] pt-[3px] text-[#6246e9] font-medium pl-[10px] w-[300px]"
+                id="userBio"
+                value={userInfo.bio}
+                onChange={(e) =>
+                  setUserInfo((p) => {
+                    return { ...p, bio: e.target.value };
+                  })
+                }
+              />
             </div>
-            <div className='flex flex-row justify-start my-[15px]'>
+            <div //* EDUCATION
+             className="flex flex-row justify-start items-start my-[15px]">
               <label
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="education"
@@ -144,14 +159,30 @@ const Details = () => {
                 Studied From{' '}
               </label>
               <TextareaAutosize
-                  placeholder="School/College"
-                  className="font-nunito text-[16px] 5xl:w-[500px] text-[#6246e9] font-medium pl-[10px] w-[300px]"
-                  id='education'
-                />
+                placeholder="School/College"
+                className="font-nunito text-[16px] 5xl:w-[500px] min-h-[30px] pt-[3px] text-[#6246e9] font-medium pl-[10px] w-[300px]"
+                id="education"
+                value = {userInfo.education}
+                onChange={(e) =>
+                  setUserInfo((p) => {
+                    return { ...p, education: e.target.value };
+                  })
+                }
+              />
             </div>
-            <div className='flex justify-center mt-[40px]'>
-                <BaseButton variant={'solid'} className={'mr-[10px]'}>Save</BaseButton>
-                <BaseButton variant={'red'}>Discard Changes</BaseButton>
+            <div //* BUTTONS
+             className="flex justify-center mt-[40px]">
+              <BaseButton
+                variant={'solid'}
+                disabled={
+                  userInfo?.bio?.length > 90 ||
+                  userInfo?.education?.length > 90
+                }
+                className={'mr-[10px]'}
+              >
+                Save
+              </BaseButton>
+              <BaseButton variant={'red'} onClick={closeModal}>Discard Changes</BaseButton>
             </div>
           </div>
         </Modal>

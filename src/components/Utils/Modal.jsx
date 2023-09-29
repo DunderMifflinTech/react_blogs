@@ -2,6 +2,7 @@ import { IoClose } from 'react-icons/io5';
 import { useState } from 'react';
 
 const Modal = ({
+  title,
   modalState,
   closeModal,
   children,
@@ -39,18 +40,19 @@ const Modal = ({
       >
         <div
           className={
-            'bg-white flex flex-col rounded-xl'+
+            'bg-white flex flex-col rounded-xl' +
             (modalWidth ? ` w-[${modalWidth}px]` : '') +
             (modalHeight ? ` h-[${modalHeight}px]` : '')
           }
           onMouseDown={handleModalInsideMouseDown}
           onMouseUp={handleModalInsideMouseUp}
         >
-          <div className=" flex justify-end rounded-xl">
+          <div className=" flex justify-between border-b-[1px]">
+            <span className='mt-[5px] ml-[15px] text-[20px] font-nunito font-extrabold'>{title}</span>
             <IoClose
               size={30}
               style={{ color: '#5c5c5c' }}
-              className=" hover:bg-slate-200 rounded-full p-[2px]"
+              className=" hover:bg-slate-200 m-[5px] rounded-full"
               onClick={closeModal}
             />
           </div>
