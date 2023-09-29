@@ -16,7 +16,6 @@ function UserWall() {
         <div className='lg:mb-[30px]'>
           <UserBio
             userNik={'userNik'}
-            UserBio={'userBio'}
           />
           {/* <PersonalArticles /> */}
         </div>

@@ -262,8 +262,7 @@ function UserBio({ userPFP, userNik, userBio, ...restOfProps }) {
             </NavLink>
           </div>
           <div className="text-[12px] text-center font-nunito text-[#8a8a8a] font-bold px-[10px] pt-[5px] pb-[15px]">
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-            commodo ligula eget dolor.
+            {auth?.bio}
           </div>
           <div className="flex pb-[10px] px-[10px] font-nunito justify-around 2xsm:text-[12px]">
             <button>78 Followers</button>

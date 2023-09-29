@@ -210,10 +210,10 @@ function Post({ props, user, modalState }) {
                     <li className="h-[15px] text-[16px] user-name list-none font-nunito font-medium flex items-center">
                       <NavLink to={`/user/${user?._id}`} className='hover:text-[#6246EA] hover:cursor-pointer hover'>{user?.name}</NavLink>
                     </li>
-                    <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
+                    {user?.details?.bio && <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
                       {' '}
-                      {bio.length > 28 ? bio.substring(0, 28) + '...' : bio}
-                    </li>
+                      {user?.details?.bio.length > 28 ? user?.details?.bio.substring(0, 28) + '...' : user?.details?.bio}
+                    </li>}
                     <li className="time-stamp h-[15px] font-nunito text-[13px] list-none text-[#666666]">
                       {displayTime(props?.createdAt)}
                     </li>

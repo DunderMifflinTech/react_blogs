@@ -71,8 +71,7 @@ function VisitingBio({ ...restOfProps }) {
               </NavLink>
             </div>
             <div className="sm:text-center text-[14px] text-start font-nunito text-[#8a8a8a] font-bold pt-[5px] pb-[15px]">
-              Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean
-              commodo ligula eget dolor.
+              {visitingUser?.user?.details?.bio}
             </div>
             <div className="flex pb-[10px] font-nunito justify-start 2xsm:text-[12px]">
               <button>78 Followers</button>
