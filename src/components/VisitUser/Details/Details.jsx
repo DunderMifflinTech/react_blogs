@@ -4,24 +4,38 @@ import { MdCake } from 'react-icons/md';
 import { FaGraduationCap } from 'react-icons/fa6';
 import { TiLocation } from 'react-icons/ti';
 import { FiEdit } from 'react-icons/fi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Modal from '../../Utils/Modal';
 import TextareaAutosize from 'react-textarea-autosize';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { Country, State, City } from 'country-state-city';
 import BaseButton from '../../BaseButton/BaseButton';
+import axios from 'axios';
+import { fetchVisitingUser } from '../../../rtk/features/VisitingUser/visitingUser';
+import { useParams } from 'react-router-dom';
 
 const Details = () => {
   const visitingUser = useSelector((state) => state.visitingUser);
   const auth = useSelector((state) => state.auth);
+  const userId = useParams().param;
+  const dispatch = useDispatch();
   const [editHover, setEditHover] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    country: null,
-    city: null,
-    education: '',
-    bio: '',
+    country: visitingUser?.user?.details?.country,
+    state: visitingUser?.user?.details?.state,
+    education: visitingUser?.user?.details?.education,
+    bio: visitingUser?.user?.details?.bio,
   });
+
+  useEffect(() => {
+    setUserInfo({
+      country: visitingUser?.user?.details?.country,
+      state: visitingUser?.user?.details?.state,
+      education: visitingUser?.user?.details?.education,
+      bio: visitingUser?.user?.details?.bio,
+    });
+  }, []);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -31,9 +45,10 @@ const Details = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setUserInfo({
-      country: null,
-      city: null,
-      education: null,
+      country: visitingUser?.user?.details?.country,
+      state: visitingUser?.user?.details?.state,
+      education: visitingUser?.user?.details?.education,
+      bio: visitingUser?.user?.details?.bio,
     });
     document.body.style.overflow = '';
   };
@@ -63,6 +78,25 @@ const Details = () => {
     });
   };
 
+  const setState = (e) => {
+    setUserInfo((p) => {
+      return { ...p, state: e.target.value };
+    });
+  };
+
+  const handleBioUpdate = async () => {
+    const data = userInfo;
+    axios
+      .post(
+        import.meta.env.VITE_API_URL + `/users/save-details/user/${auth._id}`,
+        { ...data }
+      )
+      .then(() => {
+        closeModal();
+        dispatch(fetchVisitingUser(userId));
+      });
+  };
+
   return (
     <>
       {isModalOpen && (
@@ -74,7 +108,8 @@ const Details = () => {
         >
           <div className="5xl:w-[700px] bg-white m-[10px] font-nunito font-medium text-[16px] ">
             <div //* COUNTRY AND STATE
-            className="flex flex-row justify-start items-center my-[15px]">
+              className="flex flex-row justify-start items-center my-[15px]"
+            >
               <label //* COUNTRY
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="countries"
@@ -90,6 +125,7 @@ const Details = () => {
               <select
                 className="w-[150px] text-[#6246e9] border-[#6246e9] rounded-lg"
                 onChange={setCountry}
+                value={userInfo.country}
                 id="countries"
               >
                 {Country.getAllCountries().map((obj, id) => (
@@ -108,18 +144,23 @@ const Details = () => {
               <select
                 className="text-[#6246e9] 5xl:w-[200px]"
                 disabled={false}
+                onChange={setState}
+                value={userInfo.state}
                 id="state"
               >
                 {
                   State.getStatesOfCountry(userInfo.country).map((obj, id) => (
-                    <option key={obj.isoCode}>{obj.name}</option>
+                    <option key={obj.isoCode} value={obj.isoCode}>
+                      {obj.name}
+                    </option>
                   ))
                   // console.log(State.getStatesOfCountry('IN'))
                 }
               </select>
             </div>
             <div //* BIO
-             className="flex flex-row justify-start items-start my-[15px]">
+              className="flex flex-row justify-start items-start my-[15px]"
+            >
               <label
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="userBio"
@@ -139,13 +180,14 @@ const Details = () => {
                 value={userInfo.bio}
                 onChange={(e) =>
                   setUserInfo((p) => {
-                    return { ...p, bio: e.target.value };
+                    return { ...p, bio: e.target.value.substring(0, 90)};
                   })
                 }
               />
             </div>
             <div //* EDUCATION
-             className="flex flex-row justify-start items-start my-[15px]">
+              className="flex flex-row justify-start items-start my-[15px]"
+            >
               <label
                 className={'pr-[3px] flex flex-row items-center justify-center'}
                 htmlFor="education"
@@ -162,27 +204,30 @@ const Details = () => {
                 placeholder="School/College"
                 className="font-nunito text-[16px] 5xl:w-[500px] min-h-[30px] pt-[3px] text-[#6246e9] font-medium pl-[10px] w-[300px]"
                 id="education"
-                value = {userInfo.education}
+                value={userInfo.education}
                 onChange={(e) =>
                   setUserInfo((p) => {
-                    return { ...p, education: e.target.value };
+                    return { ...p, education: e.target.value.substring(0, 60)};
                   })
                 }
               />
             </div>
             <div //* BUTTONS
-             className="flex justify-center mt-[40px]">
+              className="flex justify-center mt-[40px]"
+            >
               <BaseButton
                 variant={'solid'}
                 disabled={
-                  userInfo?.bio?.length > 90 ||
-                  userInfo?.education?.length > 90
+                  userInfo?.bio?.length > 90 || userInfo?.education?.length > 90
                 }
+                onClick={handleBioUpdate}
                 className={'mr-[10px]'}
               >
                 Save
               </BaseButton>
-              <BaseButton variant={'red'} onClick={closeModal}>Discard Changes</BaseButton>
+              <BaseButton variant={'red'} onClick={closeModal}>
+                Discard Changes
+              </BaseButton>
             </div>
           </div>
         </Modal>
@@ -206,32 +251,37 @@ const Details = () => {
               </span>
             </div>
           </div>
-          <div //*  FROM
+          {visitingUser?.user?.details?.country && <div //*  FROM
             className="w-full p-[5px] pb-[10px]"
           >
-            <div className="flex items-center mx-[10px]">
-              <TiLocation size={22} color="#8a939e" />
+            <div className="flex mx-[10px]">
+              <span className='w-[22px]'><TiLocation size={22} color="#8a939e" /></span>
               <span className="ml-[15px] align-text-bottom font-nunito text-[#303030]">
                 From
               </span>
               <span className="ml-[3px] font-nunito font-extrabold">
-                New Delhi, India
+                {State.getStateByCodeAndCountry(
+                  visitingUser?.user?.details?.state,
+                  visitingUser?.user?.details?.country
+                )?.name +
+                  ', ' +
+                  Country.getCountryByCode(visitingUser?.user?.details?.country)?.name}
               </span>
             </div>
-          </div>
-          <div //*  STUDIED AT
+          </div>}
+          {visitingUser?.user?.details?.education && <div //*  STUDIED AT
             className="w-full p-[5px] pb-[10px]"
           >
-            <div className="flex items-center mx-[10px]">
-              <FaGraduationCap size={22} color="#8a939e" />
-              <span className="ml-[15px] align-text-bottom font-nunito text-[#303030]">
+            <div className="flex mx-[10px]">
+              <span><FaGraduationCap size={22} color="#8a939e" /></span>
+              <span className="ml-[15px] w-[75px] align-text-bottom font-nunito text-[#303030] whitespace-nowrap">
                 Studied at
               </span>
               <span className="ml-[3px] font-nunito font-extrabold">
-                {'Make Shift Institute of Technology'}
+                {visitingUser?.user?.details?.education}
               </span>
             </div>
-          </div>
+          </div>}
         </div>
         <div className="m-[10px]">
           {visitingUser.user._id === auth._id && (
