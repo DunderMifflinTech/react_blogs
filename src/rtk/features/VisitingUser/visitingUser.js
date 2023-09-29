@@ -9,6 +9,12 @@ const initialState = {
     email: null,
     profilePictureURL: null,
     dateCreated: null,
+    details:{
+      country:'',
+      state:'',
+      education:'',
+      bio:'',
+    },
     followers: [],
     following: [],
   },
@@ -38,7 +44,7 @@ export const visitingUserSlice = createSlice({
       state.error = '';
     });
     builder.addCase(fetchVisitingUser.fulfilled, (state, action) => {
-      console.log(action);
+      // console.log(action);
       state.loading = false;
       state.user._id = action.payload[0]._id;
       state.user.name = action.payload[0].name;
@@ -46,12 +52,17 @@ export const visitingUserSlice = createSlice({
       state.user.profilePictureURL = action.payload[0].profilePictureURL;
       state.user.backgroundPictureURL = action.payload[0].backgroundPictureURL;
       state.user.dateCreated = action.payload[0].dateCreated;
+      state.user.details.country = action.payload[0]?.details?.country
+      state.user.details.state = action.payload[0].details?.state
+      state.user.details.bio = action.payload[0].details?.bio
+      state.user.details.education = action.payload[0].details?.education
       state.user.followers = action.payload[0].followers;
       state.user.following = action.payload[0].following;
       state.posts = action.payload[0].posts;
       state.error = '';
     });
     builder.addCase(fetchVisitingUser.rejected, (state, action) => {
+      console.log(action)
       state.loading = false;
       state.posts = [];
       state.error = action.error.message;

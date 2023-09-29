@@ -314,7 +314,7 @@ export default function Comment({
             <div>
               <form className="flex items-center pl-[50px] pr-[10px] pb-[20px]">
                 <img
-                  src={user?.profilePictureURL || UnknownPerson}
+                  src={auth?.profilePictureURL || UnknownPerson}
                   className="h-[35px] w-[35px] rounded-full object-cover"
                 ></img>
                 <TextareaAutosize

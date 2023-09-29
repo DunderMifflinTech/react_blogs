@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import './SearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 import FoundUsers from '../FoundUsers/FoundUsers';
-import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
 
 function SearchBar() {
