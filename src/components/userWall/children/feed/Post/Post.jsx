@@ -195,7 +195,8 @@ function Post({ props, user, modalState }) {
           >
             {' '}
             {/*// ! contains the whole post in this div */}
-            <div className="postee-info-container flex justify-between">
+            <div //* USER INFO
+             className="postee-info-container flex justify-between">
               {' '}
               {/* //! the postee's info*/}
               <div className="flex">
@@ -252,7 +253,8 @@ function Post({ props, user, modalState }) {
               )}
             </div>
             <div>
-              <div className="post-body font-nunito text-[16px] font-semibold text-[#303030] pt-[25px] pl-[5px]">
+              <div //* POST CONTENT 
+               className="post-body font-nunito text-[16px] font-semibold text-[#303030] pt-[25px] pl-[5px]">
                 {props.body.split('\n').map((s, id) => (
                   <span key={id}>
                     {s}
@@ -263,7 +265,8 @@ function Post({ props, user, modalState }) {
               <div className="flex justify-center pt-[15px] pb-[15px]">
                 <hr className="w-[94.5%]" />
               </div>
-              <div className="flex flex-row-reverse justify-evenly select-none">
+              <div //* LIKE COMMENT SHARE BAR
+               className="flex flex-row-reverse justify-evenly select-none">
                 <div //*LIKE BUTTON
                   onClick={() => onLikeButtonClick()()}
                   className="like hover:cursor-pointer w-[50px] flex items-center"
@@ -301,7 +304,8 @@ function Post({ props, user, modalState }) {
               </div>
             </div>
           </div>
-          <div>
+          <div //* COMMENTS SECTION 
+          >
             {commentsArray?.length > 0 &&
               commentsArray.map((ele) => {
                 return (
@@ -321,7 +325,8 @@ function Post({ props, user, modalState }) {
                 );
               })}
           </div>
-          <div>
+          <div //* POST COMMENT 
+          >
             <form className="flex items-center px-[10px] pb-[15px]">
               <img
                 src={profilePicture || unknownPerson}

@@ -1,18 +1,18 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './CreateArticles.css';
 import { BsFillPostcardHeartFill } from 'react-icons/bs';
 import { HiMiniPhoto } from 'react-icons/hi2';
-import { MdArticle } from 'react-icons/md';
+import { BiSolidVideos } from 'react-icons/bi';
 import { IoClose } from 'react-icons/io5';
 import BaseButton from '../../../BaseButton/BaseButton';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserFeed } from '../../../../rtk/features/Post/postsSlice';
-import UnknownPerson from '../../../../images/UnknownPerson.jpg'
+import UnknownPerson from '../../../../images/UnknownPerson.jpg';
 
-const PostModal = ({ userNik, setIsModalOpen }) => {
+const PostModal = ({ userNik, setIsModalOpen, modalType }) => {
   const [postContent, setPostContent] = useState('');
-  const state = useSelector(state=>state.auth);
+  const state = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const closeModal = () => {
     document.body.style.overflow = '';
@@ -27,7 +27,7 @@ const PostModal = ({ userNik, setIsModalOpen }) => {
     e.preventDefault();
     axios
       .post(import.meta.env.VITE_API_URL + '/post/create-post', {
-        user: { _id:  state._id},
+        user: { _id: state._id },
         body: postContent,
       })
       .then(() => {
@@ -79,12 +79,17 @@ const PostModal = ({ userNik, setIsModalOpen }) => {
                   handlePostChange(e);
                 }}
               ></textarea>
+              <div>
+                <input></input>
+              </div>
               <div className={'flex flex-row-reverse'}>
                 <BaseButton
                   onClick={handlePostSubmit}
                   variant={'solid'}
                   children={'Post'}
-                  className={'h-[40px] mr-[40px] font-nunito text-[16px] font-extrabold '}
+                  className={
+                    'h-[40px] mr-[40px] font-nunito text-[16px] font-extrabold '
+                  }
                 />
               </div>
             </div>
@@ -97,26 +102,9 @@ const PostModal = ({ userNik, setIsModalOpen }) => {
 
 function CreateArticles({ userPFP, userNik, ...restOfProps }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const state = useSelector(state=>state.auth);
-  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  const state = useSelector((state) => state.auth);
+  const [modalType, setModalType] = useState('');
 
-  	function getCurrentDimension(){
-    	return {
-      		width: window.innerWidth,
-      		height: window.innerHeight
-    	}
-  	}
-
-  	useEffect(() => {
-    		const updateDimension = () => {
-      			setScreenSize(getCurrentDimension())
-    		}
-    		window.addEventListener('resize', updateDimension);
-        // console.log('resize', screenSize);
-    		return(() => {
-        		window.removeEventListener('resize', updateDimension);
-    		})
-  	}, [screenSize])
   const openModal = () => {
     document.body.style.overflow = 'hidden';
     setIsModalOpen(true);
@@ -125,10 +113,7 @@ function CreateArticles({ userPFP, userNik, ...restOfProps }) {
   return (
     <>
       {isModalOpen ? (
-        <PostModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-        />
+        <PostModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} modalType = {modalType} />
       ) : (
         <></>
       )}
@@ -148,17 +133,37 @@ function CreateArticles({ userPFP, userNik, ...restOfProps }) {
           </button>
         </div>
         <div className=" pt-[15px] pr-[15px] pb-[10px] pl-[50px] flex flex-row justify-evenly xsm:px-0 2xsm:flex 2xsm:flex-col 2xsm:items-center 2xsm:justify-center">
-          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
-            <BsFillPostcardHeartFill size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Post</span>
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]" 
+          onClick={()=>{setModalType('post'); openModal()}}>
+          <BsFillPostcardHeartFill
+              size={25}
+              color="3D3D3D"
+              className="inline mr-[10px]"
+            />
+            <span className="font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]">
+              Post
+            </span>
           </div>
           <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
-            <HiMiniPhoto size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Photo</span>
+            <HiMiniPhoto
+              size={25}
+              color="3D3D3D"
+              className="inline mr-[10px]"
+            />
+            <span className="font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]">
+              Photo
+            </span>
           </div>
-          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]">
-            <MdArticle size={25} color='3D3D3D' className="inline mr-[10px]" />
-            <span className='font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]'>Article</span>
+          <div className="cursor-pointer rounded-lg h-[35px] w-[100px] flex flex-row justify-center place-items-center hover:bg-[#d7d7d7] transition-all ease-in-out 2xsm:w-[85px]"
+          onClick={()=>{setModalType('video'); openModal()}}>
+            <BiSolidVideos
+              size={25}
+              color="3D3D3D"
+              className="inline mr-[10px]"
+            />
+            <span className="font-nunito text-[18px] text-[#272727] font-extrabold xsm:text-[15px]">
+              Video
+            </span>
           </div>
         </div>
       </div>
