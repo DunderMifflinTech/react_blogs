@@ -38,7 +38,8 @@ const VisitUser = () => {
 
   return (
     <>
-      <div>
+      <div 
+      onClick={()=>{isDropdownActive?togglePopUp():''}}>
         <VisitingBio />
         <div className="flex flex-row">
           <div>
@@ -74,7 +75,7 @@ const VisitUser = () => {
                 Posts
               </span>
               <button className=" dropdown-button-active font-nunito font-extrabold flex flex-row items-center"
-              onClick={togglePopUp}>
+              onClick={(e)=>{e.stopPropagation();togglePopUp()}}>
                 <span>Sort by</span>{' '}
                 {isDropdownActive ? (
                   <BiSolidUpArrow className="ml-[5px]" size={10} />

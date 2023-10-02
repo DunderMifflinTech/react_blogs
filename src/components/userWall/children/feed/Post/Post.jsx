@@ -21,10 +21,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 const api_url = import.meta.env.VITE_API_URL;
 
-
-const bio = 'To do is to be, to be is to do, scooby dooby doo';
-
-function Post({ props, user, modalState }) {
+function Post({ props, user, modalState, postType }) {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [likeVar, setLikeVar] = useState(false);
   const [comment, setComment] = useState();
