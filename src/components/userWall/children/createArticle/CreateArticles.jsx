@@ -31,6 +31,7 @@ const PostModal = ({ userNik, setIsModalOpen, setModalType }) => {
       .post(import.meta.env.VITE_API_URL + '/post/create-post', {
         user: { _id: state._id },
         body: postContent,
+        postType: 'post'
       })
       .then(() => {
         dispatch(fetchUserFeed());
