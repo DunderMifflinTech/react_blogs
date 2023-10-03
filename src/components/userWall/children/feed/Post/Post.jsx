@@ -186,7 +186,7 @@ function Post({ props, user, modalState, postType, pollData }) {
           import.meta.env.VITE_API_URL +
             `/post/vote/?userId=${auth._id}&postId=${props._id}&idx=${idx}`
         )
-        .then(() => dispatch(fetchUserFeed()));
+        .then(() => setTimeout(()=>dispatch(fetchUserFeed())), 500);
     }
   };
 
