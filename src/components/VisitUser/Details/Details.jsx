@@ -93,7 +93,7 @@ const Details = () => {
       )
       .then(() => {
         closeModal();
-        dispatch(fetchVisitingUser(userId));
+        setTimeout(()=>dispatch(fetchVisitingUser(userId)), 300);
       });
   };
 
