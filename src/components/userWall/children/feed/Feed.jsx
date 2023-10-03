@@ -83,6 +83,8 @@ function Feed({kind, id}) {
         .map((obj) => (
           <Post
             key={obj._id}
+            postType = {obj.postType}
+            pollData={obj.pollData}
             props={obj}
             user={getUser(obj)}
             modalState={{ isModalOpen, setIsModalOpen, openModal }}

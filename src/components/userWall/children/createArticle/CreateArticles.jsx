@@ -108,7 +108,6 @@ const PollModal = ({ userNik, setIsModalOpen, setModalType }) => {
   const [pollData, setPollData] = useState(['','']);
   const [heading, setHeading] = useState('');
   const dispatch = useDispatch();
-  console.log('pollData --------->  ', pollData);
 
   const closeModal = () => {
     document.body.style.overflow = '';
@@ -120,7 +119,9 @@ const PollModal = ({ userNik, setIsModalOpen, setModalType }) => {
     axios
       .post(import.meta.env.VITE_API_URL + '/post/create-post', {
         user: { _id: state._id },
-        body: postContent,
+        body: heading,
+        pollData: pollData,
+        postType: 'poll'
       })
       .then(() => {
         dispatch(fetchUserFeed());

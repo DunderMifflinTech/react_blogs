@@ -1,27 +1,25 @@
+import axios from 'axios';
+import moment from 'moment';
 import { React, useEffect, useRef, useState } from 'react';
-import userPFP from '../../../../../images/userPFP.png';
-import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
-import { TbShare3 } from 'react-icons/tb';
+import { IconContext } from 'react-icons';
 import { BiComment } from 'react-icons/bi';
+import { FcLike, FcLikePlaceholder } from 'react-icons/fc';
+import { FiEdit2 } from 'react-icons/fi';
+import { MdDeleteOutline } from 'react-icons/md';
+import { TbShare3 } from 'react-icons/tb';
 import { VscSend } from 'react-icons/vsc';
-import './Post.css';
-import unknownPerson from '../../../../../images/UnknownPerson.jpg';
-import Comment from '../Comment/Comment';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import TextareaAutosize from 'react-textarea-autosize';
-import moment from 'moment';
-import axios from 'axios';
-import { fetchRequiredUsers } from '../../../../../rtk/features/userCache/useCacheSlice';
+import unknownPerson from '../../../../../images/UnknownPerson.jpg';
 import { fetchUserFeed } from '../../../../../rtk/features/Post/postsSlice';
-import { FiEdit2 } from 'react-icons/fi';
-import { MdDeleteOutline } from 'react-icons/md';
-import { IconContext } from 'react-icons';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import { fetchRequiredUsers } from '../../../../../rtk/features/userCache/useCacheSlice';
+import Comment from '../Comment/Comment';
+import './Post.css';
 const api_url = import.meta.env.VITE_API_URL;
 
-function Post({ props, user, modalState, postType }) {
+function Post({ props, user, modalState, postType, pollData }) {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
   const [likeVar, setLikeVar] = useState(false);
   const [comment, setComment] = useState();
@@ -38,11 +36,11 @@ function Post({ props, user, modalState, postType }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(props.likes.some(obj=>obj.userId === auth._id)){
+  useEffect(() => {
+    if (props.likes.some((obj) => obj.userId === auth._id)) {
       setLikeVar(true);
     }
-  }, [])
+  }, []);
 
   const handleKeyDown = (e) => {
     if (e.keyCode == 13 && e.shiftKey == false) {
@@ -56,7 +54,7 @@ function Post({ props, user, modalState, postType }) {
     const hour = min * 60;
     const day = hour * 24;
 
-    if (timeElapsed/min < 5) {
+    if (timeElapsed / min < 5) {
       return 'just now';
     } else if (timeElapsed < hour) {
       return `${Math.round(timeElapsed / min)}min ago`;
@@ -81,7 +79,7 @@ function Post({ props, user, modalState, postType }) {
       await axios.post(api_url + '/comment/add-comment', commentData);
       setComment('');
       setCommentsAdded((s) => s + 1);
-      setTimeout(()=>handleCommentsFetch(true), 100);
+      setTimeout(() => handleCommentsFetch(true), 100);
     }
   };
 
@@ -181,6 +179,27 @@ function Post({ props, user, modalState, postType }) {
     modalState.openModal('DELETE', auth._id, props._id, props.body);
   };
 
+  const handleVoteSubmit = (idx) => {
+    if (!hasUserVoted()) {
+      axios
+        .post(
+          import.meta.env.VITE_API_URL +
+            `/post/vote/?userId=${auth._id}&postId=${props._id}&idx=${idx}`
+        )
+        .then(() => dispatch(fetchUserFeed()));
+    }
+  };
+
+  const hasUserVoted = () => {
+    for (let option in pollData) {
+      for (let vote of pollData[option].votes) {
+        console.log(vote.userId);
+        if (vote.userId === auth._id) return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <>
       <div className="h-auto w-full bg-[#fff] mt-[20px] rounded-2xl  border-[0.5px] border-[#fff] shadow-[0px_6px_14px_2px_rgb(185,185,185)]">
@@ -193,7 +212,8 @@ function Post({ props, user, modalState, postType }) {
             {' '}
             {/*// ! contains the whole post in this div */}
             <div //* USER INFO
-             className="postee-info-container flex justify-between">
+              className="postee-info-container flex justify-between"
+            >
               {' '}
               {/* //! the postee's info*/}
               <div className="flex">
@@ -206,12 +226,21 @@ function Post({ props, user, modalState, postType }) {
                 <div>
                   <ul className="pl-[10px]">
                     <li className="h-[15px] text-[16px] user-name list-none font-nunito font-medium flex items-center">
-                      <NavLink to={`/user/${user?._id}`} className='hover:text-[#6246EA] hover:cursor-pointer hover'>{user?.name}</NavLink>
+                      <NavLink
+                        to={`/user/${user?._id}`}
+                        className="hover:text-[#6246EA] hover:cursor-pointer hover"
+                      >
+                        {user?.name}
+                      </NavLink>
                     </li>
-                    {user?.details?.bio && <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
-                      {' '}
-                      {user?.details?.bio.length > 28 ? user?.details?.bio.substring(0, 28) + '...' : user?.details?.bio}
-                    </li>}
+                    {user?.details?.bio && (
+                      <li className="h-[15px] font-nunito user-bio list-none text-[13px] text-[#666666]">
+                        {' '}
+                        {user?.details?.bio.length > 28
+                          ? user?.details?.bio.substring(0, 28) + '...'
+                          : user?.details?.bio}
+                      </li>
+                    )}
                     <li className="time-stamp h-[15px] font-nunito text-[13px] list-none text-[#666666]">
                       {displayTime(props?.createdAt)}
                     </li>
@@ -250,20 +279,46 @@ function Post({ props, user, modalState, postType }) {
               )}
             </div>
             <div>
-              <div //* POST CONTENT 
-               className="post-body font-nunito text-[16px] font-semibold text-[#303030] pt-[25px] pl-[5px]">
+              <div //* POST CONTENT
+                className="post-body font-nunito text-[16px] font-semibold text-[#303030] pt-[25px] pl-[5px]"
+              >
                 {props.body.split('\n').map((s, id) => (
                   <span key={id}>
                     {s}
                     <br />
                   </span>
                 ))}
+                {postType == 'poll' && (
+                  <ul>
+                    {pollData.map((obj, idx) => {
+                      return (
+                        <li
+                          key={idx}
+                          onClick={() => handleVoteSubmit(idx)}
+                          className=" relative self-center h-[30px] my-[5px] pl-[10px] flex justify-between items-center rounded-full border-[1.5px] bg-[#6146ea46] border-[#6246ea] w-[90%] text-[#3e2c97] cursor-pointer overflow-hidden whitespace-nowrap"
+                        >
+                          <span>{obj.option}</span>
+                          {hasUserVoted() && (
+                            <>
+                              <span
+                                style={{ width: `${obj.percentage}%` }}
+                                className={` h-full bg-[#6146ea5b] absolute top-0 left-0 rounded-xl`}
+                              ></span>
+                              <span className="font-normal px-[10px]">{`${obj.percentage}%`}</span>
+                            </>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
               <div className="flex justify-center pt-[15px] pb-[15px]">
                 <hr className="w-[94.5%]" />
               </div>
               <div //* LIKE COMMENT SHARE BAR
-               className="flex flex-row-reverse justify-evenly select-none">
+                className="flex flex-row-reverse justify-evenly select-none"
+              >
                 <div //*LIKE BUTTON
                   onClick={() => onLikeButtonClick()()}
                   className="like hover:cursor-pointer w-[50px] flex items-center"
@@ -281,14 +336,16 @@ function Post({ props, user, modalState, postType }) {
                   )}
                 </div>
                 <div //* REPOST BUTTON
-                 className="share hover:cursor-pointer w-[50px] flex text-[13px] items-center">
+                  className="share hover:cursor-pointer w-[50px] flex text-[13px] items-center"
+                >
                   <span className="w-[30px] pr-[5px] text-end font-nunito text-[14px] text-[#272727] font-extrabold">
                     4
                   </span>
                   <TbShare3 color="DimGrey" size={20} />
                 </div>
                 <div //* COMMENTS BUTTON
-                 className="comment hover:cursor-pointer w-[50px] flex text-[13px] items-center">
+                  className="comment hover:cursor-pointer w-[50px] flex text-[13px] items-center"
+                >
                   <span className="w-[30px] pr-[5px] text-end font-nunito text-[14px] text-[#272727] font-extrabold">
                     {props?.commentsCount + commentsAdded}
                   </span>
@@ -301,7 +358,7 @@ function Post({ props, user, modalState, postType }) {
               </div>
             </div>
           </div>
-          <div //* COMMENTS SECTION 
+          <div //* COMMENTS SECTION
           >
             {commentsArray?.length > 0 &&
               commentsArray.map((ele) => {
@@ -317,12 +374,12 @@ function Post({ props, user, modalState, postType }) {
                     data={ele}
                     user={getUser(ele)}
                     handleCommentsFetch={handleCommentsFetch}
-                    modalState = {modalState}
+                    modalState={modalState}
                   />
                 );
               })}
           </div>
-          <div //* POST COMMENT 
+          <div //* POST COMMENT
           >
             <form className="flex items-center px-[10px] pb-[15px]">
               <img
