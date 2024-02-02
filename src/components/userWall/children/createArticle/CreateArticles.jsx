@@ -103,7 +103,6 @@ const PostModal = ({ userNik, setIsModalOpen, setModalType }) => {
 };
 
 const PollModal = ({ userNik, setIsModalOpen, setModalType }) => {
-  const [postContent, setPostContent] = useState('');
   const state = useSelector((state) => state.auth);
   const [pollData, setPollData] = useState(['','']);
   const [heading, setHeading] = useState('');
@@ -342,7 +341,7 @@ const PhotoModal = ({ userNik, setIsModalOpen, setModalType }) => {
 function CreateArticles({ userPFP, userNik, ...restOfProps }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const state = useSelector((state) => state.auth);
-  const [modalType, setModalType] = useState('');
+  const [modalType, setModalType] = useState('post');
 
   const openModal = () => {
     document.body.style.overflow = 'hidden';

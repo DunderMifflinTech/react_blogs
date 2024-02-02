@@ -1,20 +1,18 @@
-import { React, useState, useRef, useCallback } from 'react';
-import { BsFillCameraFill } from 'react-icons/bs';
-import unknownPerson from '../../../images/UnknownPerson.jpg';
-import backgroundPlaceholder from '../../../images/backgroundImage.png';
-import nature from '../../../images/nature.png';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import './VisitingBio.css';
-import BaseButton from '../../BaseButton/BaseButton';
+import axios from 'axios';
+import { React, useCallback, useRef, useState } from 'react';
+import Cropper from 'react-easy-crop';
+import { BsSave } from 'react-icons/bs';
+import { FiUpload } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
 import { MdDelete } from 'react-icons/md';
-import { FiUpload } from 'react-icons/fi';
-import { BsSave } from 'react-icons/bs';
-import Cropper from 'react-easy-crop';
-import getCroppedImg, { dataURLtoFile, generateDownload } from '../../userWall/children/userBio/utils';
-import axios from 'axios';
-import { updateProfilePicture } from '../../../rtk/features/userAuthentication/userAuthenticationSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import unknownPerson from '../../../images/UnknownPerson.jpg';
+import backgroundPlaceholder from '../../../images/backgroundImage.png';
+import BaseButton from '../../BaseButton/BaseButton';
+import getCroppedImg, { dataURLtoFile } from '../../userWall/children/userBio/utils';
+import { BsCheckLg } from 'react-icons/bs'
+import './VisitingBio.css';
 
 function VisitingBio({ ...restOfProps }) {
   const visitingUser = useSelector((state) => state.visitingUser);
@@ -78,9 +76,11 @@ function VisitingBio({ ...restOfProps }) {
               <button className="ml-[20px]">124 Following</button>
             </div>
           </div>
-          {/* <div className=''>
-            <BaseButton className='w-[80px]'/>
-          </div> */}
+          {auth?._id !== visitingUser?.user?._id && <div className='absolute right-0 bottom-0'>
+            {true ? <button className='w-[80px] bg-[#6246ea] rounded-lg text-white font-nunito py-[7px] px-[5px] mb-[3px]'>Follow</button> : 
+            (false ? (<button className='w-[100px] bg-[#6246ea] rounded-lg text-white font-nunito py-[7px] px-[5px] mb-[3px]'>Requested</button>) : 
+          (<button className='w-[90px] bg-[#d1d1d1] rounded-lg font-bold font-nunito text-[#353535] py-[7px] px-[5px] mb-[3px]'>Following</button>))}
+          </div>}
         </div>
       </div>
       <hr className="my-[40px] w-[85vw] "></hr>
